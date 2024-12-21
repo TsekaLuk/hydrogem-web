@@ -79,5 +79,25 @@
   "user": {
     "settings": "设置",
     "logout": "退出登录"
+  },
+  "help": {
+    "title": "帮助中心",
+    "description": "查找常见问题的答案并了解如何使用我们的平台",
+    "search": {
+      "placeholder": "搜索帮助...",
+      "noResults": "未找到相关结果"
+    },
+    "categories": {
+      "title": "帮助分类",
+      "all": "全部"
+    },
+    "article": {
+      "feedback": {
+        "helpful": "这篇文章有帮助吗？",
+        "yes": "有帮助",
+        "no": "没有帮助",
+        "thanks": "感谢您的反馈！"
+      }
+    }
   }
 } 

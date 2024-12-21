@@ -7,7 +7,8 @@
     "chat": "Chat",
     "monitoring": "Monitoring",
     "analytics": "Analytics",
-    "help": "Help & Support"
+    "help": "Help & Support",
+    "dashboard": "Dashboard"
   },
   "messages": {
     "welcome": "Welcome back! Here's an overview of your activity.",
@@ -15,6 +16,9 @@
     "error": "An error occurred",
     "success": "Operation successful",
     "noData": "No data available"
+  },
+  "search": {
+    "placeholder": "Enter search terms..."
   },
   "settings": {
     "title": "Settings",
@@ -75,5 +79,25 @@
   "user": {
     "settings": "Settings",
     "logout": "Logout"
+  },
+  "help": {
+    "title": "Help Center",
+    "description": "Find answers to common questions and learn how to use our platform",
+    "search": {
+      "placeholder": "Search for help...",
+      "noResults": "No results found"
+    },
+    "categories": {
+      "title": "Help Categories",
+      "all": "All"
+    },
+    "article": {
+      "feedback": {
+        "helpful": "Was this article helpful?",
+        "yes": "Yes",
+        "no": "No",
+        "thanks": "Thank you for your feedback!"
+      }
+    }
   }
 } 

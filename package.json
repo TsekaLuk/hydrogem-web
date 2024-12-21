@@ -2,12 +2,12 @@
   "name": "hydrogem-web",
   "version": "1.0.0",
   "description": "A React-based water quality monitoring system",
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",

@@ -1,0 +1,28 @@
+{
+  "metrics": {
+    "activeUsers": {
+      "label": "Active Users",
+      "change": "vs last week"
+    },
+    "serverLoad": {
+      "label": "Server Load",
+      "change": "vs last week"
+    },
+    "responseTime": {
+      "label": "Response Time",
+      "change": "vs last week"
+    },
+    "systemHealth": {
+      "label": "System Health",
+      "change": "vs last week"
+    }
+  },
+  "chart": {
+    "title": "System Performance",
+    "metrics": {
+      "cpu": "CPU Usage",
+      "memory": "Memory Usage",
+      "network": "Network Load"
+    }
+  }
+} 

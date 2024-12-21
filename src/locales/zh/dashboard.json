@@ -1,0 +1,28 @@
+{
+  "metrics": {
+    "activeUsers": {
+      "label": "活跃用户",
+      "change": "较上周"
+    },
+    "serverLoad": {
+      "label": "服务器负载",
+      "change": "较上周"
+    },
+    "responseTime": {
+      "label": "响应时间",
+      "change": "较上周"
+    },
+    "systemHealth": {
+      "label": "系统健康度",
+      "change": "较上周"
+    }
+  },
+  "chart": {
+    "title": "系统性能",
+    "metrics": {
+      "cpu": "CPU使用率",
+      "memory": "内存使用率",
+      "network": "网络负载"
+    }
+  }
+} 

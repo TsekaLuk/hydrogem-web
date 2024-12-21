@@ -1,0 +1,290 @@
+{
+  "title": "Water Quality Monitoring",
+  "alerts": {
+    "title": "Attention Required",
+    "phWarning": "pH levels are approaching warning threshold in Tank #3. Consider maintenance check."
+  },
+  "system": {
+    "status": "System Status",
+    "lastUpdated": "Last updated"
+  },
+  "parameters": {
+    "range": "Reference Range",
+    "totalNitrogen": {
+      "name": "Total Nitrogen",
+      "description": "Evaluates total nitrogen content, an important indicator of water eutrophication.",
+      "unit": "mg/L",
+      "range": "≤0.2-1.0 (Surface water)"
+    },
+    "totalPhosphorus": {
+      "name": "Total Phosphorus",
+      "description": "Evaluates total phosphorus content, a key element causing water eutrophication.",
+      "unit": "mg/L",
+      "range": "≤0.02-0.2 (Surface water)"
+    },
+    "ammoniaNitrogen": {
+      "name": "Ammonia Nitrogen",
+      "description": "Indicates organic pollution decomposition or discharge.",
+      "unit": "mg/L",
+      "range": "≤0.5-2.0 (Surface water)"
+    },
+    "nitrate": {
+      "name": "Nitrate",
+      "description": "Reflects nitrate nitrogen concentration from nitrogen compound oxidation.",
+      "unit": "mg/L",
+      "range": "≤10 (Drinking water)"
+    },
+    "nitrite": {
+      "name": "Nitrite",
+      "description": "Indicates nitrite nitrogen content, high levels are toxic to aquatic life.",
+      "unit": "mg/L",
+      "range": "≤1.0 (Drinking water)"
+    },
+    "phosphate": {
+      "name": "Phosphate",
+      "description": "Reflects phosphate concentration, usually from domestic and agricultural wastewater.",
+      "unit": "mg/L",
+      "range": "≤0.3 (Surface water)"
+    },
+    "sulfate": {
+      "name": "Sulfate",
+      "description": "Sulfate concentration can indicate mineral dissolution or industrial discharge.",
+      "unit": "mg/L",
+      "range": "≤250 (Drinking water)"
+    },
+    "dissolvedOrganicCarbon": {
+      "name": "Dissolved Organic Carbon",
+      "description": "Important indicator of dissolved organic matter content in water.",
+      "unit": "mg/L",
+      "range": "≤5.0 (Drinking water)"
+    },
+    "totalCarbon": {
+      "name": "Total Carbon",
+      "description": "Represents the total carbon content in water.",
+      "unit": "mg/L",
+      "range": "10-30 (Surface water)"
+    },
+    "inorganicCarbon": {
+      "name": "Inorganic Carbon",
+      "description": "Usually related to carbonates and bicarbonates.",
+      "unit": "mg/L",
+      "range": "5-25 (Surface water)"
+    },
+    "totalOrganicCarbon": {
+      "name": "Total Organic Carbon",
+      "description": "Indicates total organic pollution in water.",
+      "unit": "mg/L",
+      "range": "≤3 (Drinking water)"
+    },
+    "chemicalOxygenDemand": {
+      "name": "Chemical Oxygen Demand",
+      "description": "Indicates the amount of oxygen consumed by oxidation of reducing substances in water.",
+      "unit": "mg/L",
+      "range": "≤15-40 (Surface water)"
+    },
+    "totalHardness": {
+      "name": "Total Hardness",
+      "description": "Comprehensive indicator of calcium, magnesium and other ion content in water.",
+      "unit": "mg/L",
+      "range": "150-450 (Drinking water)"
+    },
+    "residualChlorine": {
+      "name": "Residual Chlorine",
+      "description": "Residual chlorine concentration, can indicate disinfection effectiveness.",
+      "unit": "mg/L",
+      "range": "0.3-0.5 (Drinking water)"
+    },
+    "fluoride": {
+      "name": "Fluoride",
+      "description": "Fluoride content in water, closely related to drinking water safety.",
+      "unit": "mg/L",
+      "range": "≤1.0 (Drinking water)"
+    },
+    "sulfide": {
+      "name": "Sulfide",
+      "description": "Evaluates sulfide concentration, high levels can cause oxygen depletion and toxicity.",
+      "unit": "mg/L",
+      "range": "≤0.02 (Surface water)"
+    },
+    "chloride": {
+      "name": "Chloride",
+      "description": "Reflects chloride ion concentration in water.",
+      "unit": "mg/L",
+      "range": "≤250 (Drinking water)"
+    },
+    "phenols": {
+      "name": "Phenols",
+      "description": "Common organic pollutants in industrial wastewater.",
+      "unit": "mg/L",
+      "range": "≤0.002 (Surface water)"
+    },
+    "methanol": {
+      "name": "Methanol",
+      "description": "Methanol content in water, can indicate industrial pollution.",
+      "unit": "mg/L",
+      "range": "≤10 (Industrial wastewater)"
+    },
+    "potassium": {
+      "name": "Potassium",
+      "description": "Potassium ion concentration, used to analyze mineral composition of water.",
+      "unit": "mg/L",
+      "range": "≤12 (Drinking water)"
+    },
+    "resistivity": {
+      "name": "Resistivity",
+      "description": "Water resistivity, reflects its conductivity, related to dissolved solids concentration.",
+      "unit": "Ω·m",
+      "range": ">1800 (Pure water)"
+    },
+    "salinity": {
+      "name": "Salinity",
+      "description": "Evaluates water salinity, reflects total mineral content.",
+      "unit": "mg/L",
+      "range": "<1000 (Fresh water)"
+    },
+    "zinc": {
+      "name": "Zinc",
+      "description": "Evaluates zinc ion content in water.",
+      "unit": "mg/L",
+      "range": "≤1.0 (Drinking water)"
+    },
+    "cadmium": {
+      "name": "Cadmium",
+      "description": "Cadmium content in water, high levels are toxic to humans and organisms.",
+      "unit": "mg/L",
+      "range": "≤0.005 (Drinking water)"
+    },
+    "copper": {
+      "name": "Copper",
+      "description": "Evaluates copper ion content in water.",
+      "unit": "mg/L",
+      "range": "≤1.0 (Drinking water)"
+    },
+    "manganese": {
+      "name": "Manganese",
+      "description": "Manganese content in water, high levels affect drinking water taste and health.",
+      "unit": "mg/L",
+      "range": "≤0.1 (Drinking water)"
+    },
+    "aluminum": {
+      "name": "Aluminum",
+      "description": "Aluminum concentration, high levels may affect human health and industrial water quality.",
+      "unit": "mg/L",
+      "range": "≤0.2 (Drinking water)"
+    },
+    "iron": {
+      "name": "Iron",
+      "description": "Iron concentration, closely related to water color and taste.",
+      "unit": "mg/L",
+      "range": "≤0.3 (Drinking water)"
+    },
+    "chromium": {
+      "name": "Hexavalent Chromium",
+      "description": "Hexavalent chromium concentration, can indicate industrial pollution, toxic.",
+      "unit": "mg/L",
+      "range": "≤0.05 (Drinking water)"
+    },
+    "ferrousIron": {
+      "name": "Ferrous Iron",
+      "description": "Ferrous iron content, indicates whether oxidation-reduction reactions occur in water.",
+      "unit": "mg/L",
+      "range": "≤0.3 (Surface water)"
+    },
+    "arsenic": {
+      "name": "Arsenic",
+      "description": "Arsenic content, can indicate geological or industrial pollution, toxic.",
+      "unit": "mg/L",
+      "range": "≤0.01 (Drinking water)"
+    },
+    "siliconDioxide": {
+      "name": "Silicon Dioxide",
+      "description": "Reflects silicon dioxide concentration, used to analyze minerals in water.",
+      "unit": "mg/L",
+      "range": "1-30 (Surface water)"
+    },
+    "solubleSilicon": {
+      "name": "Soluble Silicon",
+      "description": "Soluble silicon, used to evaluate silicon element activity in water.",
+      "unit": "mg/L",
+      "range": "5-25 (Surface water)"
+    },
+    "ph": {
+      "name": "pH",
+      "description": "Indicates water acidity or alkalinity.",
+      "unit": "",
+      "range": "6.5-8.5 (Drinking water)",
+      "acidic": "Acidic",
+      "neutral": "Neutral",
+      "alkaline": "Alkaline"
+    },
+    "turbidity": {
+      "name": "Turbidity",
+      "description": "Indicates suspended particle content in water.",
+      "unit": "NTU",
+      "range": "≤1 (Drinking water)"
+    },
+    "conductivity": {
+      "name": "Conductivity",
+      "description": "Reflects ion concentration in water.",
+      "unit": "μS/cm",
+      "range": "≤2500 (Drinking water)"
+    },
+    "chlorophyll": {
+      "name": "Chlorophyll",
+      "description": "Reflects phytoplankton biomass in water, an important indicator of water eutrophication.",
+      "unit": "μg/L",
+      "range": "≤30 (Surface water)"
+    },
+    "dissolvedOxygen": {
+      "name": "Dissolved Oxygen",
+      "description": "Indicates oxygen supply level in water.",
+      "unit": "mg/L",
+      "range": "≥5 (Surface water)"
+    },
+    "totalDissolvedSolids": {
+      "name": "Total Dissolved Solids",
+      "description": "Total dissolved solids, reflects total amount of dissolved substances in water.",
+      "unit": "mg/L",
+      "range": "≤1000 (Drinking water)"
+    }
+  },
+  "status": {
+    "normal": "Normal",
+    "warning": "Warning",
+    "error": "Error",
+    "offline": "Offline"
+  },
+  "actions": {
+    "configure": "Configure Parameters",
+    "configureDescription": "Select parameters to monitor and configure their thresholds.",
+    "viewDetails": "View Details",
+    "export": "Export Data",
+    "refresh": "Refresh"
+  },
+  "categories": {
+    "physical": {
+      "name": "Physical Parameters",
+      "description": "Includes physical characteristics such as pH, turbidity, and conductivity."
+    },
+    "organic": {
+      "name": "Organic Parameters",
+      "description": "Includes organic content indicators such as total nitrogen, total phosphorus, and ammonia nitrogen."
+    },
+    "metals": {
+      "name": "Metal Ions",
+      "description": "Includes heavy metal ion content indicators such as zinc and copper."
+    },
+    "toxins": {
+      "name": "Toxic Substances",
+      "description": "Includes toxic and harmful substance indicators such as phenols."
+    },
+    "ions": {
+      "name": "Ionic Components",
+      "description": "Includes ion content indicators such as total hardness and chloride."
+    },
+    "biological": {
+      "name": "Biological Indicators",
+      "description": "Includes biological activity indicators such as chlorophyll."
+    }
+  }
+} 

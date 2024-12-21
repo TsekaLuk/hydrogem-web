@@ -1,0 +1,83 @@
+{
+  "app": {
+    "name": "HydroGem",
+    "beta": "测试版"
+  },
+  "nav": {
+    "chat": "聊天",
+    "monitoring": "监控",
+    "analytics": "数据分析",
+    "help": "帮助支持",
+    "dashboard": "仪表盘"
+  },
+  "messages": {
+    "welcome": "欢迎回来！以下是您的活动概览。",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "操作成功",
+    "noData": "暂无数据"
+  },
+  "search": {
+    "placeholder": "搜索..."
+  },
+  "settings": {
+    "title": "设置",
+    "description": "管理您的账户设置和偏好",
+    "tabs": {
+      "profile": "个人资料",
+      "notifications": "通知",
+      "security": "安全",
+      "appearance": "外观"
+    },
+    "profile": {
+      "title": "个人资料",
+      "description": "更新您的个人信息",
+      "name": "姓名",
+      "email": "邮箱",
+      "department": "部门",
+      "save": "保存更改"
+    },
+    "notifications": {
+      "title": "通知设置",
+      "description": "配置如何接收通知",
+      "email": "邮件通知",
+      "push": "推送通知",
+      "updates": "产品更新"
+    },
+    "security": {
+      "title": "安全设置",
+      "description": "管理您的安全选项",
+      "currentPassword": "当前密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认密码",
+      "changePassword": "更改密码",
+      "twoFactor": "两步验证",
+      "enable": "启用",
+      "disable": "禁用"
+    },
+    "appearance": {
+      "title": "外观设置",
+      "description": "自定义界面外观",
+      "theme": "主题",
+      "light": "浅色",
+      "dark": "深色",
+      "system": "跟随系统",
+      "fontSize": "字体大小",
+      "small": "小",
+      "normal": "中",
+      "large": "大"
+    }
+  },
+  "chat": {
+    "title": "聊天会话",
+    "newChat": "新建会话",
+    "deleteSession": "删除会话",
+    "send": "发送消息",
+    "inputPlaceholder": "输入您的消息...",
+    "initialMessage": "您好！我是您的AI助手，有什么我可以帮您的吗？"
+  },
+  "user": {
+    "settings": "设置",
+    "logout": "退出登录"
+  }
+} 

@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "HydroGem",
+    "beta": "Beta"
+  },
+  "nav": {
+    "chat": "Chat",
+    "monitoring": "Monitoring",
+    "analytics": "Analytics",
+    "help": "Help & Support"
+  },
+  "messages": {
+    "welcome": "Welcome back! Here's an overview of your activity.",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful",
+    "noData": "No data available"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences",
+    "tabs": {
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "security": "Security",
+      "appearance": "Appearance"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Update your personal information",
+      "name": "Name",
+      "email": "Email",
+      "department": "Department",
+      "save": "Save Changes"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "description": "Configure how you receive notifications",
+      "email": "Email Notifications",
+      "push": "Push Notifications",
+      "updates": "Product Updates"
+    },
+    "security": {
+      "title": "Security Settings",
+      "description": "Manage your security options",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "changePassword": "Change Password",
+      "twoFactor": "Two-Factor Authentication",
+      "enable": "Enable",
+      "disable": "Disable"
+    },
+    "appearance": {
+      "title": "Appearance Settings",
+      "description": "Customize the interface appearance",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "fontSize": "Font Size",
+      "small": "Small",
+      "normal": "Normal",
+      "large": "Large"
+    }
+  },
+  "chat": {
+    "title": "Chat Session",
+    "newChat": "New Chat",
+    "deleteSession": "Delete Session",
+    "send": "Send Message",
+    "inputPlaceholder": "Type your message...",
+    "initialMessage": "Hello! I'm your AI assistant. How can I help you today?"
+  },
+  "user": {
+    "settings": "Settings",
+    "logout": "Logout"
+  }
+} 

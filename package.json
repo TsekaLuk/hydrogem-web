@@ -1,0 +1,38 @@
+{
+  "name": "hydrogem-web",
+  "version": "1.0.0",
+  "description": "A React-based water quality monitoring system",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react-hooks": "^4.0.0"
+  },
+  "author": "TsekaLuk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TsekaLuk/hydrogem-web.git"
+  },
+  "keywords": [
+    "water-quality",
+    "monitoring",
+    "react",
+    "typescript"
+  ]
+}

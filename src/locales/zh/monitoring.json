@@ -1,0 +1,290 @@
+{
+  "title": "水质监测",
+  "alerts": {
+    "title": "需要注意",
+    "phWarning": "3号水箱的pH值接近警戒阈值，建议进行维护检查。"
+  },
+  "system": {
+    "status": "系统状态",
+    "lastUpdated": "最后更新时间"
+  },
+  "parameters": {
+    "range": "参考范围",
+    "totalNitrogen": {
+      "name": "总氮",
+      "description": "评估水中氮的总含量，是反映水体富营养化的重要指标。",
+      "unit": "mg/L",
+      "range": "≤0.2-1.0（地表水）"
+    },
+    "totalPhosphorus": {
+      "name": "总磷",
+      "description": "评估水中磷的总含量，磷是导致水体富营养化的关键元素。",
+      "unit": "mg/L",
+      "range": "≤0.02-0.2（地表水）"
+    },
+    "ammoniaNitrogen": {
+      "name": "氨氮",
+      "description": "评估水中氨氮含量，可指示有机污染分解或排放的情况。",
+      "unit": "mg/L",
+      "range": "≤0.5-2.0（地表水）"
+    },
+    "nitrate": {
+      "name": "硝酸盐",
+      "description": "反映水中硝酸盐氮的浓度，硝酸盐可由氮化合物氧化而来。",
+      "unit": "mg/L",
+      "range": "≤10（饮用水）"
+    },
+    "nitrite": {
+      "name": "亚硝酸盐",
+      "description": "指示亚硝酸盐氮含量，过高会对水生生物有毒害作用。",
+      "unit": "mg/L",
+      "range": "≤1.0（饮用水）"
+    },
+    "phosphate": {
+      "name": "磷酸盐",
+      "description": "反映磷酸盐浓度，通常来源于生活和农业污水。",
+      "unit": "mg/L",
+      "range": "≤0.3（地表水）"
+    },
+    "sulfate": {
+      "name": "硫酸盐",
+      "description": "硫酸盐浓度可指示矿物溶解或工业排放的影响。",
+      "unit": "mg/L",
+      "range": "≤250（饮用水）"
+    },
+    "dissolvedOrganicCarbon": {
+      "name": "溶解有机碳",
+      "description": "反映水中溶解性有机物含量的重要指标。",
+      "unit": "mg/L",
+      "range": "≤5.0（饮用水）"
+    },
+    "totalCarbon": {
+      "name": "总碳",
+      "description": "表示水体中碳元素的总含量。",
+      "unit": "mg/L",
+      "range": "10-30（地表水）"
+    },
+    "inorganicCarbon": {
+      "name": "无机碳",
+      "description": "通常与碳酸盐和重碳酸盐有关。",
+      "unit": "mg/L",
+      "range": "5-25（地表水）"
+    },
+    "totalOrganicCarbon": {
+      "name": "总有机碳",
+      "description": "指示水中有机污染的总量。",
+      "unit": "mg/L",
+      "range": "≤3（饮用水）"
+    },
+    "chemicalOxygenDemand": {
+      "name": "化学需氧量",
+      "description": "表示水中还原性物质被氧化所消耗的氧量。",
+      "unit": "mg/L",
+      "range": "≤15-40（地表水）"
+    },
+    "totalHardness": {
+      "name": "总硬度",
+      "description": "水中钙、镁等离子含量的综合指标。",
+      "unit": "mg/L",
+      "range": "150-450（饮用水）"
+    },
+    "residualChlorine": {
+      "name": "余氯",
+      "description": "余氯浓度，可指示消毒过程的效果。",
+      "unit": "mg/L",
+      "range": "0.3-0.5（饮用水）"
+    },
+    "fluoride": {
+      "name": "氟化物",
+      "description": "水中氟化物含量，与饮用水安全密切相关。",
+      "unit": "mg/L",
+      "range": "≤1.0（饮用水）"
+    },
+    "sulfide": {
+      "name": "硫化物",
+      "description": "评估硫化物浓度，过高可导致水体缺氧和毒害。",
+      "unit": "mg/L",
+      "range": "≤0.02（地表水）"
+    },
+    "chloride": {
+      "name": "氯化物",
+      "description": "反映水中氯离子浓度。",
+      "unit": "mg/L",
+      "range": "≤250（饮用水）"
+    },
+    "phenols": {
+      "name": "酚类",
+      "description": "工业废水中常见的有机污染物。",
+      "unit": "mg/L",
+      "range": "≤0.002（地表水）"
+    },
+    "methanol": {
+      "name": "甲醇",
+      "description": "水中甲醇含量，可指示工业污染。",
+      "unit": "mg/L",
+      "range": "≤10（工业废水）"
+    },
+    "potassium": {
+      "name": "钾离子",
+      "description": "钾离子浓度，用于分析水体的矿物组成。",
+      "unit": "mg/L",
+      "range": "≤12（饮用水）"
+    },
+    "resistivity": {
+      "name": "电阻率",
+      "description": "水的电阻率，反映其导电能力，与溶解性固体浓度相关。",
+      "unit": "Ω·m",
+      "range": ">1800（纯水）"
+    },
+    "salinity": {
+      "name": "盐度",
+      "description": "评估水体的盐度，反映水中矿物质总量。",
+      "unit": "mg/L",
+      "range": "<1000（淡水）"
+    },
+    "zinc": {
+      "name": "锌",
+      "description": "评估水中锌离子含量。",
+      "unit": "mg/L",
+      "range": "≤1.0（饮用水）"
+    },
+    "cadmium": {
+      "name": "镉",
+      "description": "水中镉含量，过高会对人体和生物有毒害作用。",
+      "unit": "mg/L",
+      "range": "≤0.005（饮用水）"
+    },
+    "copper": {
+      "name": "铜",
+      "description": "评估水中铜离子含量。",
+      "unit": "mg/L",
+      "range": "≤1.0（饮用水）"
+    },
+    "manganese": {
+      "name": "锰",
+      "description": "水中锰含量，过高会影响饮用水口感和健康。",
+      "unit": "mg/L",
+      "range": "≤0.1（饮用水）"
+    },
+    "aluminum": {
+      "name": "铝",
+      "description": "铝浓度，过高可能影响人体健康和工业用水质量。",
+      "unit": "mg/L",
+      "range": "≤0.2（饮用水）"
+    },
+    "iron": {
+      "name": "铁",
+      "description": "铁浓度，与水的颜色和口感密切相关。",
+      "unit": "mg/L",
+      "range": "≤0.3（饮用水）"
+    },
+    "chromium": {
+      "name": "六价铬",
+      "description": "六价铬浓度，可指示工业污染，具有毒性。",
+      "unit": "mg/L",
+      "range": "≤0.05（饮用水）"
+    },
+    "ferrousIron": {
+      "name": "亚铁",
+      "description": "水中亚铁含量，指示水体是否发生氧化还原反应。",
+      "unit": "mg/L",
+      "range": "≤0.3（地表水）"
+    },
+    "arsenic": {
+      "name": "砷",
+      "description": "砷含量，可指示地质或工业污染，具有毒性。",
+      "unit": "mg/L",
+      "range": "≤0.01（饮用水）"
+    },
+    "siliconDioxide": {
+      "name": "二氧化硅",
+      "description": "反映二氧化硅浓度，用于分析水中矿物质。",
+      "unit": "mg/L",
+      "range": "1-30（地表水）"
+    },
+    "solubleSilicon": {
+      "name": "可溶性硅",
+      "description": "可溶性硅，用于评估水中硅元素的活性。",
+      "unit": "mg/L",
+      "range": "5-25（地表水）"
+    },
+    "ph": {
+      "name": "pH值",
+      "description": "反映水的酸碱度。",
+      "unit": "",
+      "range": "6.5-8.5（饮用水）",
+      "acidic": "酸性",
+      "neutral": "中性",
+      "alkaline": "碱性"
+    },
+    "turbidity": {
+      "name": "浊度",
+      "description": "表示水中悬浮颗粒物的含量。",
+      "unit": "NTU",
+      "range": "≤1（饮用水）"
+    },
+    "conductivity": {
+      "name": "电导率",
+      "description": "反映水中离子浓度。",
+      "unit": "μS/cm",
+      "range": "≤2500（饮用水）"
+    },
+    "chlorophyll": {
+      "name": "叶绿素",
+      "description": "反映水体中浮游植物生物量，是水体富营养化的重要指标。",
+      "unit": "μg/L",
+      "range": "≤30（地表水）"
+    },
+    "dissolvedOxygen": {
+      "name": "溶解氧",
+      "description": "溶解氧浓度，反映水体的氧气供应水平。",
+      "unit": "mg/L",
+      "range": "≥5（地表水）"
+    },
+    "totalDissolvedSolids": {
+      "name": "总溶解固体",
+      "description": "总溶解固体，反映水中溶解性物质的总量。",
+      "unit": "mg/L",
+      "range": "≤1000（饮用水）"
+    }
+  },
+  "status": {
+    "normal": "正常",
+    "warning": "警告",
+    "error": "错误",
+    "offline": "离线"
+  },
+  "actions": {
+    "configure": "配置参数",
+    "configureDescription": "选择要监测的参数并配置其阈值。",
+    "viewDetails": "查看详情",
+    "export": "导出数据",
+    "refresh": "刷新"
+  },
+  "categories": {
+    "physical": {
+      "name": "物理参数",
+      "description": "包括pH值、浊度、电导率等物理特性指标。"
+    },
+    "organic": {
+      "name": "有机物参数",
+      "description": "包括总氮、总磷、氨氮等有机物含量指标。"
+    },
+    "metals": {
+      "name": "金属离子",
+      "description": "包括锌、铜等重金属离子含量指标。"
+    },
+    "toxins": {
+      "name": "有毒物质",
+      "description": "包括酚类等有毒有害物质指标。"
+    },
+    "ions": {
+      "name": "离子成分",
+      "description": "包括总硬度、氯化物等离子含量指标。"
+    },
+    "biological": {
+      "name": "生物指标",
+      "description": "包括叶绿素等生物活性指标。"
+    }
+  }
+} 

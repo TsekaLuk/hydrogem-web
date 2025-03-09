@@ -24,10 +24,10 @@ export function ChatSidebar({
   const { t } = useTranslation();
 
   return (
-    <div className="w-72 h-full flex flex-col bg-background/50 backdrop-blur-sm">
-      <div className="p-4">
+    <div className="w-64 h-full flex flex-col bg-background/30 backdrop-blur-md border-r border-border/20">
+      <div className="p-3">
         <Button
-          className="w-full justify-start gap-2 bg-black/90 text-white hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-white/90 transition-colors duration-200"
+          className="w-full justify-start gap-2 bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm py-5"
           onClick={onNewChat}
         >
           <MessageSquarePlus className="h-4 w-4" />
@@ -35,16 +35,24 @@ export function ChatSidebar({
         </Button>
       </div>
 
+      <div className="px-3 py-2">
+        <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-2">
+          {sessions.length > 0 ? t('chat.recentChats') : t('chat.noChats')}
+        </h3>
+      </div>
+
       <ScrollArea className="flex-1">
-        <div className="space-y-2 p-4">
+        <div className="space-y-1 px-2">
           {sessions.map((session) => (
             <div
               key={session.id}
               className={cn(
-                'group flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm',
-                'hover:bg-accent/50 cursor-pointer transition-all duration-300',
+                'group flex items-center gap-2 rounded-lg px-3 py-2 text-sm',
+                'hover:bg-accent/40 cursor-pointer transition-all duration-200',
                 'border border-transparent',
-                currentSessionId === session.id && 'bg-accent/50 border-border',
+                currentSessionId === session.id 
+                  ? 'bg-accent text-accent-foreground font-medium shadow-sm border-accent/30' 
+                  : 'text-foreground/80',
                 'animate-slide-in'
               )}
               onClick={() => onSelectSession(session.id)}
@@ -58,13 +66,13 @@ export function ChatSidebar({
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-full"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDeleteSession(session.id);
                 }}
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
                 <span className="sr-only">{t('chat.deleteSession')}</span>
               </Button>
             </div>

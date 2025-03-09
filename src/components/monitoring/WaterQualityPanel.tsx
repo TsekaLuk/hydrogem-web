@@ -22,26 +22,26 @@ export function WaterQualityPanel() {
 
     switch (param.category) {
       case 'physical':
-        return <PhysicalParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <PhysicalParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       case 'organic':
-        return <OrganicParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <OrganicParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       case 'metals':
-        return <MetalParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <MetalParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       case 'toxins':
-        return <ToxinParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <ToxinParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       case 'ions':
-        return <IonParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <IonParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       case 'biological':
-        return <BiologicalParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <BiologicalParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
       default:
-        return <PhysicalParameterCard parameter={param} translation={paramTranslation} className="flex-1" />;
+        return <PhysicalParameterCard parameter={param} translation={paramTranslation} className="h-full" />;
     }
   };
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full">
       {parameters.map((param) => (
-        <div key={param.id}>
+        <div key={param.id} className="h-full">
           {getParameterCard(param)}
         </div>
       ))}

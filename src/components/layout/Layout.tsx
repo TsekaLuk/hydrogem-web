@@ -31,6 +31,7 @@ export function Layout() {
     deleteSession,
   } = useChat();
   const [currentView, setCurrentView] = useState<'chat' | 'monitoring' | 'analytics' | 'help'>('chat');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -56,46 +57,65 @@ export function Layout() {
     }
   };
 
+  const handleSidebarToggle = (collapsed: boolean) => {
+    setSidebarCollapsed(collapsed);
+  };
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'chat':
+        return (
+          <div className="flex justify-center mx-auto h-full">
+            <div className="flex h-[calc(100vh-12rem)] bg-background/50 rounded-xl overflow-hidden w-full max-w-[900px] shadow-md backdrop-blur-sm border border-border/20">
+              <ChatSidebar
+                sessions={sessions}
+                currentSessionId={currentSessionId}
+                onNewChat={createNewSession}
+                onSelectSession={switchSession}
+                onDeleteSession={deleteSession}
+              />
+              <div className="flex-1 flex flex-col border-l border-border/40 overflow-hidden">
+                <ChatHeader onClearChat={clearChat} />
+                <ChatContainer 
+                  messages={messages} 
+                  streamingMessage={streamingMessage}
+                  isLoading={isLoading}
+                  onReply={handleReply}
+                />
+                {error && <div className="p-2 text-sm text-destructive text-center">{error}</div>}
+                <div className="p-2 border-t border-border/20 bg-background/80 backdrop-blur-md">
+                  <ChatInput onSend={sendMessage} isLoading={isLoading} />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'monitoring':
+        return <div className="container mx-auto px-4"><MonitoringDashboard /></div>;
+      case 'analytics':
+        return <div className="container mx-auto px-4"><AnalyticsDashboard /></div>;
+      case 'help':
+        return <div className="container mx-auto px-4"><HelpCenter /></div>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <SettingsProvider>
       <UserProfileProvider>
         <PermissionProvider>
           <TooltipProvider>
-            <div className="min-h-screen bg-background flex flex-col">
+            <div className="min-h-screen bg-background flex flex-col overflow-hidden">
               <Navbar />
-              <div className="flex-1 pt-14">
-                <Sidebar onViewChange={setCurrentView} currentView={currentView} />
-                <MainContent>
-                  {currentView === 'chat' ? (
-                    <div className="flex h-[calc(100vh-12rem)] bg-background rounded-xl overflow-hidden">
-                      <ChatSidebar
-                        sessions={sessions}
-                        currentSessionId={currentSessionId}
-                        onNewChat={createNewSession}
-                        onSelectSession={switchSession}
-                        onDeleteSession={deleteSession}
-                      />
-                      <div className="flex-1 flex flex-col border-l border-border">
-                        <ChatHeader onClearChat={clearChat} />
-                        <ChatContainer 
-                          messages={messages} 
-                          streamingMessage={streamingMessage}
-                          isLoading={isLoading}
-                          onReply={handleReply}
-                        />
-                        {error && <div className="p-2 text-sm text-destructive text-center">{error}</div>}
-                        <div className="p-4 border-t border-border bg-background">
-                          <ChatInput onSend={sendMessage} isLoading={isLoading} />
-                        </div>
-                      </div>
-                    </div>
-                  ) : currentView === 'monitoring' ? (
-                    <MonitoringDashboard />
-                  ) : currentView === 'analytics' ? (
-                    <AnalyticsDashboard />
-                  ) : (
-                    <HelpCenter />
-                  )}
+              <div className="flex-1 pt-14 w-full h-[calc(100vh-3.5rem)] overflow-hidden">
+                <Sidebar 
+                  onViewChange={setCurrentView} 
+                  currentView={currentView} 
+                  onToggleCollapse={handleSidebarToggle}
+                />
+                <MainContent sidebarCollapsed={sidebarCollapsed}>
+                  {renderContent()}
                 </MainContent>
               </div>
             </div>

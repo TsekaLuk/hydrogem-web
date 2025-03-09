@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface HelpFeedbackProps {
   articleId: string;
@@ -12,6 +13,7 @@ export function HelpFeedback({ articleId }: HelpFeedbackProps) {
   const [feedback, setFeedback] = useState<'helpful' | 'not-helpful' | null>(null);
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { t } = useTranslation('help');
 
   const handleSubmit = () => {
     // In a real app, send feedback to backend
@@ -22,7 +24,7 @@ export function HelpFeedback({ articleId }: HelpFeedbackProps) {
   if (isSubmitted) {
     return (
       <div className="mt-4 text-sm text-muted-foreground">
-        Thank you for your feedback!
+        {t('feedback.thanks')}
       </div>
     );
   }
@@ -30,7 +32,7 @@ export function HelpFeedback({ articleId }: HelpFeedbackProps) {
   return (
     <div className="mt-4 pt-4 border-t">
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">Was this article helpful?</p>
+        <p className="text-sm text-muted-foreground">{t('feedback.helpful')}</p>
         <div className="flex gap-2">
           <Button
             variant="outline"
@@ -41,7 +43,7 @@ export function HelpFeedback({ articleId }: HelpFeedbackProps) {
             onClick={() => setFeedback('helpful')}
           >
             <ThumbsUp className="h-4 w-4 mr-2" />
-            Yes
+            {t('feedback.yes')}
           </Button>
           <Button
             variant="outline"
@@ -52,20 +54,20 @@ export function HelpFeedback({ articleId }: HelpFeedbackProps) {
             onClick={() => setFeedback('not-helpful')}
           >
             <ThumbsDown className="h-4 w-4 mr-2" />
-            No
+            {t('feedback.no')}
           </Button>
         </div>
 
         {feedback === 'not-helpful' && (
           <div className="space-y-2">
             <Textarea
-              placeholder="How can we improve this article?"
+              placeholder={t('feedback.improve')}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows={3}
             />
             <Button size="sm" onClick={handleSubmit}>
-              Submit Feedback
+              {t('feedback.submit')}
             </Button>
           </div>
         )}

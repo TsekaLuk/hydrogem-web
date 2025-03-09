@@ -91,69 +91,70 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative backdrop-blur-xl p-2 sm:p-4 z-20">
-      <div className="relative flex items-end gap-2">
-        <div className="flex-1 relative">
-          <Textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t('chat.inputPlaceholder')}
-            className={cn(
-              "pr-12 resize-none text-sm sm:text-base",
-              "bg-background/50 backdrop-blur-sm transition-all",
-              "focus:bg-background/80 relative rounded-xl mb-2",
-              "border-muted placeholder:text-muted-foreground/50",
-              "min-h-[60px] max-h-[200px] overflow-y-auto"
-            )}
-            disabled={isLoading || isUploading}
-          />
-          <div className="absolute right-2 bottom-2 flex gap-1">
-            <FileUploadButton
-              icon={<Paperclip className="h-4 w-4" />}
-              tooltip={t('chat.attachFile')}
-              onFileSelect={handleFileSelect}
+    <form onSubmit={handleSubmit} className="relative w-full mx-auto max-w-3xl px-1">
+      <div className="p-1.5 rounded-2xl bg-background border border-input/70 shadow-sm">
+        <div className="relative flex items-end gap-1.5">
+          <div className="flex-1 relative">
+            <Textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={t('chat.inputPlaceholder')}
+              className={cn(
+                "pr-14 pl-4 py-3 resize-none text-sm",
+                "rounded-xl focus-visible:ring-0 focus-visible:border-input focus-visible:ring-offset-0",
+                "border-0 shadow-none",
+                "min-h-[50px] max-h-[200px] overflow-y-auto bg-transparent"
+              )}
               disabled={isLoading || isUploading}
             />
-            <FileUploadButton
-              icon={<Image className="h-4 w-4" />}
-              tooltip={t('chat.addImage')}
-              onFileSelect={handleFileSelect}
-              isImage
-              disabled={isLoading || isUploading}
-            />
+            <div className="absolute right-2 bottom-2 flex gap-1.5">
+              <FileUploadButton
+                icon={<Paperclip className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />}
+                tooltip={t('chat.attachFile')}
+                onFileSelect={handleFileSelect}
+                disabled={isLoading || isUploading}
+              />
+              <FileUploadButton
+                icon={<Image className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />}
+                tooltip={t('chat.addImage')}
+                onFileSelect={handleFileSelect}
+                isImage
+                disabled={isLoading || isUploading}
+              />
+            </div>
           </div>
+          <Button
+            size="icon"
+            type="submit"
+            disabled={!input.trim() || isLoading || isUploading}
+            className={cn(
+              'h-10 w-10 rounded-xl mr-1',
+              'transition-all duration-200',
+              'bg-primary hover:bg-primary/90 text-primary-foreground',
+              (!input.trim() || isLoading || isUploading) ? 'opacity-50' : 'shadow-md hover:shadow-lg'
+            )}
+          >
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <SendHorizontal className="h-5 w-5" />
+            )}
+            <span className="sr-only">{t('chat.send')}</span>
+          </Button>
         </div>
-        <Button
-          size="icon"
-          type="submit"
-          disabled={!input.trim() || isLoading || isUploading}
-          className={cn(
-            'h-[40px] w-[40px] rounded-xl',
-            'bg-primary hover:bg-primary/90',
-            'transition-all duration-200',
-            'hover:scale-105',
-            (isLoading || isUploading) && 'animate-pulse',
-            'mb-2'  // Add margin-bottom to move button up
-          )}
-        >
-          {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <SendHorizontal className="h-4 w-4" />
-          )}
-          <span className="sr-only">{t('chat.send')}</span>
-        </Button>
       </div>
+      
       {uploads.length > 0 && (
-        <div className="mt-2 space-y-2">
+        <div className="mt-2 space-y-2 bg-background/80 backdrop-blur-sm p-3 rounded-lg border border-border/30">
+          <h4 className="text-xs font-medium text-muted-foreground mb-2">上传中的文件</h4>
           {uploads.map((upload) => (
             <div key={upload.file.name} className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground truncate flex-1">
                 {upload.file.name}
               </span>
-              <Progress value={upload.progress} className="w-24" />
+              <Progress value={upload.progress} className="w-24 h-2" />
             </div>
           ))}
         </div>

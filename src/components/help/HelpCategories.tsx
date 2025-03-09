@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { HELP_CATEGORIES } from '@/data/help-categories';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface HelpCategoriesProps {
   selectedCategory: string | null;
@@ -9,6 +10,8 @@ interface HelpCategoriesProps {
 }
 
 export function HelpCategories({ selectedCategory, onSelectCategory }: HelpCategoriesProps) {
+  const { t } = useTranslation('help');
+  
   return (
     <ScrollArea className="h-[600px]">
       <div className="space-y-2 pr-4">
@@ -23,7 +26,7 @@ export function HelpCategories({ selectedCategory, onSelectCategory }: HelpCateg
             onClick={() => onSelectCategory(category.id)}
           >
             <category.icon className="mr-2 h-4 w-4" />
-            {category.name}
+            {t(`categories.${category.id}`, category.name)}
           </Button>
         ))}
       </div>

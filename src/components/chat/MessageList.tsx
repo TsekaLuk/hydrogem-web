@@ -57,7 +57,7 @@ export function MessageList({ messages, onReply, className }: MessageListProps) 
         itemCount={groupedMessages.length}
         itemSize={getItemSize}
         className="scrollbar-thin scrollbar-thumb-rounded-md scrollbar-track-transparent
-          scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30"
+          scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30 w-full"
       >
         {({ index, style }) => (
           <MessageGroup
@@ -65,7 +65,7 @@ export function MessageList({ messages, onReply, className }: MessageListProps) 
             date={groupedMessages[index].date}
             messages={groupedMessages[index].messages}
             onReply={onReply}
-            style={style}
+            style={{...style, width: '100%'}}
           />
         )}
       </List>

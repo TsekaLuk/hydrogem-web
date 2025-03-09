@@ -1,0 +1,35 @@
+{
+  "articles": {
+    "getting-started-overview": {
+      "title": "平台概览",
+      "description": "了解关键功能和特性",
+      "content": "# 欢迎使用 HydroGem\n\nHydroGem 是一个全面的水质监测平台，能够帮助您：\n\n- 实时监测水质参数\n- 接收关键变化的警报\n- 生成详细的分析报告\n- 管理用户访问和权限\n\n## 核心功能\n\n1. 实时监测\n2. 智能警报\n3. 高级分析\n4. 用户管理\n5. 自定义报告\n\n## 入门指南\n\n1. 登录您的账户\n2. 配置监测参数\n3. 设置通知\n4. 开始监测！"
+    },
+    "dashboard-overview": {
+      "title": "仪表盘使用指南",
+      "description": "了解如何有效使用主仪表盘",
+      "content": "# 仪表盘指南\n\n仪表盘提供了水质监测系统的全面概览。\n\n## 关键指标\n\n- pH 值\n- 温度\n- 溶解氧\n- 电导率\n\n## 自定义设置\n\n您可以通过以下方式自定义仪表盘：\n\n1. 重新排列组件\n2. 设置显示偏好\n3. 配置更新间隔\n\n## 使用技巧\n\n- 使用搜索功能快速查找特定参数\n- 将鼠标悬停在图表上获取详细信息\n- 为不同的监测需求设置自定义视图"
+    }
+  },
+  "feedback": {
+    "helpful": "这篇文章有帮助吗？",
+    "yes": "有帮助",
+    "no": "没有帮助",
+    "thanks": "感谢您的反馈！",
+    "improve": "您认为如何改进这篇文章？",
+    "submit": "提交反馈"
+  },
+  "categories": {
+    "getting-started": "入门指南",
+    "dashboard": "仪表盘",
+    "monitoring": "监控",
+    "notifications": "通知",
+    "user-management": "用户管理",
+    "security": "安全",
+    "settings": "设置"
+  },
+  "navigation": {
+    "search": "搜索帮助...",
+    "no_results": "未找到相关结果"
+  }
+} 

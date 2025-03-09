@@ -28,23 +28,26 @@ export function MonitoringDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-2xl font-semibold tracking-tight">{t('title')}</h2>
+    <div className="w-full space-y-4 pb-8">
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-2">
         <ParameterConfig onParameterSelect={handleParameterSelect} />
       </div>
-      <div className="flex flex-col gap-4">
-        <Alert variant="destructive" className="bg-amber-500/10 border-amber-500/20">
-          <AlertTriangle className="h-4 w-4 text-amber-500" />
-          <AlertTitle>{t('alerts.title')}</AlertTitle>
-          <AlertDescription>
-            {t('alerts.phWarning')}
-          </AlertDescription>
-        </Alert>
+      
+      <Alert variant="destructive" className="bg-amber-500/10 border-amber-500/20 my-2">
+        <AlertTriangle className="h-4 w-4 text-amber-500" />
+        <AlertTitle>{t('alerts.title')}</AlertTitle>
+        <AlertDescription>
+          {t('alerts.phWarning')}
+        </AlertDescription>
+      </Alert>
+      
+      <div className="mb-1">
+        <h2 className="text-lg font-medium text-muted-foreground mb-2">水质参数</h2>
+        <WaterQualityPanel />
       </div>
-      <WaterQualityPanel />
-      <Card className="p-6">
-        <h3 className="font-semibold mb-4">{t('system.status')}</h3>
+      
+      <Card className="p-4 mt-2">
+        <h3 className="font-medium mb-2">{t('system.status')}</h3>
         <div className="text-sm text-muted-foreground">
           {t('system.lastUpdated')}: {lastUpdated.toLocaleTimeString()}
         </div>

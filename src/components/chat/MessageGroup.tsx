@@ -1,6 +1,7 @@
 import { Message } from '@/types/chat';
 import { ChatMessage } from './ChatMessage';
 import { cn } from '@/lib/utils';
+import { CalendarDays } from 'lucide-react';
 
 interface MessageGroupProps {
   date: string;
@@ -11,15 +12,16 @@ interface MessageGroupProps {
 
 export function MessageGroup({ date, messages, onReply, style }: MessageGroupProps) {
   return (
-    <div style={style} className="py-2">
-      <div className="sticky top-0 z-10 flex items-center gap-2 px-4 py-1">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs font-medium text-muted-foreground bg-background/95 px-2 py-1 rounded-full">
-          {date}
-        </span>
-        <div className="h-px flex-1 bg-border" />
+    <div style={style} className="py-4 w-full">
+      <div className="mb-4 flex justify-center">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-muted/40 backdrop-blur-sm rounded-full border border-border/30 shadow-sm">
+          <CalendarDays className="h-3.5 w-3.5 text-muted-foreground/70" />
+          <span className="text-xs font-medium text-muted-foreground">
+            {date}
+          </span>
+        </div>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-6 w-full">
         {messages.map((message) => (
           <ChatMessage
             key={message.id}

@@ -7,17 +7,21 @@ import dashboardEn from '../locales/en/dashboard.json';
 import dashboardZh from '../locales/zh/dashboard.json';
 import monitoringEn from '../locales/en/monitoring.json';
 import monitoringZh from '../locales/zh/monitoring.json';
+import helpEn from '../locales/en/help.json';
+import helpZh from '../locales/zh/help.json';
 
 const resources = {
   en: {
     common: commonEn,
     dashboard: dashboardEn,
     monitoring: monitoringEn,
+    help: helpEn
   },
   zh: {
     common: commonZh,
     dashboard: dashboardZh,
     monitoring: monitoringZh,
+    help: helpZh
   },
 };
 
@@ -32,7 +36,7 @@ export const i18nConfig = {
   lng: 'zh', // 设置初始语言为中文
   fallbackLng: 'en',
   supportedLngs: ['en', 'zh'],
-  ns: ['common', 'dashboard', 'monitoring'],
+  ns: ['common', 'dashboard', 'monitoring', 'help'],
   defaultNS: 'common',
   fallbackNS: 'common',
   

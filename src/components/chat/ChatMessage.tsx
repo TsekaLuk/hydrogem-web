@@ -1,5 +1,5 @@
 import { Message } from '@/types/chat';
-import { User, Sparkles } from 'lucide-react';
+import { User, Bot } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { MessageBubble } from './MessageBubble';
@@ -15,20 +15,31 @@ export function ChatMessage({ message, isTyping, onReply }: ChatMessageProps) {
 
   return (
     <div className={cn(
-      'flex gap-3 sm:gap-5 mb-6 sm:mb-8 group transition-opacity px-2 sm:px-4',
-      isUser && 'flex-row-reverse',
-      'animate-in fade-in duration-200'
+      'flex gap-3 mb-4 group transition-opacity px-2 py-1',
+      isUser ? 'flex-row-reverse' : 'flex-row',
+      'animate-in fade-in-50 duration-100'
     )}>
-      <Avatar className={cn(
-        'h-8 w-8 sm:h-10 sm:w-10 ring-2 transition-all shrink-0 overflow-visible',
-        isUser ? 'bg-sky-500/10 ring-sky-500/20' : 'bg-cyan-500/10 ring-cyan-500/20',
-        'group-hover:ring-4 group-hover:scale-105 flex items-center justify-center'
+      <div className={cn(
+        'flex flex-col items-center gap-1',
+        isUser ? 'pl-2' : 'pr-2'
       )}>
-        {isUser ? 
-          <User className="h-4 w-4 sm:h-5 sm:w-5 text-sky-600" /> : 
-          <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
-        }
-      </Avatar>
+        <Avatar className={cn(
+          'h-8 w-8 rounded-full transition-all shrink-0',
+          isUser 
+            ? 'bg-primary/15 text-primary border-2 border-primary/30' 
+            : 'bg-blue-500/15 text-blue-600 border-2 border-blue-500/30',
+          'flex items-center justify-center'
+        )}>
+          {isUser ? 
+            <User className="h-4 w-4" /> : 
+            <Bot className="h-4 w-4" />
+          }
+        </Avatar>
+        <div className="text-[10px] text-muted-foreground font-medium">
+          {isUser ? '我' : 'AI'}
+        </div>
+      </div>
+      
       <MessageBubble
         content={message.content}
         timestamp={new Date(message.timestamp)}

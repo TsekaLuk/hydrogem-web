@@ -30,13 +30,21 @@ a:hover {
 body {
   margin: 0;
   min-height: 100vh;
-  min-width: 320px;
+  width: 100%;
   overflow-x: hidden;
   background: linear-gradient(135deg, #a5f3fc10 0%, #0ea5e920 100%),
     radial-gradient(circle at 50% 50%, #22d3ee05 0%, transparent 100%);
   background-attachment: fixed;
   background-size: cover, 800px 800px;
   animation: pulse 20s ease-in-out infinite;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 @keyframes pulse {
@@ -46,6 +54,7 @@ body {
 
 .glass-effect {
   background: rgba(255, 255, 255, 0.8);
+  -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 

@@ -1,0 +1,35 @@
+{
+  "articles": {
+    "getting-started-overview": {
+      "title": "Platform Overview",
+      "description": "Learn about the key features and capabilities",
+      "content": "# Welcome to HydroGem\n\nHydroGem is a comprehensive water quality monitoring platform that helps you:\n\n- Monitor water quality parameters in real-time\n- Receive alerts for critical changes\n- Generate detailed analytics reports\n- Manage user access and permissions\n\n## Key Features\n\n1. Real-time Monitoring\n2. Smart Alerts\n3. Advanced Analytics\n4. User Management\n5. Custom Reports\n\n## Getting Started\n\n1. Log in to your account\n2. Configure your monitoring parameters\n3. Set up notifications\n4. Start monitoring!"
+    },
+    "dashboard-overview": {
+      "title": "Understanding the Dashboard",
+      "description": "Learn how to use the main dashboard effectively",
+      "content": "# Dashboard Guide\n\nThe dashboard provides a comprehensive overview of your water quality monitoring system.\n\n## Key Metrics\n\n- pH Levels\n- Temperature\n- Dissolved Oxygen\n- Conductivity\n\n## Customization\n\nYou can customize your dashboard by:\n\n1. Rearranging widgets\n2. Setting display preferences\n3. Configuring update intervals\n\n## Tips\n\n- Use the search function to quickly find specific parameters\n- Hover over charts for detailed information\n- Set up custom views for different monitoring needs"
+    }
+  },
+  "feedback": {
+    "helpful": "Was this article helpful?",
+    "yes": "Yes",
+    "no": "No",
+    "thanks": "Thank you for your feedback!",
+    "improve": "How can we improve this article?",
+    "submit": "Submit Feedback"
+  },
+  "categories": {
+    "getting-started": "Getting Started",
+    "dashboard": "Dashboard",
+    "monitoring": "Monitoring",
+    "notifications": "Notifications",
+    "user-management": "User Management",
+    "security": "Security",
+    "settings": "Settings"
+  },
+  "navigation": {
+    "search": "Search for help...",
+    "no_results": "No results found"
+  }
+} 

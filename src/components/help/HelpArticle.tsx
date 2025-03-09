@@ -11,14 +11,19 @@ interface HelpArticleProps {
 
 export function HelpArticle({ article }: HelpArticleProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['common', 'help']);
+
+  // Get translated article content
+  const title = t(`help:articles.${article.id}.title`, article.title);
+  const description = t(`help:articles.${article.id}.description`, article.description);
+  const content = t(`help:articles.${article.id}.content`, article.content);
 
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-medium">{article.title}</h3>
-          <p className="text-sm text-muted-foreground">{article.description}</p>
+          <h3 className="font-medium">{title}</h3>
+          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
         <Button
           variant="ghost"
@@ -37,16 +42,16 @@ export function HelpArticle({ article }: HelpArticleProps) {
         <div>
           <div 
             className="prose prose-sm dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(article.content) }}
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
           />
           <div className="mt-4 text-sm text-muted-foreground">
-            <p>{t('help.article.feedback.helpful')}</p>
+            <p>{t('help:feedback.helpful')}</p>
             <div className="flex gap-2 mt-2">
               <Button variant="outline" size="sm" onClick={() => {}}>
-                {t('help.article.feedback.yes')}
+                {t('help:feedback.yes')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => {}}>
-                {t('help.article.feedback.no')}
+                {t('help:feedback.no')}
               </Button>
             </div>
           </div>

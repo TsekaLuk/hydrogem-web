@@ -7,12 +7,12 @@ interface HelpSearchProps {
 }
 
 export function HelpSearch({ results }: HelpSearchProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('help');
 
   if (results.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        {t('help.search.noResults')}
+        {t('navigation.no_results', 'No results found')}
       </div>
     );
   }

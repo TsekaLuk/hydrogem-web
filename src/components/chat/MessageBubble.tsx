@@ -20,11 +20,13 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
       <Card
         ref={ref}
         className={cn(
-          'p-4 sm:p-5 max-w-[85%] sm:max-w-[80%] transition-all message-bubble',
+          'p-3 max-w-[85%] sm:max-w-[75%] md:max-w-[65%] transition-all message-bubble',
           'animate-in slide-in-from-bottom-2 duration-200',
-          'hover:shadow-lg hover:scale-[1.02]',
-          isUser ? 'bg-sky-500/5 dark:bg-sky-500/10 ml-auto' : 'bg-cyan-500/5 dark:bg-cyan-500/10 mr-auto',
-          'backdrop-blur-sm rounded-2xl',
+          'hover:shadow-md',
+          isUser 
+            ? 'bg-primary/10 dark:bg-primary/20 ml-auto rounded-2xl rounded-tr-sm' 
+            : 'bg-card dark:bg-card/90 mr-auto rounded-2xl rounded-tl-sm border border-border/30',
+          isTyping && 'animate-pulse',
           className
         )}
       >
@@ -40,10 +42,10 @@ export const MessageBubble = forwardRef<HTMLDivElement, MessageBubbleProps>(
         {isTyping && <TypingIndicator />}
         
         <time className={cn(
-          'text-[10px] sm:text-xs text-muted-foreground dark:text-white/50 mt-2 block',
-          'opacity-0 group-hover:opacity-100 transition-opacity duration-200'
+          'text-[10px] sm:text-xs text-muted-foreground/60 mt-1 block text-right',
+          'opacity-50 group-hover:opacity-100 transition-opacity duration-200'
         )}>
-          {timestamp.toLocaleTimeString()}
+          {timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </time>
       </Card>
     );

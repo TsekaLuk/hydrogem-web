@@ -35,7 +35,7 @@ export const HELP_CATEGORIES: HelpCategory[] = [
     icon: Bell,
   },
   {
-    id: 'users',
+    id: 'user-management',
     name: 'User Management',
     description: 'Managing users and roles',
     icon: Users,

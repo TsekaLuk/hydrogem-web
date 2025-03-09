@@ -17,7 +17,6 @@ export function Dashboard() {
       <div className="flex justify-center w-full">
         <div className="relative w-full min-w-[320px] max-w-screen-2xl flex-1 px-[calc(0.5rem+1vw)] sm:px-[calc(1rem+1vw)] lg:px-[calc(1.5rem+1vw)]">
           <div className="w-full py-[calc(0.5rem+1vh)] sm:py-[calc(1rem+1vh)]">
-            <h1 className="text-2xl font-bold mb-4">{t('messages.welcome')}</h1>
             <div className="grid grid-cols-1 gap-[calc(0.5rem+0.5vw)] sm:gap-[calc(0.75rem+0.5vw)] md:gap-[calc(1rem+0.5vw)] auto-rows-min">
               <DashboardMetrics />
               <SystemChart />

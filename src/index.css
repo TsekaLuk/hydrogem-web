@@ -188,3 +188,97 @@ html, body, #root {
     @apply bg-background text-foreground;
   }
 }
+
+/* 自定义滚动条样式 */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.2);
+  border-radius: 9999px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.4);
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.2) transparent;
+}
+
+.scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+}
+
+.scrollbar-thumb-primary\/20::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.2);
+}
+
+.scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.3);
+}
+
+.hover\:scrollbar-thumb-primary\/30:hover::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.3);
+}
+
+/* 在暗色模式部分添加 */
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dark .scrollbar-thin {
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+.dark .scrollbar-thumb-primary\/20::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.3);
+}
+
+.dark .scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb {
+  background: rgba(var(--primary), 0.4);
+}
+
+/* AnimatedGradient 动画 */
+@keyframes background-gradient {
+  0%, 100% {
+    transform: translate(
+      calc(var(--tx-1, 0) * 20px),
+      calc(var(--ty-1, 0) * 20px)
+    );
+  }
+  25% {
+    transform: translate(
+      calc(var(--tx-2, 0) * 20px),
+      calc(var(--ty-2, 0) * 20px)
+    );
+  }
+  50% {
+    transform: translate(
+      calc(var(--tx-3, 0) * 20px),
+      calc(var(--ty-3, 0) * 20px)
+    );
+  }
+  75% {
+    transform: translate(
+      calc(var(--tx-4, 0) * 20px),
+      calc(var(--ty-4, 0) * 20px)
+    );
+  }
+}
+
+.animate-background-gradient {
+  animation: background-gradient calc(var(--background-gradient-speed, 0.5s) * 40) ease infinite;
+}

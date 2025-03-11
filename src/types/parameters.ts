@@ -1,23 +1,29 @@
-export type ParameterCategory = 'physical' | 'organic' | 'metals' | 'toxins' | 'ions' | 'biological';
+export type ParameterCategory = 
+  | 'temperature'
+  | 'chemical'
+  | 'mineral'
+  | 'biological'
+  | 'physical'
+  | 'metal'     // 重金属类
+  | 'organic'   // 有机物类
+  | 'other';
 
-export type ParameterStatus = 'normal' | 'warning' | 'error' | 'offline';
+export type ParameterStatus = 
+  | 'critical'  // 严重异常
+  | 'warning'   // 警告状态
+  | 'good'      // 正常状态
+  | 'inactive'; // 未活动
 
 export interface WaterQualityParameter {
   id: string;
-  key: string;
+  name: string;
   category: ParameterCategory;
-  value: number;
-  unit: string;
+  current: number;
+  unit?: string;
+  range?: [number, number]; // 允许的范围
+  optimal?: [number, number]; // 最佳范围
   status: ParameterStatus;
-  timestamp: Date;
-  range?: {
-    min: number;
-    max: number;
-  };
-  trend?: {
-    direction: 'up' | 'down' | 'stable';
-    percentage: number;
-  };
+  importance?: 'high' | 'medium' | 'low'; // 参数重要性
 }
 
 export interface ParameterTranslation {

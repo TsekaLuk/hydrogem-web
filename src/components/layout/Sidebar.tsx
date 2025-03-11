@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { SidebarNav } from './SidebarNav';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,29 @@ interface SidebarProps {
 
 export function Sidebar({ className, onViewChange, currentView, onToggleCollapse }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { t } = useTranslation();
+
+  // 检测屏幕尺寸变化
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      // 在移动设备上自动折叠侧边栏
+      if (window.innerWidth < 768 && !isCollapsed) {
+        setIsCollapsed(true);
+        if (onToggleCollapse) {
+          onToggleCollapse(true);
+        }
+      }
+    };
+
+    // 初始检查
+    checkScreenSize();
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, [onToggleCollapse, isCollapsed]);
 
   const handleToggleCollapse = () => {
     const newCollapsedState = !isCollapsed;
@@ -27,14 +49,14 @@ export function Sidebar({ className, onViewChange, currentView, onToggleCollapse
   return (
     <aside className={cn(
       'fixed left-0 top-14 h-[calc(100vh-3.5rem)]',
-      'border-r border-border/50 bg-background/95 backdrop-blur-xl z-50',
+      'border-r border-border/50 bg-background/95 backdrop-blur-xl z-[100]',
       'transition-all duration-300 ease-in-out shadow-sm',
       isCollapsed ? 'w-[60px]' : 'w-[240px]',
-      'md:block',
+      isMobile ? 'transform translate-x-0' : '',
       className
     )}>
       <div className="flex h-full flex-col relative">
-        <div className="flex-1 overflow-y-auto py-4">
+        <div className="flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary/20 hover:scrollbar-thumb-primary/30">
           <SidebarNav 
             isCollapsed={isCollapsed}
             onViewChange={onViewChange}
@@ -45,14 +67,14 @@ export function Sidebar({ className, onViewChange, currentView, onToggleCollapse
           variant="ghost"
           size="icon"
           className={cn(
-            'absolute -right-4 top-4 h-8 w-8',
-            'rounded-full border bg-background shadow-sm z-50',
+            'absolute -right-3 top-4 h-6 w-6',
+            'rounded-full border bg-background shadow-sm z-[101]',
             'hover:bg-accent hover:text-accent-foreground'
           )}
           onClick={handleToggleCollapse}
         >
           <ChevronLeft className={cn(
-            "h-4 w-4 transition-transform",
+            "h-3 w-3 transition-transform",
             isCollapsed && "rotate-180"
           )} />
           <span className="sr-only">

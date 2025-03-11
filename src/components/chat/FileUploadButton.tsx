@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Tooltip } from '@/components/ui/tooltip';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { validateFile } from '@/lib/file-utils';
 import { cn } from '@/lib/utils';
 
@@ -51,23 +51,32 @@ export function FileUploadButton({
         className="hidden"
         accept={isImage ? "image/*" : undefined}
         onChange={handleFileChange}
+        aria-label={isImage ? "Upload image" : "Upload file"}
+        title={isImage ? "Upload image" : "Upload file"}
       />
-      <Tooltip content={tooltip}>
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={handleClick}
-          disabled={disabled}
-          className={cn(
-            "h-8 w-8 rounded-lg",
-            "opacity-70 hover:opacity-100",
-            "transition-all duration-200",
-            className
-          )}
-        >
-          {icon}
-        </Button>
-      </Tooltip>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleClick}
+              disabled={disabled}
+              className={cn(
+                "h-8 w-8 rounded-lg",
+                "opacity-70 hover:opacity-100",
+                "transition-all duration-200",
+                className
+              )}
+            >
+              {icon}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {tooltip}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </>
   );
 }

@@ -2,11 +2,83 @@
   "title": "Water Quality Monitoring",
   "alerts": {
     "title": "Attention Required",
-    "phWarning": "pH levels are approaching warning threshold in Tank #3. Consider maintenance check."
+    "phWarning": "pH levels are approaching warning threshold in Tank #3. Consider maintenance check.",
+    "criticalMessage": "System detected {{count}} critical parameters, immediate check required!",
+    "warningMessage": "System detected {{count}} parameters that need attention, check recommended."
   },
   "system": {
     "status": "System Status",
     "lastUpdated": "Last updated"
+  },
+  "analytics": {
+    "title": "Water Quality Analytics",
+    "description": "30-day historical data analysis and trends",
+    "parameterTrends": "Parameter Trends"
+  },
+  "dashboard": {
+    "status": {
+      "optimal": "System Optimal",
+      "warning": "System Needs Attention",
+      "critical": "System Critical",
+      "offline": "System Updating"
+    },
+    "statusDescription": {
+      "optimal": "All water quality parameters are within normal range, system running well.",
+      "warning": "{{count}} water parameters need attention, check recommended.",
+      "critical": "{{count}} critical water parameters detected, immediate system check required!",
+      "offline": "Loading system status data, please wait..."
+    },
+    "exportData": "Export Data",
+    "updating": "Updating...",
+    "connectingToSensors": "Connecting to sensors...",
+    "parametersOverview": "Parameters Overview",
+    "critical": "Critical",
+    "warning": "Warning",
+    "normal": "Normal"
+  },
+  "panel": {
+    "loading": "Loading water parameters...",
+    "error": "Error loading data",
+    "title": "Water Parameters",
+    "items": "items",
+    "status": {
+      "critical": "Critical",
+      "warning": "Warning",
+      "good": "Normal"
+    },
+    "views": {
+      "grid": "Grid View",
+      "priority": "Priority View",
+      "charts": "Charts View"
+    },
+    "filter": {
+      "all": "All Categories",
+      "physical": "Physical Parameters",
+      "chemical": "Chemical Parameters",
+      "mineral": "Minerals",
+      "metal": "Heavy Metals",
+      "organic": "Organic Compounds",
+      "biological": "Biological Parameters"
+    },
+    "noParameters": "No parameters found",
+    "priority": {
+      "critical": "Critical",
+      "warning": "Warning",
+      "good": "Normal"
+    },
+    "noCriticalParameters": "No critical parameters",
+    "noWarningParameters": "No warning parameters",
+    "noGoodParameters": "No normal parameters",
+    "chartsComingSoon": "Charts view coming soon..."
+  },
+  "chat": {
+    "allParametersNormal": "All parameters normal",
+    "normalParameters": "Normal Parameters",
+    "noChats": "No chat messages",
+    "clear": "Clear chat",
+    "recentChats": "Recent Conversations",
+    "newChat": "New Conversation",
+    "title": "Chat Assistant"
   },
   "parameters": {
     "range": "Reference Range",

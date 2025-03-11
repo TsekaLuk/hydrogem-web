@@ -8,7 +8,7 @@ interface ChatHeaderProps {
 }
 
 export function ChatHeader({ onClearChat }: ChatHeaderProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('monitoring');
 
   return (
     <div className={cn(

@@ -26,11 +26,11 @@ export function ChatContainer({ messages, streamingMessage, isLoading, onReply }
   const hasMessages = messages.length > 0 || streamingMessage;
 
   return (
-    <ScrollArea className="flex-1 relative bg-background/10 w-full">
-      <div className="h-full w-full flex flex-col items-center">
-        <div className="w-full max-w-[95%] mx-auto py-4">
+    <div className="h-full flex-1 relative bg-background/10 w-full overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary/20 hover:scrollbar-thumb-primary/30">
+      <div className="flex flex-col h-full">
+        <div className="w-full max-w-[98%] mx-auto py-4 flex-1">
           {!hasMessages && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-[50vh] text-center text-muted-foreground/70">
+            <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center text-muted-foreground/70">
               <div className="mb-2 p-4 rounded-full bg-primary/5 border border-primary/10">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-primary/50">
                   <path d="M12 20.5c4.142 0 7.5-3.134 7.5-7s-3.358-7-7.5-7c-4.142 0-7.5 3.134-7.5 7 0 1.941.846 3.698 2.214 4.99L6.5 20.5l3.5-2.5" />
@@ -72,6 +72,6 @@ export function ChatContainer({ messages, streamingMessage, isLoading, onReply }
           <div ref={bottomRef} className="h-4" />
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 }

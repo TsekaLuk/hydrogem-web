@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { SendHorizontal, Paperclip, Image, Loader2 } from 'lucide-react';
+import { SendHorizontal, Send, Paperclip, Image, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,9 @@ interface FileUpload {
   file: File;
   progress: number;
 }
+
+// 设置最大字符数
+const MAX_CHARS = 4000;
 
 export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   const [input, setInput] = useState('');
@@ -91,58 +94,45 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative w-full mx-auto max-w-3xl px-1">
-      <div className="p-1.5 rounded-2xl bg-background border border-input/70 shadow-sm">
-        <div className="relative flex items-end gap-1.5">
-          <div className="flex-1 relative">
-            <Textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={t('chat.inputPlaceholder')}
+    <form onSubmit={handleSubmit} className="relative w-full mx-auto max-w-full">
+      <div className="rounded-xl bg-background border border-input/70 shadow-sm hover:border-primary/30 transition-colors duration-200">
+        <div className="relative">
+          <Textarea
+            id="message-input"
+            placeholder={t('chat.inputPlaceholder') || "输入您的消息..."}
+            className="min-h-[60px] max-h-[200px] w-full resize-none border-0 bg-transparent p-2 focus-visible:ring-0 focus-visible:ring-transparent"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={isLoading}
+            rows={1}
+            maxLength={MAX_CHARS}
+          />
+          
+          <div className="absolute right-2 bottom-2 flex items-center gap-2">
+            {input.length > 0 && !isLoading && (
+              <span className="text-xs text-muted-foreground select-none">
+                {input.length}/{MAX_CHARS}
+              </span>
+            )}
+            <Button 
+              type="submit" 
+              size="icon" 
+              disabled={isLoading || input.trim().length === 0}
               className={cn(
-                "pr-14 pl-4 py-3 resize-none text-sm",
-                "rounded-xl focus-visible:ring-0 focus-visible:border-input focus-visible:ring-offset-0",
-                "border-0 shadow-none",
-                "min-h-[50px] max-h-[200px] overflow-y-auto bg-transparent"
+                "h-8 w-8 rounded-lg bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+                "transition-all duration-200 ease-in-out",
+                (isLoading || input.trim().length === 0) && "opacity-50"
               )}
-              disabled={isLoading || isUploading}
-            />
-            <div className="absolute right-2 bottom-2 flex gap-1.5">
-              <FileUploadButton
-                icon={<Paperclip className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />}
-                tooltip={t('chat.attachFile')}
-                onFileSelect={handleFileSelect}
-                disabled={isLoading || isUploading}
-              />
-              <FileUploadButton
-                icon={<Image className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />}
-                tooltip={t('chat.addImage')}
-                onFileSelect={handleFileSelect}
-                isImage
-                disabled={isLoading || isUploading}
-              />
-            </div>
+            >
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <SendHorizontal className="h-4 w-4" />
+              )}
+              <span className="sr-only">Send</span>
+            </Button>
           </div>
-          <Button
-            size="icon"
-            type="submit"
-            disabled={!input.trim() || isLoading || isUploading}
-            className={cn(
-              'h-10 w-10 rounded-xl mr-1',
-              'transition-all duration-200',
-              'bg-primary hover:bg-primary/90 text-primary-foreground',
-              (!input.trim() || isLoading || isUploading) ? 'opacity-50' : 'shadow-md hover:shadow-lg'
-            )}
-          >
-            {isLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <SendHorizontal className="h-5 w-5" />
-            )}
-            <span className="sr-only">{t('chat.send')}</span>
-          </Button>
         </div>
       </div>
       

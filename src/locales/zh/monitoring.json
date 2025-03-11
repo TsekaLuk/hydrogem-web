@@ -2,11 +2,83 @@
   "title": "水质监测",
   "alerts": {
     "title": "需要注意",
-    "phWarning": "3号水箱的pH值接近警戒阈值，建议进行维护检查。"
+    "phWarning": "3号水箱的pH值接近警戒阈值，建议进行维护检查。",
+    "criticalMessage": "系统检测到 {{count}} 个异常参数，请立即检查！",
+    "warningMessage": "系统检测到 {{count}} 个参数需要关注，建议进行检查。"
   },
   "system": {
     "status": "系统状态",
     "lastUpdated": "最后更新时间"
+  },
+  "analytics": {
+    "title": "水质数据分析",
+    "description": "30天历史数据分析与趋势",
+    "parameterTrends": "参数趋势"
+  },
+  "dashboard": {
+    "status": {
+      "optimal": "系统状态良好",
+      "warning": "系统需要注意",
+      "critical": "系统存在严重问题",
+      "offline": "系统状态更新中"
+    },
+    "statusDescription": {
+      "optimal": "所有水质参数都在正常范围内，系统运行良好。",
+      "warning": "有 {{count}} 个水质参数需要关注，建议进行检查。",
+      "critical": "存在 {{count}} 个严重异常的水质参数，请立即检查系统！",
+      "offline": "正在加载系统状态数据，请稍候..."
+    },
+    "exportData": "导出数据",
+    "updating": "更新中...",
+    "connectingToSensors": "正在连接传感器...",
+    "parametersOverview": "参数概览",
+    "critical": "异常参数",
+    "warning": "警告参数",
+    "normal": "正常参数"
+  },
+  "panel": {
+    "loading": "加载水质参数中...",
+    "error": "加载数据出错",
+    "title": "水质参数",
+    "items": "项",
+    "status": {
+      "critical": "异常",
+      "warning": "警告",
+      "good": "正常"
+    },
+    "views": {
+      "grid": "网格视图",
+      "priority": "优先级视图",
+      "charts": "图表视图"
+    },
+    "filter": {
+      "all": "全部分类",
+      "physical": "物理参数",
+      "chemical": "化学参数",
+      "mineral": "矿物质",
+      "metal": "重金属",
+      "organic": "有机物",
+      "biological": "生物参数"
+    },
+    "noParameters": "没有符合条件的参数",
+    "priority": {
+      "critical": "异常",
+      "warning": "警告",
+      "good": "正常"
+    },
+    "noCriticalParameters": "没有异常参数",
+    "noWarningParameters": "没有警告参数",
+    "noGoodParameters": "没有正常参数",
+    "chartsComingSoon": "图表视图即将推出..."
+  },
+  "chat": {
+    "allParametersNormal": "所有参数正常",
+    "normalParameters": "正常参数",
+    "noChats": "暂无聊天记录",
+    "clear": "清除聊天",
+    "recentChats": "最近对话",
+    "newChat": "新建对话",
+    "title": "对话助手"
   },
   "parameters": {
     "range": "参考范围",

@@ -1,446 +1,504 @@
 import { useState, useEffect } from 'react';
-import { WaterQualityParameter } from '@/types/parameters';
+import { WaterQualityParameter } from '../types/parameters';
 
-const INITIAL_PARAMETERS: WaterQualityParameter[] = [
-  // 有机物参数
+// 模拟数据 - 在实际应用中，这些数据会从API获取
+const mockParameters: WaterQualityParameter[] = [
+  // 温度参数
   {
-    id: 'total-nitrogen',
-    key: 'totalNitrogen',
-    category: 'organic',
-    value: 0.5,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0.2, max: 1.0 },
-    trend: { direction: 'up', percentage: 0.5 }
+    id: 'temperature',
+    name: '水温',
+    category: 'physical',
+    current: 24.5,
+    unit: '°C',
+    range: [15, 30],
+    optimal: [20, 26],
+    status: 'good',
+    importance: 'high'
   },
-  {
-    id: 'total-phosphorus',
-    key: 'totalPhosphorus',
-    category: 'organic',
-    value: 0.1,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0.02, max: 0.2 },
-    trend: { direction: 'up', percentage: 3.6 }
-  },
-  {
-    id: 'ammonia-nitrogen',
-    key: 'ammoniaNitrogen',
-    category: 'organic',
-    value: 0.91,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0.5, max: 2.0 },
-    trend: { direction: 'up', percentage: 3.7 }
-  },
-  {
-    id: 'nitrate',
-    key: 'nitrate',
-    category: 'organic',
-    value: 5.0,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 10.0 },
-    trend: { direction: 'up', percentage: 2.1 }
-  },
-  {
-    id: 'nitrite',
-    key: 'nitrite',
-    category: 'organic',
-    value: 0.5,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1.0 },
-    trend: { direction: 'up', percentage: 1.8 }
-  },
-  {
-    id: 'phosphate',
-    key: 'phosphate',
-    category: 'organic',
-    value: 0.15,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.3 },
-    trend: { direction: 'up', percentage: 2.3 }
-  },
-  {
-    id: 'dissolved-organic-carbon',
-    key: 'dissolvedOrganicCarbon',
-    category: 'organic',
-    value: 2.38,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 5.0 },
-    trend: { direction: 'up', percentage: 1.7 }
-  },
-  {
-    id: 'total-carbon',
-    key: 'totalCarbon',
-    category: 'organic',
-    value: 20,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 10, max: 30 },
-    trend: { direction: 'up', percentage: 2.5 }
-  },
-  {
-    id: 'inorganic-carbon',
-    key: 'inorganicCarbon',
-    category: 'organic',
-    value: 15,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 5, max: 25 },
-    trend: { direction: 'up', percentage: 1.9 }
-  },
-  {
-    id: 'total-organic-carbon',
-    key: 'totalOrganicCarbon',
-    category: 'organic',
-    value: 1.5,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 3.0 },
-    trend: { direction: 'up', percentage: 2.2 }
-  },
-  {
-    id: 'chemical-oxygen-demand',
-    key: 'chemicalOxygenDemand',
-    category: 'organic',
-    value: 20.07,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 15, max: 40 },
-    trend: { direction: 'up', percentage: 4.4 }
-  },
-  // 物理参数
+  // 基础物理参数
   {
     id: 'ph',
-    key: 'ph',
+    name: 'pH值',
     category: 'physical',
-    value: 7.06,
-    unit: '',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 6.5, max: 8.5 },
-    trend: { direction: 'up', percentage: 3.4 }
+    current: 8.7,
+    unit: 'pH',
+    range: [6.5, 9.0],
+    optimal: [7.0, 8.5],
+    status: 'warning',
+    importance: 'high'
   },
   {
-    id: 'turbidity',
-    key: 'turbidity',
+    id: 'dissolved_oxygen',
+    name: '溶解氧',
     category: 'physical',
-    value: 0.48,
-    unit: 'NTU',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1.0 },
-    trend: { direction: 'up', percentage: 0.4 }
+    current: 5.2,
+    unit: 'mg/L',
+    range: [4, 12],
+    optimal: [6, 10],
+    status: 'warning',
+    importance: 'high'
   },
   {
     id: 'conductivity',
-    key: 'conductivity',
+    name: '电导率',
     category: 'physical',
-    value: 1250,
+    current: 1250,
     unit: 'μS/cm',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 2500 },
-    trend: { direction: 'up', percentage: 1.5 }
+    range: [0, 2500],
+    optimal: [500, 1500],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'turbidity',
+    name: '浊度',
+    category: 'physical',
+    current: 0.48,
+    unit: 'NTU',
+    range: [0, 1.0],
+    optimal: [0, 0.5],
+    status: 'good',
+    importance: 'medium'
   },
   {
     id: 'resistivity',
-    key: 'resistivity',
+    name: '电阻率',
     category: 'physical',
-    value: 2000,
+    current: 2000,
     unit: 'Ω·m',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 1800, max: 3000 },
-    trend: { direction: 'up', percentage: 1.2 }
+    range: [1800, 3000],
+    optimal: [2000, 2500],
+    status: 'good',
+    importance: 'low'
   },
   {
     id: 'salinity',
-    key: 'salinity',
+    name: '盐度',
     category: 'physical',
-    value: 500,
+    current: 500,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1000 },
-    trend: { direction: 'up', percentage: 2.1 }
+    range: [0, 1000],
+    optimal: [100, 600],
+    status: 'good',
+    importance: 'medium'
   },
   {
-    id: 'total-dissolved-solids',
-    key: 'totalDissolvedSolids',
+    id: 'tds',
+    name: '总溶解固体',
     category: 'physical',
-    value: 500,
+    current: 500,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1000 },
-    trend: { direction: 'up', percentage: 1.8 }
+    range: [0, 1000],
+    optimal: [100, 500],
+    status: 'good',
+    importance: 'medium'
   },
-  // 金属离子
+  // 氮相关指标
   {
-    id: 'zinc',
-    key: 'zinc',
-    category: 'metals',
-    value: 0.5,
+    id: 'total_nitrogen',
+    name: '总氮',
+    category: 'chemical',
+    current: 0.5,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1.0 },
-    trend: { direction: 'up', percentage: 4.0 }
-  },
-  {
-    id: 'copper',
-    key: 'copper',
-    category: 'metals',
-    value: 0.5,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1.0 },
-    trend: { direction: 'up', percentage: 2.7 }
+    range: [0, 1.0],
+    optimal: [0, 0.5],
+    status: 'good',
+    importance: 'high'
   },
   {
-    id: 'cadmium',
-    key: 'cadmium',
-    category: 'metals',
-    value: 0.002,
+    id: 'ammonia',
+    name: '氨氮',
+    category: 'chemical',
+    current: 0.8,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.005 },
-    trend: { direction: 'up', percentage: 1.5 }
+    range: [0, 1.0],
+    optimal: [0, 0.5],
+    status: 'warning',
+    importance: 'high'
   },
   {
-    id: 'manganese',
-    key: 'manganese',
-    category: 'metals',
-    value: 0.05,
+    id: 'nitrite',
+    name: '亚硝酸盐',
+    category: 'chemical',
+    current: 0.05,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.1 },
-    trend: { direction: 'up', percentage: 2.3 }
+    range: [0, 0.3],
+    optimal: [0, 0.1],
+    status: 'good',
+    importance: 'high'
   },
   {
-    id: 'aluminum',
-    key: 'aluminum',
-    category: 'metals',
-    value: 0.1,
+    id: 'nitrate',
+    name: '硝酸盐',
+    category: 'chemical',
+    current: 45.0,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.2 },
-    trend: { direction: 'up', percentage: 1.9 }
+    range: [0, 50],
+    optimal: [0, 40],
+    status: 'warning',
+    importance: 'high'
+  },
+  // 磷相关指标
+  {
+    id: 'total_phosphorus',
+    name: '总磷',
+    category: 'chemical',
+    current: 0.1,
+    unit: 'mg/L',
+    range: [0, 0.2],
+    optimal: [0, 0.1],
+    status: 'good',
+    importance: 'high'
   },
   {
-    id: 'iron',
-    key: 'iron',
-    category: 'metals',
-    value: 0.15,
+    id: 'phosphate',
+    name: '磷酸盐',
+    category: 'chemical',
+    current: 0.15,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.3 },
-    trend: { direction: 'up', percentage: 2.4 }
+    range: [0, 0.3],
+    optimal: [0, 0.15],
+    status: 'good',
+    importance: 'medium'
+  },
+  // 碳相关指标
+  {
+    id: 'doc',
+    name: '溶解有机碳',
+    category: 'chemical',
+    current: 2.38,
+    unit: 'mg/L',
+    range: [0, 5.0],
+    optimal: [0, 3.0],
+    status: 'good',
+    importance: 'medium'
   },
   {
-    id: 'chromium',
-    key: 'chromium',
-    category: 'metals',
-    value: 0.025,
+    id: 'tc',
+    name: '总碳',
+    category: 'chemical',
+    current: 20.0,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.05 },
-    trend: { direction: 'up', percentage: 1.7 }
+    range: [10, 30],
+    optimal: [15, 25],
+    status: 'good',
+    importance: 'low'
   },
   {
-    id: 'ferrous-iron',
-    key: 'ferrousIron',
-    category: 'metals',
-    value: 0.15,
+    id: 'tic',
+    name: '无机碳',
+    category: 'chemical',
+    current: 15.0,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.3 },
-    trend: { direction: 'up', percentage: 2.1 }
+    range: [5, 25],
+    optimal: [10, 20],
+    status: 'good',
+    importance: 'low'
   },
   {
-    id: 'arsenic',
-    key: 'arsenic',
-    category: 'metals',
-    value: 0.005,
+    id: 'toc',
+    name: '总有机碳',
+    category: 'chemical',
+    current: 1.5,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.01 },
-    trend: { direction: 'up', percentage: 1.8 }
+    range: [0, 3.0],
+    optimal: [0, 2.0],
+    status: 'good',
+    importance: 'medium'
   },
-  // 离子成分
   {
-    id: 'total-hardness',
-    key: 'totalHardness',
-    category: 'ions',
-    value: 320.68,
+    id: 'cod',
+    name: '化学需氧量',
+    category: 'chemical',
+    current: 20.07,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 150, max: 450 },
-    trend: { direction: 'up', percentage: 4.3 }
+    range: [15, 40],
+    optimal: [15, 25],
+    status: 'good',
+    importance: 'high'
   },
+  // 离子指标
   {
     id: 'chloride',
-    key: 'chloride',
-    category: 'ions',
-    value: 130.25,
+    name: '氯化物',
+    category: 'chemical',
+    current: 250,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 250 },
-    trend: { direction: 'up', percentage: 0.7 }
+    range: [0, 250],
+    optimal: [0, 200],
+    status: 'critical',
+    importance: 'medium'
   },
   {
     id: 'sulfate',
-    key: 'sulfate',
-    category: 'ions',
-    value: 125,
+    name: '硫酸盐',
+    category: 'chemical',
+    current: 125,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 250 },
-    trend: { direction: 'up', percentage: 1.9 }
+    range: [0, 250],
+    optimal: [0, 200],
+    status: 'good',
+    importance: 'medium'
   },
   {
-    id: 'residual-chlorine',
-    key: 'residualChlorine',
-    category: 'ions',
-    value: 0.4,
+    id: 'hardness',
+    name: '硬度',
+    category: 'physical',
+    current: 320.68,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0.3, max: 0.5 },
-    trend: { direction: 'up', percentage: 2.2 }
+    range: [150, 450],
+    optimal: [200, 400],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'residual_chlorine',
+    name: '余氯',
+    category: 'chemical',
+    current: 0.4,
+    unit: 'mg/L',
+    range: [0.3, 0.5],
+    optimal: [0.3, 0.4],
+    status: 'good',
+    importance: 'high'
   },
   {
     id: 'fluoride',
-    key: 'fluoride',
-    category: 'ions',
-    value: 0.5,
+    name: '氟化物',
+    category: 'chemical',
+    current: 0.5,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 1.0 },
-    trend: { direction: 'up', percentage: 1.5 }
+    range: [0, 1.0],
+    optimal: [0.3, 0.8],
+    status: 'good',
+    importance: 'medium'
   },
   {
     id: 'sulfide',
-    key: 'sulfide',
-    category: 'ions',
-    value: 0.01,
+    name: '硫化物',
+    category: 'chemical',
+    current: 0.01,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.02 },
-    trend: { direction: 'up', percentage: 2.3 }
+    range: [0, 0.02],
+    optimal: [0, 0.01],
+    status: 'good',
+    importance: 'medium'
   },
   {
     id: 'potassium',
-    key: 'potassium',
-    category: 'ions',
-    value: 6,
+    name: '钾离子',
+    category: 'mineral',
+    current: 6.0,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 12 },
-    trend: { direction: 'up', percentage: 1.7 }
+    range: [0, 12],
+    optimal: [3, 9],
+    status: 'good',
+    importance: 'low'
   },
-  // 有毒物质
+  // 重金属指标
+  {
+    id: 'zinc',
+    name: '锌',
+    category: 'metal',
+    current: 0.5,
+    unit: 'mg/L',
+    range: [0, 1.0],
+    optimal: [0, 0.8],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'cadmium',
+    name: '镉',
+    category: 'metal',
+    current: 0.002,
+    unit: 'mg/L',
+    range: [0, 0.005],
+    optimal: [0, 0.003],
+    status: 'good',
+    importance: 'high'
+  },
+  {
+    id: 'copper',
+    name: '铜',
+    category: 'metal',
+    current: 0.5,
+    unit: 'mg/L',
+    range: [0, 1.0],
+    optimal: [0, 0.8],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'manganese',
+    name: '锰',
+    category: 'metal',
+    current: 0.05,
+    unit: 'mg/L',
+    range: [0, 0.1],
+    optimal: [0, 0.07],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'aluminum',
+    name: '铝',
+    category: 'metal',
+    current: 0.1,
+    unit: 'mg/L',
+    range: [0, 0.2],
+    optimal: [0, 0.15],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'iron',
+    name: '铁',
+    category: 'metal',
+    current: 0.15,
+    unit: 'mg/L',
+    range: [0, 0.3],
+    optimal: [0, 0.2],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'chromium',
+    name: '六价铬',
+    category: 'metal',
+    current: 0.025,
+    unit: 'mg/L',
+    range: [0, 0.05],
+    optimal: [0, 0.035],
+    status: 'good',
+    importance: 'high'
+  },
+  {
+    id: 'ferrous_iron',
+    name: '亚铁',
+    category: 'metal',
+    current: 0.15,
+    unit: 'mg/L',
+    range: [0, 0.3],
+    optimal: [0, 0.2],
+    status: 'good',
+    importance: 'medium'
+  },
+  {
+    id: 'arsenic',
+    name: '砷',
+    category: 'metal',
+    current: 0.005,
+    unit: 'mg/L',
+    range: [0, 0.01],
+    optimal: [0, 0.007],
+    status: 'good',
+    importance: 'high'
+  },
+  // 有机物指标
   {
     id: 'phenols',
-    key: 'phenols',
-    category: 'toxins',
-    value: 0.001,
+    name: '酚类',
+    category: 'organic',
+    current: 0.001,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 0.002 },
-    trend: { direction: 'up', percentage: 4.9 }
+    range: [0, 0.002],
+    optimal: [0, 0.001],
+    status: 'good',
+    importance: 'high'
   },
   {
     id: 'methanol',
-    key: 'methanol',
-    category: 'toxins',
-    value: 5,
+    name: '甲醇',
+    category: 'organic',
+    current: 5.0,
     unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 10 },
-    trend: { direction: 'up', percentage: 2.1 }
+    range: [0, 10],
+    optimal: [0, 7],
+    status: 'good',
+    importance: 'medium'
+  },
+  // 硅相关指标
+  {
+    id: 'silicon_dioxide',
+    name: '二氧化硅',
+    category: 'mineral',
+    current: 15.0,
+    unit: 'mg/L',
+    range: [1, 30],
+    optimal: [5, 25],
+    status: 'good',
+    importance: 'low'
+  },
+  {
+    id: 'soluble_silicon',
+    name: '可溶性硅',
+    category: 'mineral',
+    current: 15.0,
+    unit: 'mg/L',
+    range: [5, 25],
+    optimal: [10, 20],
+    status: 'good',
+    importance: 'low'
   },
   // 生物指标
   {
     id: 'chlorophyll',
-    key: 'chlorophyll',
+    name: '叶绿素',
     category: 'biological',
-    value: 15.3,
+    current: 15.3,
     unit: 'μg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 0, max: 30 },
-    trend: { direction: 'up', percentage: 4.3 }
-  },
-  {
-    id: 'dissolved-oxygen',
-    key: 'dissolvedOxygen',
-    category: 'biological',
-    value: 7.5,
-    unit: 'mg/L',
-    status: 'normal',
-    timestamp: new Date(),
-    range: { min: 5, max: 10 },
-    trend: { direction: 'up', percentage: 2.1 }
+    range: [0, 30],
+    optimal: [5, 20],
+    status: 'good',
+    importance: 'medium'
   }
 ];
 
-export function useMonitoringData() {
-  const [parameters, setParameters] = useState<WaterQualityParameter[]>(INITIAL_PARAMETERS);
+// 定义useMonitoringData hook的返回类型
+export interface MonitoringDataResult {
+  parameters: WaterQualityParameter[];
+  lastUpdated: Date;
+  loading: boolean;
+  error: Error | null;
+}
+
+/**
+ * 获取水质监测数据的Hook
+ */
+export function useMonitoringData(): MonitoringDataResult {
+  const [parameters, setParameters] = useState<WaterQualityParameter[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate real-time updates
-      setParameters(prev => prev.map(param => ({
-        ...param,
-        value: Number((param.value + (Math.random() - 0.5) * 0.2).toFixed(2)),
-        timestamp: new Date(),
-        trend: {
-          direction: Math.random() > 0.5 ? 'up' : 'down',
-          percentage: Number((Math.random() * 5).toFixed(1))
-        }
-      })));
-      setLastUpdated(new Date());
-    }, 5000);
+    // 模拟API调用
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // 模拟网络延迟
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // 使用模拟数据
+        setParameters(mockParameters);
+        setLastUpdated(new Date());
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('Unknown error'));
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return () => clearInterval(interval);
+    fetchData();
+
+    // 设置定时刷新 (每60秒)
+    const intervalId = setInterval(fetchData, 60000);
+
+    // 清理函数
+    return () => clearInterval(intervalId);
   }, []);
 
-  return {
-    parameters,
-    lastUpdated,
-  };
+  return { parameters, lastUpdated, loading, error };
 }

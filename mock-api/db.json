@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": "u123",
+      "name": "测试用户",
+      "email": "test@hydrogem.tech",
+      "role": "admin",
+      "tenants": [
+        {"id": "t789", "name": "默认租户", "role": "tenant_admin", "isActive": true}
+      ],
+      "defaultTenantId": "t789"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "a001",
+      "title": "系统通知",
+      "content": "欢迎使用HydroGem水质监测系统",
+      "createdAt": "2025-03-12T10:00:00Z",
+      "read": false
+    }
+  ],
+  "parameters": [
+    {
+      "id": "p001",
+      "name": "pH值",
+      "unit": "pH",
+      "minValue": 0,
+      "maxValue": 14,
+      "warningThreshold": {
+        "min": 6.5,
+        "max": 8.5
+      }
+    }
+  ],
+  "measurements": [
+    {
+      "id": "m001",
+      "parameterId": "p001",
+      "value": 7.2,
+      "timestamp": "2025-03-12T10:00:00Z",
+      "deviceId": "d001"
+    }
+  ]
+} 

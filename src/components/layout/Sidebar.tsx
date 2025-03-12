@@ -72,6 +72,7 @@ export function Sidebar({ className, onViewChange, currentView, onToggleCollapse
             'hover:bg-accent hover:text-accent-foreground'
           )}
           onClick={handleToggleCollapse}
+          aria-label={isCollapsed ? t('actions.expand') : t('actions.collapse')}
         >
           <ChevronLeft className={cn(
             "h-3 w-3 transition-transform",

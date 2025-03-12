@@ -3,6 +3,7 @@ import { Notification } from '@/types/notifications';
 import { AlertTriangle, CheckCircle, Info, X, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface NotificationToastProps {
   notification: Notification;
@@ -10,6 +11,8 @@ interface NotificationToastProps {
 }
 
 export function NotificationToast({ notification, onClose }: NotificationToastProps) {
+  const { t } = useTranslation('notifications');
+
   const getIcon = () => {
     switch (notification.type) {
       case 'success':
@@ -45,6 +48,8 @@ export function NotificationToast({ notification, onClose }: NotificationToastPr
         <button
           onClick={onClose}
           className="text-muted-foreground hover:text-foreground"
+          aria-label={t('closeNotification')}
+          title={t('closeNotification')}
         >
           <X className="h-4 w-4" />
         </button>

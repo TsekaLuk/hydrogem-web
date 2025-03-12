@@ -10,12 +10,26 @@
     "help": "帮助支持",
     "dashboard": "仪表盘"
   },
+  "actions": {
+    "collapse": "收起侧边栏",
+    "expand": "展开侧边栏",
+    "search": "搜索",
+    "clear": "清除",
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "view": "查看",
+    "refresh": "刷新",
+    "download": "下载"
+  },
   "messages": {
     "welcome": "欢迎回来！以下是您的活动概览。",
     "loading": "加载中...",
     "error": "发生错误",
     "success": "操作成功",
-    "noData": "暂无数据"
+    "noData": "没有找到相关内容"
   },
   "search": {
     "placeholder": "搜索..."
@@ -70,11 +84,18 @@
   },
   "chat": {
     "title": "聊天会话",
-    "newChat": "新建会话",
+    "newChat": "新建聊天",
     "deleteSession": "删除会话",
     "send": "发送消息",
     "inputPlaceholder": "输入您的消息...",
-    "initialMessage": "您好！我是您的AI助手，有什么我可以帮您的吗？"
+    "initialMessage": "您好！我是您的AI助手，有什么我可以帮您的吗？",
+    "recentChats": "最近对话",
+    "noChats": "还没有聊天记录",
+    "searchChats": "搜索对话",
+    "confirmDelete": "您确定要删除这个对话吗？此操作无法撤销。",
+    "regarding": "关于",
+    "search": "搜索聊天",
+    "clearSearch": "清除搜索"
   },
   "user": {
     "settings": "设置",
@@ -99,5 +120,20 @@
         "thanks": "感谢您的反馈！"
       }
     }
+  },
+  "monitoring": {
+    "refreshing": "刷新监测数据"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "lessThanMinute": "不到一分钟前",
+    "minutesAgo": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前",
+    "daysAgo": "{{count}}天前",
+    "weeksAgo": "{{count}}周前",
+    "monthsAgo": "{{count}}个月前",
+    "yearsAgo": "{{count}}年前",
+    "yesterday": "昨天",
+    "today": "今天"
   }
 } 

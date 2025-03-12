@@ -1,15 +1,18 @@
-export function TypingIndicator() {
+import { cn } from '@/lib/utils';
+
+interface TypingIndicatorProps {
+  className?: string;
+}
+
+export function TypingIndicator({ className }: TypingIndicatorProps) {
   return (
-    <div className="flex gap-1 items-center p-2">
-      <div className="flex gap-1">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="w-2 h-2 rounded-full bg-sky-500/50 animate-bounce"
-            style={{ animationDelay: `${i * 0.2}s` }}
-          />
-        ))}
-      </div>
+    <div className={cn(
+      'typing-indicator mt-1 px-1 opacity-80',
+      className
+    )}>
+      <div className="typing-dot"></div>
+      <div className="typing-dot"></div>
+      <div className="typing-dot"></div>
     </div>
   );
 }

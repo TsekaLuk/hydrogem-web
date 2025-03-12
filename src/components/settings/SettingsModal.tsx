@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { ProfileSettings } from './ProfileSettings';
 import { NotificationSettings } from './NotificationSettings';
 import { SecuritySettings } from './SecuritySettings';
@@ -28,16 +28,34 @@ export function SettingsModal({ defaultOpen = false, onOpenChange }: SettingsMod
     setOpen(defaultOpen);
   }, [defaultOpen]);
 
-  const handleOpenChange = (newOpen: boolean) => {
+  // 组件卸载时清理资源
+  useEffect(() => {
+    return () => {
+      // 确保在组件卸载时移除body上的pointer-events样式
+      document.body.style.removeProperty('pointer-events');
+    };
+  }, []);
+
+  const handleOpenChange = useCallback((newOpen: boolean) => {
     setOpen(newOpen);
+    
+    // 在对话框关闭时，确保移除body上的pointer-events样式
+    if (!newOpen) {
+      document.body.style.removeProperty('pointer-events');
+    }
+    
     onOpenChange?.(newOpen);
-  };
+  }, [onOpenChange]);
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange} modal={false}>
       <DialogContent 
         className="max-w-2xl max-h-[80vh] overflow-y-auto"
         onInteractOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={() => {
+          // 确保在Escape关闭对话框时也移除pointer-events
+          document.body.style.removeProperty('pointer-events');
+        }}
       >
         <DialogHeader>
           <DialogTitle>{t('settings.title')}</DialogTitle>

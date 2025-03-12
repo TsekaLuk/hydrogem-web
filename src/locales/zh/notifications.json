@@ -1,0 +1,43 @@
+{
+  "title": "通知中心",
+  "noNotifications": "暂无通知",
+  "markAllAsRead": "全部标为已读",
+  "clearAll": "清除全部",
+  "loadMore": "加载更多",
+  "closeNotification": "关闭通知",
+  "timeAgo": {
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}}分钟前",
+    "minutesAgo_plural": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前",
+    "hoursAgo_plural": "{{count}}小时前",
+    "daysAgo": "{{count}}天前",
+    "daysAgo_plural": "{{count}}天前"
+  },
+  "types": {
+    "info": "信息",
+    "success": "成功",
+    "warning": "警告",
+    "error": "警报"
+  },
+  "status": {
+    "active": "活动",
+    "read": "已读",
+    "dismissed": "已忽略"
+  },
+  "error": {
+    "failedToLoad": "加载通知失败",
+    "tryAgain": "重试"
+  },
+  "actions": {
+    "view": "查看详情",
+    "dismiss": "忽略"
+  },
+  "filters": {
+    "all": "所有通知",
+    "unread": "未读",
+    "alerts": "警报",
+    "warnings": "警告",
+    "info": "信息"
+  }
+}

@@ -11,10 +11,25 @@ export default defineConfig({
   },
   publicDir: 'public',
   server: {
+    port: 5174,
+    strictPort: true,
     watch: {
-      usePolling: true,
+      usePolling: false,
+      ignored: ['**/node_modules/**', '**/.git/**'],
     },
     host: true,
+    hmr: {
+      overlay: true,
+      port: 5174,
+      timeout: 30000,
+    },
+    proxy: {
+      '/v1': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/v1/, '')
+      }
+    }
   },
   json: {
     stringify: true,

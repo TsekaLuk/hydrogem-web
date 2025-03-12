@@ -9,19 +9,23 @@ import monitoringEn from '../locales/en/monitoring.json';
 import monitoringZh from '../locales/zh/monitoring.json';
 import helpEn from '../locales/en/help.json';
 import helpZh from '../locales/zh/help.json';
+import notificationsEn from '../locales/en/notifications.json';
+import notificationsZh from '../locales/zh/notifications.json';
 
 const resources = {
   en: {
     common: commonEn,
     dashboard: dashboardEn,
     monitoring: monitoringEn,
-    help: helpEn
+    help: helpEn,
+    notifications: notificationsEn
   },
   zh: {
     common: commonZh,
     dashboard: dashboardZh,
     monitoring: monitoringZh,
-    help: helpZh
+    help: helpZh,
+    notifications: notificationsZh
   },
 };
 
@@ -33,10 +37,10 @@ i18n
 // 导出配置选项供main.tsx使用
 export const i18nConfig = {
   resources,
-  lng: 'zh', // 设置初始语言为中文
+  lng: localStorage.getItem('i18nextLng') || 'zh', // 使用保存的语言或默认为中文
   fallbackLng: 'en',
   supportedLngs: ['en', 'zh'],
-  ns: ['common', 'dashboard', 'monitoring', 'help'],
+  ns: ['common', 'dashboard', 'monitoring', 'help', 'notifications'],
   defaultNS: 'common',
   fallbackNS: 'common',
   
@@ -55,10 +59,6 @@ export const i18nConfig = {
   react: {
     useSuspense: false,
   },
-
-  // 强制使用中文
-  load: 'currentOnly',
-  preload: ['zh'],
   
   // 确保资源加载完成
   initImmediate: false
@@ -71,7 +71,7 @@ i18n.on('languageChanged', (lng) => {
   console.log('Current translations:', i18n.getDataByLanguage(lng));
   document.documentElement.lang = lng;
   
-  // 强制更新 localStorage
+  // 更新 localStorage
   localStorage.setItem('i18nextLng', lng);
 });
 
@@ -80,11 +80,6 @@ i18n.on('initialized', () => {
   console.log('i18n initialized with options:', i18n.options);
   console.log('Initial language:', i18n.language);
   console.log('Available resources:', i18n.options.resources);
-  
-  // 确保设置为中文
-  if (i18n.language !== 'zh') {
-    i18n.changeLanguage('zh');
-  }
 });
 
 i18n.on('loaded', (loaded) => {
@@ -95,4 +90,4 @@ i18n.on('failedLoading', (lng, ns, msg) => {
   console.error('i18n failed loading:', { lng, ns, msg });
 });
 
-export default i18n; 
+export default i18n;

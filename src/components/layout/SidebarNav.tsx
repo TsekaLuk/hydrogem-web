@@ -56,10 +56,10 @@ export function SidebarNav({ isCollapsed, onViewChange, currentView }: SidebarNa
   return (
     <div
       data-collapsed={isCollapsed}
-      className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+      className="group flex flex-col gap-4 pt-0 pb-2 data-[collapsed=true]:pt-0 data-[collapsed=true]:pb-2"
     >
-      <nav className="grid gap-1 px-2">
-        {navItems.map((item) => {
+      <nav className="grid gap-1 px-2 mt-2">
+        {navItems.map((item, index) => {
           const Icon = item.icon;
           const title = t(item.titleKey);
           return isCollapsed ? (
@@ -72,7 +72,8 @@ export function SidebarNav({ isCollapsed, onViewChange, currentView }: SidebarNa
                   className={cn(
                     'h-10 w-10',
                     currentView === item.view && 'bg-accent',
-                    item.disabled && 'opacity-50 cursor-not-allowed'
+                    item.disabled && 'opacity-50 cursor-not-allowed',
+                    index === 0 && 'mt-2'
                   )}
                   disabled={item.disabled}
                 >
@@ -92,7 +93,8 @@ export function SidebarNav({ isCollapsed, onViewChange, currentView }: SidebarNa
               className={cn(
                 'w-full justify-start gap-4',
                 currentView === item.view && 'bg-accent',
-                item.disabled && 'opacity-50 cursor-not-allowed'
+                item.disabled && 'opacity-50 cursor-not-allowed',
+                index === 0 && 'mt-2'
               )}
               disabled={item.disabled}
             >

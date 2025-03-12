@@ -1,4 +1,3 @@
-import { Diamond } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 
@@ -23,17 +22,18 @@ export function Logo({ className, variant = 'default', showBeta = false }: LogoP
         className={cn(
           'relative flex items-center justify-center',
           'h-9 w-9 rounded-xl overflow-visible',
-          'bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-indigo-500/20',
-          'hover:from-cyan-500/30 hover:via-blue-500/30 hover:to-indigo-500/30',
           'transition-all duration-300 group'
         )}
       >
-        <Diamond className={cn(
-          'h-5 w-5 text-cyan-500 dark:text-cyan-400',
-          'transition-all duration-300',
-          'group-hover:scale-110 group-hover:rotate-12'
-        )} />
-        <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <img 
+          src="/brand-icons/HydroGem-logo-removebg.png" 
+          alt="HydroGem Logo" 
+          className={cn(
+            'h-8 w-8',
+            'transition-all duration-300',
+            'group-hover:scale-110'
+          )} 
+        />
       </div>
       
       {variant === 'default' && (

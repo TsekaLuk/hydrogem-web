@@ -2,7 +2,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export function ThemeSettings() {
   const { t } = useTranslation();
@@ -11,11 +11,11 @@ export function ThemeSettings() {
     return localStorage.getItem('app-font-size') || 'normal';
   });
 
-  const handleThemeChange = (value: string) => {
+  const handleThemeChange = useCallback((value: string) => {
     setTheme(value);
-  };
+  }, [setTheme]);
 
-  const handleFontSizeChange = (value: string) => {
+  const handleFontSizeChange = useCallback((value: string) => {
     setFontSize(value);
     localStorage.setItem('app-font-size', value);
     
@@ -34,13 +34,19 @@ export function ThemeSettings() {
         document.body.classList.add('text-lg');
         break;
     }
-  };
+  }, []);
 
+  // 初始化字体大小
   useEffect(() => {
     const savedFontSize = localStorage.getItem('app-font-size') || 'normal';
     setFontSize(savedFontSize);
     handleFontSizeChange(savedFontSize);
-  }, []);
+    
+    // 组件卸载时清理
+    return () => {
+      // 如果需要清理任何副作用，可以在这里进行
+    };
+  }, [handleFontSizeChange]);
 
   return (
     <div className="space-y-6">

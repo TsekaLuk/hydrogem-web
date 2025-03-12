@@ -1,37 +1,77 @@
-import { useMemo } from 'react';
-import { Code, Image as ImageIcon, FileText, ExternalLink } from 'lucide-react';
+import { useMemo, useEffect, useRef, memo } from 'react';
+import { Code, Image as ImageIcon, FileText, ExternalLink, Binary } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { renderMarkdown } from '@/lib/markdown';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import 'katex/dist/katex.min.css'; // Import KaTeX styles
 
 interface MessageContentProps {
   content: string;
   className?: string;
 }
 
-interface ContentType {
-  type: 'text' | 'code' | 'image' | 'link' | 'file';
-  icon: typeof Code;
-  color: string;
-  label: string;
-}
-
-const contentTypeConfigs: ContentType[] = [
-  { type: 'code', icon: Code, color: 'text-amber-500', label: 'Code block' },
-  { type: 'image', icon: ImageIcon, color: 'text-emerald-500', label: 'Image' },
-  { type: 'link', icon: ExternalLink, color: 'text-blue-500', label: 'Link' },
-  { type: 'file', icon: FileText, color: 'text-purple-500', label: 'File' },
+// Content type configuration for detecting and showing content type badges
+const contentTypeConfigs = [
+  {
+    type: 'code',
+    pattern: /```[\s\S]*?```/,
+    icon: Code,
+    label: '包含代码块',
+    color: 'text-amber-500',
+  },
+  {
+    type: 'math',
+    pattern: /\$\$[\s\S]*?\$\$|\$[^$\n]+?\$/,
+    icon: Binary,
+    label: '包含数学公式',
+    color: 'text-blue-500',
+  },
+  {
+    type: 'image',
+    pattern: /!\[.*?\]\(.*?\)/,
+    icon: ImageIcon,
+    label: '包含图片',
+    color: 'text-green-500',
+  },
+  {
+    type: 'link',
+    pattern: /\[.*?\]\(https?:\/\/.*?\)|(https?:\/\/[^\s)]+)/,
+    icon: ExternalLink,
+    label: '包含链接',
+    color: 'text-purple-500',
+  },
+  {
+    type: 'document',
+    pattern: /\[.*?\]\((?!https?:\/\/).*?\)/,
+    icon: FileText,
+    label: '包含文档',
+    color: 'text-orange-500',
+  },
 ];
 
-export function MessageContent({ content, className }: MessageContentProps) {
+function MessageContentComponent({ content, className }: MessageContentProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Detect content types to show appropriate badges
   const contentTypes = useMemo(() => {
-    const types = new Set<'text' | 'code' | 'image' | 'link' | 'file'>();
-    if (content.includes('```')) types.add('code');
-    if (content.includes('![')) types.add('image');
-    if (content.includes('[') && content.includes('](')) types.add('link');
-    if (content.includes('.pdf') || content.includes('.doc')) types.add('file');
-    return Array.from(types);
+    return contentTypeConfigs
+      .filter(config => config.pattern.test(content))
+      .map(config => config.type);
   }, [content]);
+
+  // Parse and render the markdown content with KaTeX processing
+  const renderedContent = useMemo(() => {
+    return renderMarkdown(content);
+  }, [content]);
+
+  // 使用 useEffect 来确保 KaTeX 公式渲染得到正确处理
+  useEffect(() => {
+    // 如果需要进行特殊处理，可以在此处添加代码
+    // 例如：在内容包含数学公式时重新渲染 KaTeX
+    if (contentRef.current && contentTypes.includes('math')) {
+      // KaTeX 自动已经在 renderMarkdown 中处理了
+    }
+  }, [renderedContent, contentTypes]);
 
   return (
     <div className={cn('relative group', className)}>
@@ -64,18 +104,24 @@ export function MessageContent({ content, className }: MessageContentProps) {
         </div>
       )}
       <div 
+        ref={contentRef}
         className={cn(
           'prose prose-sm sm:prose-base dark:prose-invert max-w-none',
           'transition-all duration-200',
           'prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border/30 prose-pre:shadow-sm',
           'prose-code:bg-muted/50 prose-code:border prose-code:border-border/30 prose-code:rounded-md prose-code:px-1 prose-code:py-0.5',
           'prose-img:rounded-lg prose-img:shadow-md',
-          'prose-blockquote:border-l-4 prose-blockquote:border-blue-500/40 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:font-normal'
+          'prose-blockquote:border-l-4 prose-blockquote:border-blue-500/40 prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:font-normal',
+          // Add KaTeX specific styles
+          'katex-styles'
         )}
         dangerouslySetInnerHTML={{ 
-          __html: renderMarkdown(content) 
+          __html: renderedContent
         }} 
       />
     </div>
   );
 }
+
+// 导出使用 memo 包装的 MessageContent 组件
+export const MessageContent = memo(MessageContentComponent);

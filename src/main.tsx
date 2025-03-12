@@ -6,6 +6,7 @@ import i18n, { i18nConfig } from './lib/i18n';
 import { updateInitialMessage } from './lib/constants';
 import { InitOptions } from 'i18next';
 import { TooltipProvider } from './components/ui/tooltip';
+import './lib/client-init'; // 导入客户端初始化脚本
 
 // 使用导出的配置初始化i18n
 i18n.init(i18nConfig as InitOptions).then(() => {

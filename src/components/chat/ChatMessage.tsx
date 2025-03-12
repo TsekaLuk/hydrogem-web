@@ -4,19 +4,23 @@ import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/avatar';
 import { MessageBubble } from './MessageBubble';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 
 interface ChatMessageProps {
   message: Message;
   isTyping?: boolean;
+  isStreaming?: boolean;
   onReply?: () => void;
 }
 
-export function ChatMessage({ message, isTyping, onReply }: ChatMessageProps) {
+// 使用 memo 包装 MessageBubble 组件
+const MemoizedMessageBubble = memo(MessageBubble);
+
+function ChatMessageComponent({ message, isTyping, isStreaming = false, onReply }: ChatMessageProps) {
   const isUser = message.role === 'user';
   const [isHovered, setIsHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-
+  
   // Trigger animation when typing starts
   useEffect(() => {
     if (isTyping && !isUser) {
@@ -26,32 +30,32 @@ export function ChatMessage({ message, isTyping, onReply }: ChatMessageProps) {
     }
   }, [isTyping, isUser]);
 
+  // 消息使用的CSS类
+  const messageClass = cn(
+    'flex gap-3 mb-6 group transition-opacity px-2 py-1',
+    isUser ? 'flex-row-reverse' : 'flex-row',
+  );
+
+  // 创建一个包裹组件，根据是否是流式消息使用不同的容器
+  const MessageWrapper = isStreaming ? motion.div : 'div';
+  const motionProps = isStreaming ? {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.3 }
+  } : {};
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={cn(
-        'flex gap-3 mb-6 group transition-opacity px-2 py-1',
-        isUser ? 'flex-row-reverse' : 'flex-row',
-      )}
+    <MessageWrapper 
+      className={messageClass}
+      {...motionProps}
     >
       <div className={cn(
         'flex flex-col items-center gap-1',
         isUser ? 'pl-2' : 'pr-2'
       )}>
-        <motion.div
+        <div
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          whileHover={{ scale: 1.05 }}
-          animate={isAnimating ? { 
-            scale: [1, 1.05, 1],
-            transition: { 
-              repeat: Infinity, 
-              duration: 2,
-              repeatType: "reverse" 
-            }
-          } : {}}
           className={!isUser ? 'ai-avatar-container' : ''}
         >
           {!isUser && <div className="ai-avatar-ring" />}
@@ -93,7 +97,7 @@ export function ChatMessage({ message, isTyping, onReply }: ChatMessageProps) {
               <div className="ai-status-indicator" />
             )}
           </Avatar>
-        </motion.div>
+        </div>
         <div className={cn(
           "text-[10px] font-medium px-2 py-0.5 rounded-full",
           isUser 
@@ -104,13 +108,17 @@ export function ChatMessage({ message, isTyping, onReply }: ChatMessageProps) {
         </div>
       </div>
       
-      <MessageBubble
+      <MemoizedMessageBubble
         content={message.content}
         timestamp={new Date(message.timestamp)}
         isUser={isUser}
         isTyping={isTyping}
+        isStreaming={isStreaming}
         onReply={onReply}
       />
-    </motion.div>
+    </MessageWrapper>
   );
 }
+
+// 导出使用 memo 包装的 ChatMessage
+export const ChatMessage = memo(ChatMessageComponent);

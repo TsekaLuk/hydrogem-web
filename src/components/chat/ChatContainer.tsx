@@ -1,77 +1,155 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, memo, useState } from 'react';
 import { Message } from '@/types/chat';
-import { MessageList } from './MessageList';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ChatMessage } from './ChatMessage';
+import { cn } from '@/lib/utils';
 
 interface ChatContainerProps {
   messages: Message[];
   streamingMessage?: string;
   isLoading?: boolean;
+  onSendMessage?: (content: string) => void;
   onReply?: (content: string) => void;
 }
 
-export function ChatContainer({ messages, streamingMessage, isLoading, onReply }: ChatContainerProps) {
-  const bottomRef = useRef<HTMLDivElement>(null);
+// 使用 memo 优化历史消息
+const MemoizedChatMessage = memo(ChatMessage);
+
+// 流式消息组件
+const StreamingMessageComponent = memo(({ message, onReply }: { 
+  message: Message, 
+  onReply?: () => void 
+}) => {
+  return (
+    <ChatMessage
+      key="streaming"
+      message={message}
+      isTyping={true}
+      isStreaming={true}
+      onReply={onReply}
+    />
+  );
+});
+
+// 加载指示器
+const LoadingIndicator = () => (
+  <div className="flex justify-center py-4">
+    <div className="loading-dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+);
+
+// 空白状态组件
+const EmptyMessageView = () => (
+  <div className="flex flex-col items-center justify-center h-full text-center px-4 space-y-4">
+    <div className="text-xl font-semibold">开始对话</div>
+    <p className="text-muted-foreground max-w-md">
+      通过发送消息开始您与玑衡的对话。您可以询问任何问题或请求帮助。
+    </p>
+  </div>
+);
+
+export function ChatContainer({
+  messages,
+  streamingMessage,
+  isLoading,
+  onReply
+}: ChatContainerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const hasMessages = messages.length > 0;
+  const hasStreamingContent = !!streamingMessage;
   
-  const scrollToBottom = useCallback(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
+  // 过滤掉用于演示的重复模拟消息
+  const [filteredMessages, setFilteredMessages] = useState<Message[]>([]);
+  
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, streamingMessage, scrollToBottom]);
+    // 过滤掉包含模拟消息内容的消息
+    const mockupPhrases = [
+      "This is a simulated",
+      "模拟消息",
+      "模拟回复",
+      "这是模拟"
+    ];
+    
+    const uniqueMessages = messages.filter(msg => {
+      // 检查是否包含模拟内容
+      const containsMockup = mockupPhrases.some(phrase => 
+        msg.content.includes(phrase)
+      );
+      
+      // 如果正在流式传输类似内容，则过滤掉历史消息中的模拟内容
+      return !(containsMockup && hasStreamingContent);
+    });
+    
+    setFilteredMessages(uniqueMessages);
+  }, [messages, hasStreamingContent]);
+  
+  // 自动滚动到底部
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [filteredMessages, streamingMessage]);
 
-  const hasMessages = messages.length > 0 || streamingMessage;
+  // 处理回复，包装一下参数
+  const handleReply = onReply 
+    ? () => {
+        // 当用户点击回复按钮时，这个闭包已经有了消息内容
+        if (onReply && filteredMessages.length > 0) {
+          const lastAiMessage = [...filteredMessages].reverse().find(m => m.role === 'assistant');
+          if (lastAiMessage) {
+            onReply(lastAiMessage.content);
+          }
+        }
+      }
+    : undefined;
+
+  // 模拟空白状态
+  if (!hasMessages && !hasStreamingContent && !isLoading) {
+    return <EmptyMessageView />;
+  }
+
+  // 创建流式消息的 Message 对象
+  const streamingMessageObj = streamingMessage 
+    ? {
+        id: 'streaming',
+        role: 'assistant' as const,
+        content: streamingMessage,
+        timestamp: new Date()
+      }
+    : undefined;
 
   return (
-    <div className="h-full flex-1 relative bg-background/10 w-full overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary/20 hover:scrollbar-thumb-primary/30">
-      <div className="flex flex-col h-full">
-        <div className="w-full max-w-[98%] mx-auto py-4 flex-1">
-          {!hasMessages && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center text-muted-foreground/70">
-              <div className="mb-2 p-4 rounded-full bg-primary/5 border border-primary/10">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-primary/50">
-                  <path d="M12 20.5c4.142 0 7.5-3.134 7.5-7s-3.358-7-7.5-7c-4.142 0-7.5 3.134-7.5 7 0 1.941.846 3.698 2.214 4.99L6.5 20.5l3.5-2.5" />
-                  <path d="M12 12v.01M8 12v.01M16 12v.01" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-medium">开始新对话</h3>
-              <p className="mt-2 max-w-xs text-sm">输入您的问题开始对话，或点击左侧新建会话按钮...</p>
-            </div>
-          )}
-          
-          <MessageList 
-            messages={messages}
-            onReply={onReply}
-            className="w-full"
+    <div
+      ref={containerRef}
+      className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
+    >
+      {/* 历史消息容器 */}
+      <div className="history-message-container">
+        {filteredMessages.map((message) => (
+          <MemoizedChatMessage
+            key={message.id}
+            message={message}
+            onReply={handleReply}
+            isStreaming={false}
           />
-          
-          {streamingMessage && (
-            <ChatMessage
-              message={{
-                id: 'streaming',
-                role: 'assistant',
-                content: streamingMessage,
-                timestamp: new Date()
-              }}
-              isTyping={true}
-            />
-          )}
-          
-          {isLoading && !streamingMessage && (
-            <div className="flex gap-3 p-4 animate-pulse">
-              <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />
-              <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-[60%]" />
-                <Skeleton className="h-4 w-[40%]" />
-              </div>
-            </div>
-          )}
-          <div ref={bottomRef} className="h-4" />
-        </div>
+        ))}
       </div>
+
+      {/* 流式消息容器 */}
+      {streamingMessageObj && (
+        <div className="streaming-message-container">
+          <StreamingMessageComponent 
+            message={streamingMessageObj} 
+            onReply={handleReply} 
+          />
+        </div>
+      )}
+
+      {/* 加载状态 */}
+      {isLoading && !streamingMessage && <LoadingIndicator />}
     </div>
   );
 }

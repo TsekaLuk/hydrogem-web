@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Message } from '@/types/chat';
 import { ChatMessage } from './ChatMessage';
 import { cn } from '@/lib/utils';
@@ -10,7 +11,11 @@ interface MessageGroupProps {
   style?: React.CSSProperties;
 }
 
-export function MessageGroup({ date, messages, onReply, style }: MessageGroupProps) {
+// 使用 memo 包装 ChatMessage 组件
+const MemoizedChatMessage = memo(ChatMessage);
+
+// 在这个组件内部实现 MessageGroup 逻辑
+function MessageGroupInner({ date, messages, onReply, style }: MessageGroupProps) {
   return (
     <div style={style} className="py-4 w-full">
       <div className="mb-4 flex justify-center">
@@ -23,7 +28,7 @@ export function MessageGroup({ date, messages, onReply, style }: MessageGroupPro
       </div>
       <div className="space-y-6 w-full">
         {messages.map((message) => (
-          <ChatMessage
+          <MemoizedChatMessage
             key={message.id}
             message={message}
             onReply={() => onReply?.(message.content)}
@@ -33,3 +38,6 @@ export function MessageGroup({ date, messages, onReply, style }: MessageGroupPro
     </div>
   );
 }
+
+// 导出使用 memo 包装的 MessageGroup
+export const MessageGroup = memo(MessageGroupInner);

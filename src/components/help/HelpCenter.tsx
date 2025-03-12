@@ -6,6 +6,8 @@ import { HelpContent } from './HelpContent';
 import { HelpSearch } from './HelpSearch';
 import { useHelpSearch } from '@/hooks/useHelpSearch';
 import { useTranslation } from 'react-i18next';
+import { KatexDemo } from '../chat/KatexDemo';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 export function HelpCenter() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -42,6 +44,18 @@ export function HelpCenter() {
           <HelpContent category={selectedCategory} />
         </div>
       )}
+
+      <Tabs defaultValue="general" className="w-full">
+        <TabsList className="grid grid-cols-3 max-w-md">
+          <TabsTrigger value="general">常见问题</TabsTrigger>
+          <TabsTrigger value="usage">使用指南</TabsTrigger>
+          <TabsTrigger value="math">数学公式</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="math" className="space-y-4">
+          <KatexDemo />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

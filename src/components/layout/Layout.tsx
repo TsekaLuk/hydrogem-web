@@ -32,6 +32,8 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Routes, Route, Link } from 'react-router-dom';
+import MathTest from '../MathTest';
 
 // 提取共用的滚动容器样式为一个常量
 const scrollContainerClass = "h-[calc(100vh-12rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary/20 hover:scrollbar-thumb-primary/30 pr-2";
@@ -290,7 +292,10 @@ export function Layout() {
                     : (i18n.language === 'en' ? "ml-[180px]" : "ml-[200px]"),
                   "md:w-auto max-w-full"
                 )}>
-                  {renderContent()}
+                  <Routes>
+                    <Route path="/" element={renderContent()} />
+                    <Route path="/math-test" element={<MathTest />} />
+                  </Routes>
                 </main>
               </div>
             </div>

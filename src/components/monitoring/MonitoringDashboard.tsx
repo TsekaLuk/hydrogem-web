@@ -151,7 +151,7 @@ export function MonitoringDashboard() {
             : "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
         )}
       >
-        {criticalCount > 0 ? (
+          {criticalCount > 0 ? (
           <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" aria-hidden="true" />
         ) : (
           <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" aria-hidden="true" />
@@ -245,7 +245,7 @@ export function MonitoringDashboard() {
               ) : (
                 <Menu className="h-5 w-5" />
               )}
-            </Button>
+        </Button>
 
             {/* Desktop: Filter and Export buttons */}
             <div className="hidden sm:flex items-center gap-2">
@@ -333,7 +333,7 @@ export function MonitoringDashboard() {
           </div>
         )}
       </div>
-
+      
       {/* Alert notification */}
       {renderAlert()}
 
@@ -367,10 +367,10 @@ export function MonitoringDashboard() {
                   }
                 />
               </div>
-            </CardContent>
+          </CardContent>
           </div>
         </Card>
-
+        
         <Card className="rounded-xl overflow-hidden border-0 shadow-sm">
           <div className="flex items-stretch h-full">
             <div className={`w-1 ${criticalCount > 0 ? statusColors.critical : warningCount > 0 ? statusColors.warning : statusColors.normal}`}></div>
@@ -401,11 +401,11 @@ export function MonitoringDashboard() {
                   />
                   <span className="text-xs sm:text-sm font-medium">{normalCount}</span>
                 </div>
-              </div>
-            </CardContent>
+            </div>
+          </CardContent>
           </div>
         </Card>
-
+        
         <Card className="rounded-xl overflow-hidden border-0 shadow-sm">
           <CardContent className="p-3 sm:p-4">
             <div className="flex justify-between">
@@ -437,8 +437,8 @@ export function MonitoringDashboard() {
                     size="xs"
                   />
                   <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">{normalCount}</span>
-                </div>
-              </div>
+            </div>
+            </div>
             </div>
           </CardContent>
         </Card>

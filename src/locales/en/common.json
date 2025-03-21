@@ -32,7 +32,17 @@
     "noData": "No results found"
   },
   "search": {
-    "placeholder": "Enter search terms..."
+    "placeholder": "Enter search terms...",
+    "search": "Search",
+    "globalSearch": "Global Search",
+    "searchPlaceholder": "Search parameters, devices or areas...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "tryDifferentQuery": "Try a different search query",
+    "all": "All",
+    "parameters": "Parameters",
+    "devices": "Devices",
+    "areas": "Areas"
   },
   "settings": {
     "title": "Settings",

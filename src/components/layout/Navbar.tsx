@@ -1,9 +1,9 @@
-
 import { UserMenu } from './UserMenu';
 import { MobileMenu } from './MobileMenu';
 import { Logo } from './Logo';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 import { LanguageToggle } from '@/components/language/LanguageToggle';
+import SearchTrigger from '@/components/search/SearchTrigger';
 
 export function Navbar() {
   return (
@@ -13,6 +13,7 @@ export function Navbar() {
           <Logo showBeta={true} className="ml-0" />
         </div>
         <div className="flex items-center gap-3">
+          <SearchTrigger className="hidden md:flex" />
           <NotificationCenter />
           <LanguageToggle />
           <UserMenu />

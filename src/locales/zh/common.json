@@ -33,7 +33,17 @@
     "noData": "没有找到相关内容"
   },
   "search": {
-    "placeholder": "搜索..."
+    "placeholder": "搜索...",
+    "search": "搜索",
+    "globalSearch": "全局搜索",
+    "searchPlaceholder": "搜索参数、设备或区域...",
+    "searching": "正在搜索...",
+    "noResults": "没有找到符合的结果",
+    "tryDifferentQuery": "请尝试使用不同的搜索词",
+    "all": "全部",
+    "parameters": "水质参数",
+    "devices": "设备",
+    "areas": "区域"
   },
   "settings": {
     "title": "设置",

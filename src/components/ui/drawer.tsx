@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
+import { cva, type VariantProps } from "class-variance-authority";
+import { X } from "lucide-react";
 
 import { cn } from '@/lib/utils';
 
@@ -32,18 +34,46 @@ const DrawerOverlay = React.forwardRef<
 ));
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
+const drawerContentVariants = cva(
+  "fixed bottom-0 left-0 right-0 z-50 mt-24 flex h-auto max-h-[calc(100vh-6rem)] flex-col rounded-t-[10px] border bg-background",
+  {
+    variants: {
+      side: {
+        right: "right-0 h-full max-h-screen rounded-t-none rounded-l-lg",
+        left: "left-0 h-full max-h-screen rounded-t-none rounded-r-lg",
+        bottom: "inset-x-0 bottom-0 h-auto max-h-[calc(100vh-6rem)] rounded-b-none rounded-t-lg",
+      },
+      size: {
+        sm: "max-w-sm",
+        default: "max-w-md",
+        lg: "max-w-lg",
+        xl: "max-w-xl",
+        xxl: "max-w-2xl",
+        full: "max-w-full",
+      },
+    },
+    defaultVariants: {
+      side: "bottom",
+      size: "default",
+    },
+  }
+);
+
+interface DrawerContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof drawerContentVariants> {
+  children: React.ReactNode;
+}
+
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  DrawerContentProps
+>(({ children, size, side = "bottom", className, ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
-      className={cn(
-        'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background',
-        className
-      )}
+      className={cn(drawerContentVariants({ size, side }), className)}
       {...props}
     >
       <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />

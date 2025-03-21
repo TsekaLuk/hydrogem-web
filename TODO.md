@@ -96,7 +96,7 @@ This document outlines the development roadmap for the HydroGem water quality mo
 - [x] Add global filter functionality for filtering by time period, status, etc.
 - [x] Create consistent status indicator components
 - [x] Add data export functionality for all sections
-- [ ] Implement global search across all monitoring data
+- [x] Implement global search across all monitoring data
 - [ ] Implement dashboard summary cards with real-time data
 - [ ] Add visual indicators for critical thresholds
 - [ ] Integrate export functionality for reports

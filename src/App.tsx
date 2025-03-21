@@ -5,6 +5,7 @@ import { memo, Suspense, useCallback, lazy } from 'react';
 import NineDotGridRandom from './components/ui/NineDotGridRandom';
 import StatusIndicatorShowcase from './components/examples/StatusIndicatorShowcase';
 import { Route } from 'react-router-dom';
+import { SearchProvider } from './contexts/search-context';
 
 // 懒加载性能监控组件，确保不影响初始加载时间
 const PerformanceMonitor = lazy(() => import('./components/performance/PerformanceMonitor'));
@@ -43,11 +44,13 @@ function App() {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <BrowserRouter>
-        <Suspense fallback={<div className="flex items-center justify-center h-screen"><NineDotGridRandom /></div>}>
-          <MemoizedLayout />
-          {/* 只在生产环境之外显示性能监控 */}
-          {process.env.NODE_ENV !== 'production' && <PerformanceMonitor />}
-        </Suspense>
+        <SearchProvider>
+          <Suspense fallback={<div className="flex items-center justify-center h-screen"><NineDotGridRandom /></div>}>
+            <MemoizedLayout />
+            {/* 只在生产环境之外显示性能监控 */}
+            {process.env.NODE_ENV !== 'production' && <PerformanceMonitor />}
+          </Suspense>
+        </SearchProvider>
       </BrowserRouter>
     </ThemeProvider>
   );

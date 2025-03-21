@@ -198,13 +198,16 @@ export function Layout() {
             <div className="flex flex-1 gap-4 h-full">
               {/* 中间聊天界面 */}
               <div className="flex-1 flex flex-col md:flex-row bg-background/50 rounded-xl overflow-hidden shadow-md backdrop-blur-sm border border-border/20 dark:bg-[#141a1a]/80 dark:border-[#1e2626]/50">
-                <ChatSidebar
-                  sessions={sessions}
-                  currentSessionId={currentSessionId}
-                  onNewChat={createNewSession}
-                  onSelectSession={switchSession}
-                  onDeleteSession={deleteSession}
-                />
+                {/* 使用条件渲染仅在中等及以上尺寸设备上显示ChatSidebar */}
+                <div className="hidden md:block">
+                  <ChatSidebar
+                    sessions={sessions}
+                    currentSessionId={currentSessionId}
+                    onNewChat={createNewSession}
+                    onSelectSession={switchSession}
+                    onDeleteSession={deleteSession}
+                  />
+                </div>
                 <div className="flex-1 flex flex-col border-l border-border/40 overflow-hidden dark:border-[#1e2626]/50 max-h-[calc(100vh-8rem)] sm:max-h-[calc(100vh-8rem)] max-h-[calc(100vh-7rem)]">
                   <ChatHeader onClearChat={clearChat} />
                   <div className="flex-1 overflow-hidden flex flex-col min-h-0">

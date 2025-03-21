@@ -325,27 +325,28 @@ html, body, #root {
 }
 
 /* 自定义滚动条样式 */
-.scrollbar-thin::-webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-track {
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.2);
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.3);
   border-radius: 9999px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.4);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.5);
 }
 
-.scrollbar-thin {
+/* 为Firefox添加滚动条样式 */
+.custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(100, 116, 139, 0.2) transparent;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
 }
 
 .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
@@ -502,6 +503,13 @@ html, body, #root {
 .chat-sidebar {
   position: relative;
   transition: all 0.3s ease;
+}
+
+/* 在移动设备上隐藏聊天侧边栏 */
+@media (max-width: 767px) {
+  .chat-sidebar {
+    display: none !important;
+  }
 }
 
 .chat-session-item {

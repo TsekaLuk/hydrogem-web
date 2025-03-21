@@ -46,13 +46,18 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onOpenChange }) => {
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="max-h-[85vh]">
-        <DrawerHeader className="border-b pb-4">
+      <DrawerContent 
+        side="right" 
+        size="sm" 
+        className="h-full rounded-l-xl border-l shadow-lg"
+      >
+        <DrawerHeader className="border-b border-border/30 pb-3">
           <div className="flex items-center justify-between">
-            <DrawerTitle>{t('search.globalSearch')}</DrawerTitle>
+            <DrawerTitle className="text-lg font-medium">{t('search.globalSearch')}</DrawerTitle>
             <Button
               variant="ghost"
               size="icon"
+              className="h-8 w-8 rounded-full hover:bg-muted transition-colors"
               onClick={() => onOpenChange(false)}
             >
               <X className="h-4 w-4" />
@@ -67,11 +72,11 @@ const SearchDrawer: React.FC<SearchDrawerProps> = ({ open, onOpenChange }) => {
               debounceTime={300}
               showClear
               iconPosition="left"
-              className="w-full"
+              className="w-full focus-within:ring-1 focus-within:ring-primary/30 transition-all"
             />
           </div>
         </DrawerHeader>
-        <div className="p-4 overflow-auto">
+        <div className="p-4 overflow-auto flex-1 custom-scrollbar">
           <SearchResults />
         </div>
       </DrawerContent>

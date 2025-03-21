@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Search, Keyboard } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import SearchDrawer from './SearchDrawer';
+import { cn } from '@/lib/utils';
 
 /**
  * 搜索触发器属性
@@ -52,13 +53,17 @@ const SearchTrigger: React.FC<SearchTriggerProps> = ({
       <Button
         variant={variant}
         size="sm"
-        className={`gap-2 ${className}`}
+        className={cn(
+          "gap-2 rounded-full transition-all duration-200 hover:shadow-sm", 
+          isOpen && "ring-2 ring-primary/20",
+          className
+        )}
         onClick={() => setIsOpen(true)}
       >
         <Search className="h-4 w-4" />
-        <span>{t('search.search')}</span>
+        <span className="text-sm font-medium">{t('search.search')}</span>
         {showKeyboardShortcut && (
-          <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+          <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted/80 px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
             <span className="text-xs">
               {navigator.platform.indexOf('Mac') === 0 ? '⌘' : 'Ctrl'}
             </span>

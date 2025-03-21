@@ -1,0 +1,56 @@
+/* 自定义滚动条样式 */
+.hydrogem-scroll-container {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important; /* Firefox */
+  scrollbar-color: rgba(14, 165, 233, 0.5) rgba(0, 0, 0, 0.05) !important; /* Firefox */
+  -ms-overflow-style: auto !important; /* IE and Edge */
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important; /* 确保容器可以滚动 */
+  flex: 1 1 auto !important;
+}
+
+/* 强制显示滚动条 */
+.hydrogem-scroll-container::after {
+  content: "";
+  display: block;
+  min-height: 1px;
+}
+
+/* Webkit browsers (Chrome, Safari) */
+.hydrogem-scroll-container::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+  display: block !important;
+}
+
+.hydrogem-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 20px !important;
+}
+
+.hydrogem-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(14, 165, 233, 0.5) !important;
+  border-radius: 20px !important;
+  border: 3px solid transparent !important;
+  background-clip: content-box !important;
+  min-height: 40px !important;
+}
+
+.hydrogem-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(14, 165, 233, 0.7) !important;
+}
+
+/* 确保滚动条在暗色模式中也可见 */
+.dark .hydrogem-scroll-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.dark .hydrogem-scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.dark .hydrogem-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+} 

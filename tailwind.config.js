@@ -16,6 +16,18 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        // 中文字体
+        alibaba: ['AlibabaPuHuiTi-2', 'system-ui', 'sans-serif'],
+        'ibm-plex': ['IBM Plex Sans TC', 'system-ui', 'sans-serif'],
+        // 英文字体
+        apoc: ['Apoc Normal Trial', 'serif'],
+        indecisive: ['Indecisive Sans Trial', 'system-ui', 'sans-serif'],
+        // 系统默认
+        sans: ['AlibabaPuHuiTi-2', 'Indecisive Sans Trial', 'system-ui', 'sans-serif'],
+        serif: ['Apoc Normal Trial', 'serif'],
+        mono: ['Indecisive Sans Trial', 'IBM Plex Sans TC', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

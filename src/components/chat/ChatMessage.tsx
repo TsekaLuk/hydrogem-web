@@ -51,7 +51,7 @@ function ChatMessageComponent({ message, isTyping, isStreaming = false, onReply 
     >
       <div className={cn(
         'flex flex-col items-center gap-1',
-        isUser ? 'pl-2' : 'pr-2'
+        isUser ? 'pl-2 sm:pl-2 pl-1' : 'pr-2 sm:pr-2 pr-1'
       )}>
         <div
           onMouseEnter={() => setIsHovered(true)}
@@ -61,7 +61,7 @@ function ChatMessageComponent({ message, isTyping, isStreaming = false, onReply 
           {!isUser && <div className="ai-avatar-ring" />}
           
           <Avatar className={cn(
-            'h-10 w-10 rounded-full transition-all shrink-0',
+            'h-9 w-9 sm:h-10 sm:w-10 rounded-full transition-all shrink-0',
             isUser 
               ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/30 text-cyan-600 dark:text-cyan-400 border-2 border-cyan-500/30' 
               : 'bg-gradient-to-br from-blue-600/20 via-indigo-500/30 to-blue-400/20 text-blue-600 dark:text-blue-400 border-2 border-blue-500/30',
@@ -70,7 +70,7 @@ function ChatMessageComponent({ message, isTyping, isStreaming = false, onReply 
             !isUser && 'ai-avatar-inner'
           )}>
             {isUser ? (
-              <User className="h-5 w-5" />
+              <User className="h-4 w-4 sm:h-5 sm:w-5" />
             ) : (
               <div className="relative flex items-center justify-center">
                 <div className={cn(

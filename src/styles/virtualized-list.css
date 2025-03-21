@@ -1,0 +1,37 @@
+.virtualized-list-container {
+  overflow: auto;
+  height: var(--container-height, auto);
+}
+
+.virtualized-list-content {
+  position: relative;
+  height: var(--content-height, 0px);
+}
+
+/* 使用属性选择器来处理动态高度 */
+.virtualized-list-content[data-total-height] {
+  height: attr(data-total-height px); /* 备用方法，如果CSS变量不起作用 */
+}
+
+.virtualized-list-items {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(var(--offset-y, 0px));
+}
+
+/* 使用属性选择器处理偏移量 */
+.virtualized-list-items[data-offset-y] {
+  transform: translateY(attr(data-offset-y px)); /* 备用方法，如果CSS变量不起作用 */
+}
+
+.virtualized-list-item {
+  box-sizing: border-box;
+  height: var(--item-height, auto);
+}
+
+/* 使用属性选择器处理高度 */
+.virtualized-list-item[data-height] {
+  height: attr(data-height px); /* 备用方法，如果CSS变量不起作用 */
+}

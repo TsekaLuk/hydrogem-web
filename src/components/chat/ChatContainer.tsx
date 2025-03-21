@@ -2,33 +2,21 @@ import { useEffect, useRef, memo, useState } from 'react';
 import { Message } from '@/types/chat';
 import { ChatMessage } from './ChatMessage';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
+import StreamingMessage from './StreamingMessage';
 
 interface ChatContainerProps {
   messages: Message[];
   streamingMessage?: string;
   isLoading?: boolean;
   onSendMessage?: (content: string) => void;
-  onReply?: (content: string) => void;
+  onReply?: () => void;
+  modelName?: string;
+  className?: string;
 }
 
 // 使用 memo 优化历史消息
 const MemoizedChatMessage = memo(ChatMessage);
-
-// 流式消息组件
-const StreamingMessageComponent = memo(({ message, onReply }: { 
-  message: Message, 
-  onReply?: () => void 
-}) => {
-  return (
-    <ChatMessage
-      key="streaming"
-      message={message}
-      isTyping={true}
-      isStreaming={true}
-      onReply={onReply}
-    />
-  );
-});
 
 // 加载指示器
 const LoadingIndicator = () => (
@@ -51,20 +39,35 @@ const EmptyMessageView = () => (
   </div>
 );
 
-export function ChatContainer({
+const ChatContainer: React.FC<ChatContainerProps> = memo(({
   messages,
   streamingMessage,
   isLoading,
-  onReply
-}: ChatContainerProps) {
+  onReply,
+  modelName,
+  className
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasMessages = messages.length > 0;
   const hasStreamingContent = !!streamingMessage;
+  const prevMessagesLengthRef = useRef<number>(messages.length);
+  const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
   
   // 过滤掉用于演示的重复模拟消息
   const [filteredMessages, setFilteredMessages] = useState<Message[]>([]);
   
+  const { t } = useTranslation();
+  
   useEffect(() => {
+    // 如果消息数量减少（例如清除聊天），重置所有状态
+    if (messages.length < prevMessagesLengthRef.current) {
+      setFilteredMessages(messages);
+      prevMessagesLengthRef.current = messages.length;
+      return;
+    }
+    
+    prevMessagesLengthRef.current = messages.length;
+    
     // 过滤掉包含模拟消息内容的消息
     const mockupPhrases = [
       "This is a simulated",
@@ -86,22 +89,62 @@ export function ChatContainer({
     setFilteredMessages(uniqueMessages);
   }, [messages, hasStreamingContent]);
   
-  // 自动滚动到底部
+  // 监听容器滚动事件
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [filteredMessages, streamingMessage]);
+    const container = containerRef.current;
+    if (!container) return;
 
-  // 处理回复，包装一下参数
-  const handleReply = onReply 
+    const handleScroll = () => {
+      if (!container) return;
+      
+      // 判断是否接近底部（在底部20px范围内）
+      const isNearBottom = 
+        container.scrollHeight - container.scrollTop - container.clientHeight < 20;
+      
+      setIsAutoScrollEnabled(isNearBottom);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 改进的自动滚动逻辑
+  useEffect(() => {
+    if (!containerRef.current || !isAutoScrollEnabled) return;
+
+    // 使用requestAnimationFrame确保在浏览器绘制后再滚动
+    const scrollToBottom = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollTop = containerRef.current.scrollHeight;
+      }
+    };
+
+    // 延迟滚动，确保内容已经渲染
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(scrollToBottom);
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [filteredMessages, streamingMessage, isAutoScrollEnabled]);
+  
+  // 确保新消息时总是滚动到底部
+  useEffect(() => {
+    if (filteredMessages.length > prevMessagesLengthRef.current || hasStreamingContent) {
+      setIsAutoScrollEnabled(true);
+      requestAnimationFrame(() => {
+        if (containerRef.current) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+      });
+    }
+  }, [filteredMessages.length, hasStreamingContent]);
+
+  // 处理重新生成响应
+  const handleRegenerateResponse = onReply 
     ? () => {
-        // 当用户点击回复按钮时，这个闭包已经有了消息内容
-        if (onReply && filteredMessages.length > 0) {
-          const lastAiMessage = [...filteredMessages].reverse().find(m => m.role === 'assistant');
-          if (lastAiMessage) {
-            onReply(lastAiMessage.content);
-          }
+        // 当用户点击重新生成按钮时，直接调用重新生成函数
+        if (onReply) {
+          onReply();
         }
       }
     : undefined;
@@ -122,34 +165,53 @@ export function ChatContainer({
     : undefined;
 
   return (
-    <div
+    <div 
       ref={containerRef}
-      className="flex-1 overflow-y-auto p-4 space-y-4 scroll-smooth"
-    >
-      {/* 历史消息容器 */}
-      <div className="history-message-container">
-        {filteredMessages.map((message) => (
-          <MemoizedChatMessage
-            key={message.id}
-            message={message}
-            onReply={handleReply}
-            isStreaming={false}
-          />
-        ))}
-      </div>
-
-      {/* 流式消息容器 */}
-      {streamingMessageObj && (
-        <div className="streaming-message-container">
-          <StreamingMessageComponent 
-            message={streamingMessageObj} 
-            onReply={handleReply} 
-          />
-        </div>
+      className={cn(
+        "flex-1 flex flex-col overflow-hidden",
+        className
       )}
-
-      {/* 加载状态 */}
-      {isLoading && !streamingMessage && <LoadingIndicator />}
+    >
+      <div 
+        className={cn(
+          "flex-1 p-2 sm:p-4 pr-2 sm:pr-3 space-y-2 sm:space-y-4 h-full overflow-y-auto hydrogem-scroll-container overscroll-contain",
+          "min-h-[100px] relative"
+        )}
+      >
+        {/* 历史消息容器 */}
+        <div className="space-y-2 sm:space-y-4 flex-1">
+          {filteredMessages.map((message, index) => (
+            <MemoizedChatMessage
+              key={message.id || index}
+              message={message}
+              onReply={handleRegenerateResponse}
+            />
+          ))}
+          
+          {/* 流式消息放在历史消息列表中 */}
+          {streamingMessageObj && (
+            <StreamingMessage 
+              message={streamingMessageObj} 
+              onReply={handleRegenerateResponse} 
+            />
+          )}
+        </div>
+        
+        {/* 加载状态 */}
+        {isLoading && !streamingMessage && <LoadingIndicator />}
+        
+        {/* 当没有消息时显示欢迎信息 */}
+        {filteredMessages.length === 0 && !streamingMessage && (
+          <div className="flex items-center justify-center h-full text-center p-4">
+            <div className="max-w-md">
+              <h3 className="text-lg font-medium text-foreground mb-2">{t('chat.welcomeTitle')}</h3>
+              <p className="text-muted-foreground">{t('chat.welcomeMessage')}</p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+});
+
+export default ChatContainer;

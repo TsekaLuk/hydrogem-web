@@ -7,6 +7,7 @@
     "chat": "聊天",
     "monitoring": "监控",
     "analytics": "数据分析",
+    "knowledge": "璇玑玉衡",
     "help": "帮助支持",
     "dashboard": "仪表盘"
   },
@@ -88,14 +89,17 @@
     "deleteSession": "删除会话",
     "send": "发送消息",
     "inputPlaceholder": "输入您的消息...",
-    "initialMessage": "您好！我是您的AI助手，有什么我可以帮您的吗？",
+    "initialMessage": "您好！我是您的玑衡智能代理，有什么我可以帮您的吗？",
     "recentChats": "最近对话",
     "noChats": "还没有聊天记录",
     "searchChats": "搜索对话",
     "confirmDelete": "您确定要删除这个对话吗？此操作无法撤销。",
     "regarding": "关于",
     "search": "搜索聊天",
-    "clearSearch": "清除搜索"
+    "clearSearch": "清除搜索",
+    "disclaimer": "响应内容可能并不总是准确，请谨慎核实重要信息",
+    "welcomeTitle": "开始对话",
+    "welcomeMessage": "通过发送消息开始您与玑衡的对话。您可以询问任何问题或请求帮助。"
   },
   "user": {
     "settings": "设置",

@@ -40,6 +40,7 @@ export function ChatSidebar({
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const activeSessionRef = useRef<HTMLDivElement>(null);
 
   // 检测屏幕尺寸变化
   useEffect(() => {
@@ -59,6 +60,16 @@ export function ChatSidebar({
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
   }, [isCollapsed]);
+
+  // 当会话列表或当前会话ID变化时，滚动到活动会话
+  useEffect(() => {
+    if (currentSessionId && scrollRef.current && activeSessionRef.current) {
+      activeSessionRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }, [currentSessionId, sessions.length]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -91,15 +102,13 @@ export function ChatSidebar({
     }
   };
 
-  // 滚动到当前会话
-  useEffect(() => {
-    if (currentSessionId && scrollRef.current) {
-      const element = document.getElementById(`chat-session-${currentSessionId}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+  // 处理会话点击
+  const handleSessionClick = (sessionId: string) => {
+    onSelectSession(sessionId);
+    if (isMobile) {
+      setIsCollapsed(true);
     }
-  }, [currentSessionId]);
+  };
 
   // 侧边栏动画变体
   const sidebarVariants = {
@@ -399,6 +408,7 @@ export function ChatSidebar({
                 <motion.div
                   key={session.id}
                   id={`chat-session-${session.id}`}
+                  ref={session.id === currentSessionId ? activeSessionRef : null}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ 
                     opacity: 1, 
@@ -414,7 +424,7 @@ export function ChatSidebar({
                     'cursor-pointer',
                     isCollapsed ? "px-0 py-2.5 flex justify-center" : "px-3 py-2.5 flex items-center gap-2"
                   )}
-                  onClick={() => onSelectSession(session.id)}
+                  onClick={() => handleSessionClick(session.id)}
                 >
                   {isCollapsed ? (
                     <div className={cn(

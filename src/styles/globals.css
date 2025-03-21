@@ -65,7 +65,54 @@
     --ring: 220 10% 90%;
   }
 }
- 
+
+/* 聊天容器样式 */
+.hydrogem-scroll-container {
+  overscroll-behavior: contain;
+  position: relative;
+  min-height: 100px;
+}
+
+/* NineDotGridRandom样式 */
+.nine-dot-grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+/* 九点加载动画 */
+@keyframes three-dot-loader-growing {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.5);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+.dot-animate {
+  animation-name: three-dot-loader-growing;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: both;
+  animation-timing-function: ease-in;
+}
+
+.dot-animate-delay-0 { animation-delay: 0s; }
+.dot-animate-delay-1 { animation-delay: 0.1s; }
+.dot-animate-delay-2 { animation-delay: 0.2s; }
+.dot-animate-delay-3 { animation-delay: 0.3s; }
+.dot-animate-delay-4 { animation-delay: 0.4s; }
+.dot-animate-delay-5 { animation-delay: 0.5s; }
+.dot-animate-delay-6 { animation-delay: 0.25s; }
+.dot-animate-delay-7 { animation-delay: 0.35s; }
+.dot-animate-delay-8 { animation-delay: 0.45s; }
+
 @layer base {
   * {
     @apply border-border;
@@ -78,4 +125,3 @@
 .glass-effect {
   @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
 }
-  

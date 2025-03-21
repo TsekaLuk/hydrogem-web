@@ -45,7 +45,7 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 150)}px`;
     }
   }, [input]);
 
@@ -132,17 +132,17 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
   return (
     <form onSubmit={handleSubmit} className="relative w-full mx-auto max-w-full">
       <div className="rounded-xl bg-background border border-input/70 shadow-sm hover:border-primary/30 transition-colors duration-200">
-        <div className="flex items-center px-2 py-1">
-          <div className="flex items-center gap-1">
+        <div className="flex items-center px-1 sm:px-2 py-0">
+          <div className="flex items-center gap-0.5">
             <FileUploadButton
-              icon={<Image className="h-4 w-4" />}
+              icon={<Image className="h-3.5 w-3.5" />}
               tooltip="上传图片"
               onFileSelect={handleFileSelect}
               isImage={true}
               disabled={isLoading}
             />
             <FileUploadButton
-              icon={<Paperclip className="h-4 w-4" />}
+              icon={<Paperclip className="h-3.5 w-3.5" />}
               tooltip="上传文件"
               onFileSelect={handleFileSelect}
               disabled={isLoading}
@@ -152,16 +152,16 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 rounded-lg opacity-70 hover:opacity-100 transition-all duration-200"
+                  className="h-7 w-7 rounded-lg opacity-70 hover:opacity-100 transition-all duration-200"
                   disabled={isLoading}
                 >
-                  <Binary className="h-4 w-4" />
+                  <Binary className="h-3.5 w-3.5" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent side="top" align="start" className="w-[320px] p-2">
+              <PopoverContent side="top" align="start" className="w-[280px] sm:w-[320px] p-2">
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium">插入数学公式</h3>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {mathTemplates.map((template, index) => (
                       <Button
                         key={index}
@@ -187,7 +187,7 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
             ref={textareaRef}
             id="message-input"
             placeholder={t('chat.inputPlaceholder') || "输入您的消息..."}
-            className="min-h-[60px] max-h-[200px] w-full resize-none border-0 bg-transparent p-2 pb-4 focus-visible:ring-0 focus-visible:ring-transparent"
+            className="min-h-[45px] max-h-[150px] w-full resize-none border-0 bg-transparent p-2 px-1 sm:px-2 pt-1 pb-2 focus-visible:ring-0 focus-visible:ring-transparent"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -196,7 +196,7 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
             maxLength={MAX_CHARS}
           />
           
-          <div className="absolute right-2 bottom-2 flex items-center gap-2">
+          <div className="absolute right-2 bottom-1 flex items-center gap-2">
             {input.length > 0 && !isLoading && (
               <span className="text-xs text-muted-foreground select-none">
                 {input.length}/{MAX_CHARS}
@@ -207,15 +207,15 @@ export function ChatInput({ onSend, isLoading = false }: ChatInputProps) {
               size="icon" 
               disabled={isLoading || input.trim().length === 0 || isUploading}
               className={cn(
-                "h-8 w-8 rounded-lg bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+                "h-7 w-7 rounded-lg bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
                 "transition-all duration-200 ease-in-out",
                 (isLoading || input.trim().length === 0 || isUploading) && "opacity-50"
               )}
             >
               {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <SendHorizontal className="h-4 w-4" />
+                <SendHorizontal className="h-3.5 w-3.5" />
               )}
               <span className="sr-only">Send</span>
             </Button>

@@ -5,12 +5,13 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { Button } from '@/components/ui/button';
 import { Repeat } from 'lucide-react';
-import { components } from './markdown-components';
+import { getMarkdownComponents } from './markdown-components';
 import KatexRenderer from './KatexRenderer';
 import KatexMarkdown from './KatexMarkdown';
 import 'highlight.js/styles/github-dark.css';
 import 'katex/dist/katex.min.css';
 import { Components } from 'react-markdown';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface MessageBubbleProps {
   content: string;
@@ -64,14 +65,15 @@ function MessageBubbleComponent({
 
   return (
     <div className={cn(
-      'group flex-1 relative',
-      isUser ? 'flex justify-end' : 'flex justify-start'
+      "group flex-1 relative flex", 
+      isUser ? "justify-end" : "justify-start"
     )}>
       <div className={cn(
-        'max-w-[80%] rounded-2xl py-3 px-4 text-sm shadow-sm mb-0.5',
-        isUser 
-        ? 'bg-gradient-to-br from-cyan-500 to-blue-500 text-white rounded-tr-sm' 
-        : 'bg-gradient-to-br from-background to-muted rounded-tl-sm',
+        "max-w-[80%] sm:max-w-[80%] max-w-[90%]", // Adjust max width on mobile
+        "rounded-2xl py-3 px-3 sm:px-4 text-sm shadow-sm mb-0.5",
+        isUser
+          ? "bg-gradient-to-br from-cyan-500 to-blue-500 text-white rounded-tr-sm"
+          : "bg-gradient-to-br from-background to-muted rounded-tl-sm",
         isTyping && !isUser ? 'pulse-bg' : ''
       )}>
         <div className={cn(
@@ -87,7 +89,7 @@ function MessageBubbleComponent({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
-              components={components}
+              components={getMarkdownComponents()}
             >
               {content}
             </ReactMarkdown>
@@ -103,21 +105,32 @@ function MessageBubbleComponent({
         </div>
       </div>
       
-      {/* 回复按钮 */}
+      {/* 重新生成回复按钮 */}
       {!isUser && !isStreaming && (
         <div className="flex ml-1 mt-1">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={onReply}
-            className={cn(
-              'h-6 w-6 rounded-full opacity-0 transition-opacity',
-              'group-hover:opacity-100 focus:opacity-100',
-              'bg-transparent hover:bg-muted/50'
-            )}
-          >
-            <Repeat className="h-3 w-3" />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={onReply}
+                  className={cn(
+                    'h-8 w-8 rounded-lg opacity-0 transition-opacity',
+                    'group-hover:opacity-100 focus:opacity-100',
+                    'bg-background/80 hover:bg-primary/10',
+                    'border border-border/40 hover:border-primary/30',
+                    'text-primary/80 hover:text-primary'
+                  )}
+                >
+                  <Repeat className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>重新生成回复</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       )}
     </div>

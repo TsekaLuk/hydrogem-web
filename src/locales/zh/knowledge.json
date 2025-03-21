@@ -1,0 +1,44 @@
+{
+  "title": "璇玑玉衡知识图谱",
+  "description": "知识库和知识图谱查询与管理系统",
+  "search": {
+    "placeholder": "搜索知识库..."
+  },
+  "tabs": {
+    "graph": "知识图谱",
+    "entities": "沧海遗珠",
+    "schemas": "模式定义"
+  },
+  "graph": {
+    "title": "知识图谱视图",
+    "description": "展示知识实体及其关系的可视化",
+    "loadExample": "加载样例图谱",
+    "query": "图谱查询",
+    "filter": "筛选实体",
+    "expand": "展开节点",
+    "collapse": "收起节点",
+    "details": "查看详情"
+  },
+  "entities": {
+    "title": "沧海遗珠",
+    "description": "管理知识库中的珍贵实体和概念，如同沧海遗珠般珍稀且有价值",
+    "create": "创建新实体",
+    "edit": "编辑实体",
+    "delete": "删除实体",
+    "type": "实体类型",
+    "properties": "属性",
+    "relations": "关系"
+  },
+  "schemas": {
+    "title": "知识模式定义",
+    "description": "定义和管理知识图谱的模式",
+    "create": "创建新模式",
+    "edit": "编辑模式",
+    "delete": "删除模式",
+    "entityTypes": "实体类型",
+    "relationTypes": "关系类型",
+    "propertyTypes": "属性类型",
+    "constraints": "约束条件"
+  },
+  "documentation": "文档"
+} 

@@ -15,15 +15,15 @@ export function HelpCenter() {
   const { t } = useTranslation(['common', 'help']);
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col gap-2 mb-4">
         <h1 className="text-2xl font-semibold">{t('common:help.title')}</h1>
         <p className="text-muted-foreground">
           {t('common:help.description')}
         </p>
       </div>
 
-      <div className="relative">
+      <div className="relative mb-4">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder={t('help:navigation.search')}
@@ -36,7 +36,7 @@ export function HelpCenter() {
       {searchQuery ? (
         <HelpSearch results={searchResults} />
       ) : (
-        <div className="grid gap-6 md:grid-cols-[250px_1fr]">
+        <div className="grid gap-6 md:grid-cols-[250px_1fr] flex-grow">
           <HelpCategories
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
@@ -45,7 +45,7 @@ export function HelpCenter() {
         </div>
       )}
 
-      <Tabs defaultValue="general" className="w-full">
+      <Tabs defaultValue="general" className="w-full mt-auto pt-4">
         <TabsList className="grid grid-cols-3 max-w-md">
           <TabsTrigger value="general">常见问题</TabsTrigger>
           <TabsTrigger value="usage">使用指南</TabsTrigger>
@@ -59,3 +59,5 @@ export function HelpCenter() {
     </div>
   );
 }
+
+export default HelpCenter;

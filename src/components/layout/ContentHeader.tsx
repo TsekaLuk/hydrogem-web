@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
 import { LayoutDashboard } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export function ContentHeader() {
   const { t } = useTranslation(['common', 'dashboard']);

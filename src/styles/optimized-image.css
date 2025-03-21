@@ -1,0 +1,73 @@
+.optimized-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+/* 处理宽度和高度的CSS变量 */
+.optimized-image-container {
+  width: var(--image-width, 100%);
+  height: var(--image-height, auto);
+}
+
+/* 使用宽高比 */
+.optimized-image-container.use-aspect-ratio {
+  height: 0;
+  padding-bottom: calc(100% / var(--aspect-ratio));
+}
+
+/* 计算出的高度和宽度 */
+.optimized-image-container {
+  height: var(--calculated-height, var(--image-height, auto));
+  width: var(--calculated-width, var(--image-width, 100%));
+}
+
+.optimized-image {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.optimized-image.loading {
+  opacity: 0;
+}
+
+.optimized-image.loaded {
+  opacity: 1;
+}
+
+/* 对象适应方式工具类 */
+.object-cover {
+  object-fit: cover;
+}
+
+.object-contain {
+  object-fit: contain;
+}
+
+.object-fill {
+  object-fit: fill;
+}
+
+.object-none {
+  object-fit: none;
+}
+
+.object-scale-down {
+  object-fit: scale-down;
+}
+
+.blurhash-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  transform: scale(1.2);
+}
+
+/* 使用数据属性设置背景图像 */
+.blurhash-placeholder[data-blurhash] {
+  background-image: url(attr(data-blurhash url));
+}

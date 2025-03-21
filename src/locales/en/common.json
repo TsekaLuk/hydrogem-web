@@ -94,7 +94,10 @@
     "searchChats": "Search Chats",
     "confirmDelete": "Are you sure you want to delete this chat? This action cannot be undone.",
     "regarding": "Regarding",
-    "clearSearch": "Clear Search"
+    "clearSearch": "Clear Search",
+    "disclaimer": "Responses may not always be accurate, please verify important information",
+    "welcomeTitle": "Start a Conversation",
+    "welcomeMessage": "Start your conversation with HydroGem by sending a message. You can ask any questions or request assistance."
   },
   "user": {
     "settings": "Settings",

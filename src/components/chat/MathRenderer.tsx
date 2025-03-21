@@ -33,11 +33,11 @@ const isComplexFormula = (formula: string): boolean => {
   return COMPLEX_PATTERNS.some(pattern => pattern.test(formula));
 };
 
-export const MathRenderer: React.FC<MathRendererProps> = ({ 
+export function MathRenderer({ 
   math, 
   displayMode = false, 
   className 
-}) => {
+}: MathRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [renderer, setRenderer] = useState<'katex' | 'mathjax'>('katex');
@@ -161,6 +161,6 @@ export const MathRenderer: React.FC<MathRendererProps> = ({
       {error && <span className="math-error" title={error}>{math}</span>}
     </div>
   );
-};
+}
 
 export default MathRenderer; 

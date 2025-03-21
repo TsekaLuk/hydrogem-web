@@ -1,0 +1,44 @@
+{
+  "title": "Xuanji Yuheng Knowledge Graph",
+  "description": "Knowledge Base and Graph Query & Management System",
+  "search": {
+    "placeholder": "Search knowledge base..."
+  },
+  "tabs": {
+    "graph": "Knowledge Graph",
+    "entities": "Canghai Yizhu (Treasures from the Sea)",
+    "schemas": "Schema Definitions"
+  },
+  "graph": {
+    "title": "Knowledge Graph View",
+    "description": "Visualization of knowledge entities and their relationships",
+    "loadExample": "Load Example Graph",
+    "query": "Graph Query",
+    "filter": "Filter Entities",
+    "expand": "Expand Node",
+    "collapse": "Collapse Node",
+    "details": "View Details"
+  },
+  "entities": {
+    "title": "Canghai Yizhu (Treasures from the Sea)",
+    "description": "Manage precious entities and concepts in the knowledge base, valuable like treasures found in the vast sea",
+    "create": "Create New Entity",
+    "edit": "Edit Entity",
+    "delete": "Delete Entity",
+    "type": "Entity Type",
+    "properties": "Properties",
+    "relations": "Relations"
+  },
+  "schemas": {
+    "title": "Schema Definitions",
+    "description": "Define and manage knowledge graph schemas",
+    "create": "Create New Schema",
+    "edit": "Edit Schema",
+    "delete": "Delete Schema",
+    "entityTypes": "Entity Types",
+    "relationTypes": "Relation Types",
+    "propertyTypes": "Property Types",
+    "constraints": "Constraints"
+  },
+  "documentation": "Documentation"
+} 

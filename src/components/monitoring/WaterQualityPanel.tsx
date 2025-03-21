@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMonitoringData } from '../../hooks/useMonitoringData';
 import { useParameterTrends } from '../../hooks/useParameterTrends';
@@ -8,17 +8,21 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Button } from '../ui/button';
-import { LineChart, Droplet, Thermometer, Waves, Search, BarChart3, AlertTriangle } from 'lucide-react';
-import { WaterQualityParameter } from '../../types/parameters';
-import { Spinner } from '../ui/spinner';
+import { LineChart, Waves, Search, BarChart3, AlertTriangle } from 'lucide-react';
 import { categoryColors } from '../../lib/parameter-colors';
+import { CircularBarsSpinnerLoader } from '@/cuicui/common-ui/loaders/spinner-loader/circular-bars-spinner-loader';
+import { WaterQualityParameter } from '../../types/parameters';
 
 // 视图类型
 type ViewType = 'category' | 'priority' | 'charts';
 
-export const WaterQualityPanel: React.FC = () => {
+interface WaterQualityPanelProps {
+  parameters: WaterQualityParameter[];
+}
+
+export const WaterQualityPanel: React.FC<WaterQualityPanelProps> = ({ parameters }) => {
   const { t } = useTranslation('monitoring');
-  const { parameters, loading, error } = useMonitoringData();
+  const { loading, error } = useMonitoringData();
   const trends = useParameterTrends(parameters);
   const insertParameter = useInsertParameterToChat();
   
@@ -42,26 +46,25 @@ export const WaterQualityPanel: React.FC = () => {
   const getCategoryCount = (category: string) => {
     return parameters.filter(p => p.category === category).length;
   };
-  
+
+  // 如果加载中显示加载状态
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-40">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-          <p className="text-sm text-muted-foreground">{t('panel.loading')}</p>
-        </div>
+      <div className="w-full h-full flex-grow flex justify-center items-center">
+        <CircularBarsSpinnerLoader />
       </div>
     );
   }
-  
+
+  // 如果出错显示错误信息
   if (error) {
     return (
-      <div className="p-4 text-center text-red-500">
-        {t('panel.error')}
+      <div className="w-full h-full flex justify-center items-center text-red-500">
+        <p>{t('errors.loadingFailed')}</p>
       </div>
     );
   }
-  
+
   return (
     <div className="w-full flex flex-col h-full">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2 flex-shrink-0">

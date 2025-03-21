@@ -53,7 +53,6 @@ export function MonitoringDashboard() {
   const { t } = useTranslation('monitoring');
   const { parameters: allParameters, lastUpdated, loading } = useMonitoringData();
   const [activeTab, setActiveTab] = useState<ActiveTab>('monitoring');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
   
   // 添加过滤器状态
@@ -102,9 +101,6 @@ export function MonitoringDashboard() {
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      if (window.innerWidth >= 640) {
-        setIsMobileMenuOpen(false);
-      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -168,14 +164,6 @@ export function MonitoringDashboard() {
   // Handle tab change with transition
   const handleTabChange = (value: string) => {
     setActiveTab(value as ActiveTab);
-    if (windowWidth < 640) {
-      setIsMobileMenuOpen(false);
-    }
-  };
-
-  // Mobile menu toggle
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
   
   // 处理过滤器变化
@@ -232,21 +220,6 @@ export function MonitoringDashboard() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Mobile menu button - only appears on small screens */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="sm:hidden"
-              onClick={toggleMobileMenu}
-              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-        </Button>
-
             {/* Desktop: Filter and Export buttons */}
             <div className="hidden sm:flex items-center gap-2">
               <MonitoringFilter 
@@ -446,28 +419,6 @@ export function MonitoringDashboard() {
       
       {/* Tab navigation - adapts to screen size */}
       <div className="relative">
-        {/* Mobile tab menu - slides in from the top when menu button is clicked */}
-        {windowWidth < 640 && (
-          <div className={cn(
-            "absolute top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-md rounded-lg z-10 transform transition-transform duration-200 ease-in-out",
-            isMobileMenuOpen ? "translate-y-0" : "-translate-y-full opacity-0 pointer-events-none"
-          )}>
-            <div className="p-2">
-              {tabConfig.map((tab) => (
-                <Button
-                  key={tab.id}
-                  variant={activeTab === tab.id ? "default" : "ghost"}
-                  className="w-full justify-start mb-1 px-3 py-2"
-                  onClick={() => handleTabChange(tab.id)}
-                >
-                  {React.createElement(tab.icon, { className: `h-4 w-4 mr-3 ${tab.iconColor}`, "aria-hidden": true })}
-                  <span>{tab.label}</span>
-                </Button>
-              ))}
-            </div>
-          </div>
-        )}
-      
         {/* Desktop tabs */}
         <Tabs 
           value={activeTab} 

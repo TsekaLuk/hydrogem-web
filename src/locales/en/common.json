@@ -8,7 +8,10 @@
     "monitoring": "Monitoring",
     "analytics": "Analytics",
     "help": "Help & Support",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "menu": "Menu",
+    "mainNavigation": "Main Navigation",
+    "quickLinks": "Quick Links"
   },
   "actions": {
     "collapse": "Collapse Sidebar",
@@ -107,7 +110,9 @@
     "clearSearch": "Clear Search",
     "disclaimer": "Responses may not always be accurate, please verify important information",
     "welcomeTitle": "Start a Conversation",
-    "welcomeMessage": "Start your conversation with HydroGem by sending a message. You can ask any questions or request assistance."
+    "welcomeMessage": "Start your conversation with HydroGem by sending a message. You can ask any questions or request assistance.",
+    "noChatsYet": "No Chats Yet",
+    "startNewChat": "Start a new chat to begin exploring"
   },
   "user": {
     "settings": "Settings",

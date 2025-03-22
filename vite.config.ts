@@ -15,6 +15,13 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths(),
       EnvironmentPlugin('all'),
     ],
+    // 添加define配置，定义全局常量
+    define: {
+      // 确保所有值都使用JSON.stringify包装
+      __APP_NAME__: JSON.stringify("HydroGem"),
+      __IDEA__: JSON.stringify("HydroGem Water Monitoring"),
+      __VERSION__: JSON.stringify("1.0.0")
+    },
     server: {
       port: 5173,
       watch: {
@@ -75,8 +82,13 @@ export default defineConfig(({ mode }) => {
     },
     // 为模块预加载添加链接预取
     experimental: {
-      renderBuiltUrl(filename: string) {
-        return { runtime: `window.__assetsPath("${filename}")` };
+      renderBuiltUrl(filename: string, { hostType }) {
+        // 只在JS代码中应用动态资源路径，HTML中使用静态路径
+        if (hostType === 'js') {
+          return { runtime: `window.__assetsPath("${filename}")` };
+        }
+        // 对于HTML中的资源，使用相对路径
+        return { relative: true };
       }
     },
     // 配置CSS优化

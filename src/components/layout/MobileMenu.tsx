@@ -1,29 +1,29 @@
+import { useState, useEffect } from 'react';
+import { cn } from '@/lib/utils';
 import { 
-  Menu, MessageSquare, GaugeCircle, LineChart, 
-  BrainCircuit, HelpCircle, Type, Settings, 
-  PlusCircle, X, Home, ChevronRight
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetFooter,
   SheetClose
 } from '@/components/ui/sheet';
-import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import {
+  Menu, MessageSquare, GaugeCircle, LineChart, 
+  BrainCircuit, HelpCircle, Settings, 
+  PlusCircle, X, Home, ChevronRight
+} from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from './Logo';
 import { useChat } from '@/hooks/useChat';
-import { useState, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN, enUS } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
+import { useTranslation } from 'react-i18next';
+import SearchTrigger from '@/components/search/SearchTrigger';
 
 export function MobileMenu() {
   const { t, i18n } = useTranslation();
@@ -80,8 +80,24 @@ export function MobileMenu() {
 
   // 创建新的聊天会话
   const handleNewChat = () => {
+    // 首先创建会话
     createNewSession();
+    
+    // 强制设置hash并手动触发事件以确保导航
+    window.location.hash = 'chat';
+    
+    // 确保关闭MobileMenu
     setIsOpen(false);
+
+    // 强制触发hashchange事件 - 这是为了确保即使hash没变也能正确导航
+    if (window.location.hash === '#chat') {
+      // 如果已经在chat页面，手动触发hashchange事件
+      const hashChangeEvent = new Event('hashchange');
+      window.dispatchEvent(hashChangeEvent);
+    }
+    
+    // 添加日志以便调试
+    console.log('新建聊天并导航至: #chat');
   };
 
   // 处理导航链接点击
@@ -178,17 +194,26 @@ export function MobileMenu() {
         className="w-[85vw] sm:w-[350px] p-0 overflow-hidden flex flex-col bg-white dark:bg-gray-950"
       >
         <div className="flex flex-col h-full">
-          {/* 标题栏 */}
+          {/* 标题栏 - 交换Logo和关闭按钮的位置 */}
           <SheetHeader className="px-4 py-3 border-b border-border/30 flex-row items-center justify-between">
-            <SheetTitle className="flex items-center">
-              <Logo variant="compact" />
-            </SheetTitle>
             <SheetClose asChild>
               <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
                 <X className="h-4 w-4" />
               </Button>
             </SheetClose>
+            <SheetTitle className="flex items-center">
+              <Logo variant="compact" />
+            </SheetTitle>
           </SheetHeader>
+          
+          {/* 添加搜索触发器 */}
+          <div className="px-4 py-2 border-b">
+            <SearchTrigger 
+              className="w-full justify-start" 
+              variant="outline"
+              showKeyboardShortcut={false}
+            />
+          </div>
           
           {/* 内容区域 */}
           <Tabs 
@@ -448,11 +473,11 @@ export function MobileMenu() {
           </Tabs>
           
           {/* 底部版权信息 */}
-          <SheetFooter className="px-4 py-3 border-t border-border/30 flex-row items-center justify-center mt-auto">
+          <div className="px-4 py-3 border-t border-border/30 flex items-center justify-center mt-auto">
             <p className="text-xs text-muted-foreground">
               HydroGem © {new Date().getFullYear()}
             </p>
-          </SheetFooter>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

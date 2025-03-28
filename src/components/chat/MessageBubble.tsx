@@ -1,140 +1,266 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
+import { MathRendererForMessages } from './MathRenderer';
 import { cn } from '@/lib/utils';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
+import { motion } from 'framer-motion';
+import { MessageActions } from './MessageActions';
+import { Pencil, X, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Repeat } from 'lucide-react';
-import { getMarkdownComponents } from './markdown-components';
-import KatexRenderer from './KatexRenderer';
-import KatexMarkdown from './KatexMarkdown';
-import 'highlight.js/styles/github-dark.css';
-import 'katex/dist/katex.min.css';
-import { Components } from 'react-markdown';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Textarea } from '@/components/ui/textarea';
+import { MessageContent } from './MessageContent';
 
-export interface MessageBubbleProps {
+interface MessageBubbleProps {
   content: string;
-  timestamp: Date;
-  isUser: boolean;
+  isUser?: boolean;
+  className?: string;
+  timestamp?: Date;
   isTyping?: boolean;
   isStreaming?: boolean;
-  onReply?: () => void;
+  onRegenerate?: () => void;
+  onEdit?: (content: string) => void;
+  totalBranches?: number;
+  currentBranch?: number;
+  onSwitchBranch?: (branchNumber: number) => void;
 }
 
-function MessageBubbleComponent({
+export const MessageBubble: React.FC<MessageBubbleProps> = ({
   content,
+  isUser = false,
+  className,
   timestamp,
-  isUser,
   isTyping,
-  isStreaming = false,
-  onReply
-}: MessageBubbleProps) {
-  const formattedTime = new Intl.DateTimeFormat('zh-CN', {
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(timestamp);
-
-  // 增强的LaTeX检测函数，识别更多数学表达式
-  const hasLatex = useMemo(() => {
-    // 检查是否包含常见的LaTeX分隔符
-    const hasDelimiters = /\$\$.+?\$\$|\$.+?\$|\\[\(\[].*?\\[\)\]]/s.test(content);
-    if (hasDelimiters) return true;
-    
-    // 检查是否包含LaTeX命令
-    const hasCommands = /\\[a-zA-Z]+(\{.*?\})*/.test(content);
-    if (hasCommands) return true;
-    
-    // 检查是否包含积分表达式
-    const hasIntegrals = /\\int|\\oint|\\iint|\\iiint|\\sum|\\prod/.test(content);
-    if (hasIntegrals) return true;
-    
-    // 检查是否包含分数、根号等常见数学结构
-    const hasMathStructures = /\\frac|\\sqrt|\\lim|\\infty|\\partial/.test(content);
-    if (hasMathStructures) return true;
-    
-    // 检查是否包含微分符号
-    const hasDifferentials = /\bd[xyz]\b|\\mathrm\{d[xyz]\}/.test(content);
-    if (hasDifferentials) return true;
-    
-    // 检查是否包含希腊字母
-    const hasGreekLetters = /\\(alpha|beta|gamma|delta|epsilon|zeta|eta|theta|iota|kappa|lambda|mu|nu|xi|omicron|pi|rho|sigma|tau|upsilon|phi|chi|psi|omega)/i.test(content);
-    
-    return hasGreekLetters;
-  }, [content]);
-
+  isStreaming,
+  onRegenerate,
+  onEdit,
+  totalBranches,
+  currentBranch,
+  onSwitchBranch
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+  
+  // Detect if content is purely mathematical formula
+  const isPureMath = content.trim().startsWith('$') && content.trim().endsWith('$');
+  
+  // Format timestamp if provided
+  const formattedTime = timestamp ? new Intl.DateTimeFormat('default', {
+    hour: 'numeric',
+    minute: 'numeric'
+  }).format(timestamp) : '';
+  
+  // Animation variants for bubble
+  const bubbleVariants = {
+    initial: { 
+      opacity: 0, 
+      y: 10,
+      scale: 0.98
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: { 
+        duration: 0.2,
+        ease: "easeOut" 
+      }
+    }
+  };
+  
+  // Handle start editing
+  const handleStartEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log("Starting edit mode with content:", content);
+    setEditedContent(content);
+    setIsEditing(true);
+  };
+  
+  // Handle cancel edit
+  const handleCancelEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditing(false);
+  };
+  
+  // Handle save edit
+  const handleSaveEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onEdit && editedContent.trim() !== '') {
+      console.log("Saving edited content:", editedContent);
+      onEdit(editedContent);
+      setIsEditing(false);
+    }
+  };
+  
+  // Use motion.div for animated content
+  const BubbleContainer = isStreaming || isTyping ? motion.div : 'div';
+  
   return (
-    <div className={cn(
-      "group flex-1 relative flex", 
-      isUser ? "justify-end" : "justify-start"
-    )}>
-      <div className={cn(
-        "max-w-[80%] sm:max-w-[80%] max-w-[90%]", // Adjust max width on mobile
-        "rounded-2xl py-3 px-3 sm:px-4 text-sm shadow-sm mb-0.5",
-        isUser
-          ? "bg-gradient-to-br from-cyan-500 to-blue-500 text-white rounded-tr-sm"
-          : "bg-gradient-to-br from-background to-muted rounded-tl-sm",
-        isTyping && !isUser ? 'pulse-bg' : ''
-      )}>
-        <div className={cn(
-          'prose prose-sm dark:prose-invert max-w-none',
-          'prose-p:leading-relaxed prose-pre:p-0',
-          'prose-code:bg-background prose-code:rounded-md prose-code:p-0.5',
-          'prose-pre:my-2',
-          'katex-styles'
-        )}>
-          {hasLatex ? (
-            <KatexMarkdown markdown={content} />
-          ) : (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
-              components={getMarkdownComponents()}
-            >
-              {content}
-            </ReactMarkdown>
-          )}
-        </div>
+    <div
+      className={cn(
+        'message-bubble-container relative group',
+        isUser ? 'flex justify-end' : 'flex justify-start'
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <BubbleContainer
+        className={cn(
+          'message-bubble max-w-[95%] relative',
+          isUser 
+            ? 'user-bubble rounded-2xl rounded-tr-sm ml-auto bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-sm'
+            : 'ai-bubble rounded-2xl rounded-tl-sm bg-card border border-border/30 shadow-sm',
+          isPureMath && 'math-message-bubble',
+          isTyping && 'is-typing',
+          'transition-all duration-300 ease-in-out transform-gpu',
+          className
+        )}
+        initial={isStreaming || isTyping ? "initial" : undefined}
+        animate={isStreaming || isTyping ? "animate" : undefined}
+        variants={isStreaming || isTyping ? bubbleVariants : undefined}
+      >
+        {isEditing ? (
+          <div className="p-2 w-full">
+            <Textarea
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+              className={cn(
+                "min-h-[80px] w-full bg-transparent border border-blue-300/50 dark:border-blue-700/50",
+                "focus:ring-1 focus:ring-blue-400 dark:focus:ring-blue-600",
+                "placeholder:text-blue-300/60 dark:placeholder:text-blue-500/60",
+                "resize-none"
+              )}
+              autoFocus
+            />
+            <div className="flex justify-end mt-2 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs py-1 px-2 h-auto bg-transparent"
+                onClick={handleCancelEdit}
+              >
+                <X className="mr-1 h-3 w-3" />
+                取消
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="text-xs py-1 px-2 h-auto bg-blue-600 hover:bg-blue-700"
+                onClick={handleSaveEdit}
+              >
+                <Check className="mr-1 h-3 w-3" />
+                保存
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className={cn(
+            "w-full overflow-hidden markdown-content-wrapper",
+            "transition-all duration-300 ease-in-out layout-stable",
+            "transform-gpu",
+            isUser ? "px-3 py-2.5" : "px-4 py-3",
+            isPureMath && "math-container"
+          )}>
+            <MathRendererForMessages
+              content={content}
+              displayMode={false}
+              className={cn(
+                'message-math w-full layout-stable',
+                'transition-height duration-300',
+                isUser ? 'user-message-math' : '',
+                isPureMath && 'pure-math-content'
+              )}
+            />
+          </div>
+        )}
         
-        {/* 时间显示，放在气泡内部底部 */}
-        <div className={cn(
-          'text-xs opacity-70 mt-2 text-right',
-          isUser ? 'text-white/70' : 'text-muted-foreground'
-        )}>
-          {formattedTime}
-        </div>
-      </div>
+        {/* Timestamp display */}
+        {timestamp && !isTyping && !isEditing && (
+          <div className={cn(
+            "absolute -bottom-5 text-[0.65rem] text-muted-foreground/70 px-1",
+            isUser ? "left-1" : "left-1",
+            "opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          )}>
+            {formattedTime}
+          </div>
+        )}
+        
+        {/* Message actions */}
+        {!isTyping && !isUser && onRegenerate && !isEditing && (
+          <div className={cn(
+            "absolute -bottom-5 right-1 transition-opacity duration-200",
+            isHovered ? "opacity-100" : "opacity-0"
+          )}>
+            <MessageActions content={content} onRegenerate={onRegenerate} />
+          </div>
+        )}
+        
+        {/* Edit option for user messages */}
+        {!isTyping && isUser && onEdit && !isEditing && (
+          <div className={cn(
+            "absolute -bottom-5 right-1 transition-opacity duration-200",
+            isHovered ? "opacity-100" : "opacity-0"
+          )}>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className={cn(
+                        'h-7 w-7 rounded-full bg-blue-100 dark:bg-blue-900/40',
+                        'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300',
+                        'shadow-sm border border-blue-200 dark:border-blue-800/40',
+                        'hover:bg-blue-200 dark:hover:bg-blue-800/50'
+                      )}
+                      onClick={handleStartEdit}
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Button>
+                  </motion.div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="text-xs">
+                  <p>编辑消息</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
+        
+        {/* Elegant branch indicator for AI responses with multiple branches */}
+        {!isUser && totalBranches && totalBranches > 1 && (
+          <div className="absolute top-1 right-1 flex items-center gap-0.5">
+            {Array.from({ length: totalBranches }).map((_, i) => (
+              <button
+                key={i}
+                className={cn(
+                  "w-4 h-1 rounded-sm transition-all duration-300",
+                  currentBranch === i + 1 
+                    ? "bg-primary/70" 
+                    : "bg-muted-foreground/10 hover:bg-muted-foreground/20",
+                  "opacity-70 hover:opacity-100"
+                )}
+                onClick={() => onSwitchBranch && onSwitchBranch(i + 1)}
+                title={`Response variation ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </BubbleContainer>
       
-      {/* 重新生成回复按钮 */}
-      {!isUser && !isStreaming && (
-        <div className="flex ml-1 mt-1">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={onReply}
-                  className={cn(
-                    'h-8 w-8 rounded-lg opacity-0 transition-opacity',
-                    'group-hover:opacity-100 focus:opacity-100',
-                    'bg-background/80 hover:bg-primary/10',
-                    'border border-border/40 hover:border-primary/30',
-                    'text-primary/80 hover:text-primary'
-                  )}
-                >
-                  <Repeat className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>重新生成回复</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+      {/* Typing indicator for AI messages */}
+      {!isUser && isTyping && (
+        <div className="typing-indicator">
+          <span className="dot"></span>
+          <span className="dot"></span>
+          <span className="dot"></span>
         </div>
       )}
     </div>
   );
-}
-
-export const MessageBubble = React.memo(MessageBubbleComponent);
+};

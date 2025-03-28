@@ -103,12 +103,12 @@ renderer.code = (code: string, language: string | undefined) => {
   return `
     <div class="code-block-container relative w-full rounded-lg bg-slate-900 p-4 font-mono text-sm">
       <div class="flex justify-between items-center py-2">
-        ${language ? `<div class="text-xs text-zinc-400">${language}</div>` : ''}
-        <button class="copy-code-button flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 transition-colors font-sans">
+        ${language ? `<div class="text-xs font-medium text-zinc-300">${language}</div>` : ''}
+        <button class="copy-code-button flex items-center gap-1 text-xs text-zinc-300 hover:text-white transition-colors font-sans">
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
         </button>
       </div>
-      <pre class="hljs ${langClass}" style="margin:0;padding:0;background:transparent;font-size:0.875rem;"><code>${highlighted}</code></pre>
+      <pre class="hljs ${langClass}" style="margin:0;padding:0.5rem;background:transparent;font-size:1rem;line-height:1.5;font-family:Consolas,Monaco,'Andale Mono',monospace;color:rgba(255,255,255,0.95);font-weight:500;"><code>${highlighted}</code></pre>
     </div>
   `;
 };

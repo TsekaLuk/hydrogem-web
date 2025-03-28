@@ -97,20 +97,29 @@ export const CodeBlock = ({
           margin: 0,
           padding: 0,
           background: "transparent",
-          fontSize: "0.875rem",
+          fontSize: "1rem",
+          lineHeight: "1.5",
         }}
         wrapLines={true}
         showLineNumbers={true}
         lineProps={(lineNumber) => ({
           style: {
             backgroundColor: activeHighlightLines.includes(lineNumber)
-              ? "rgba(255,255,255,0.1)"
+              ? "rgba(255,255,255,0.15)"
               : "transparent",
             display: "block",
             width: "100%",
+            padding: "0 0.5rem",
           },
         })}
         PreTag="div"
+        codeTagProps={{
+          style: {
+            fontFamily: "Consolas, Monaco, 'Andale Mono', monospace",
+            fontWeight: "500",
+            color: "rgba(255, 255, 255, 0.95)",
+          }
+        }}
       >
         {String(activeCode)}
       </SyntaxHighlighter>

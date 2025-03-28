@@ -3,6 +3,28 @@ import hljs from 'highlight.js';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
+// 定义用于识别公式的正则表达式模式
+const MATH_PATTERN = /\$\$([\s\S]+?)\$\$|\$([^\n$]*?)\$|\\[\s\n]*\([\s\S]*?\\[\s\n]*\)|\\[\s\n]*\[[\s\S]*?\\[\s\n]*\]|\\begin\{(equation|align|gather|multline)\*?\}[\s\S]*?\\end\{(equation|align|gather|multline)\*?\}/;
+
+// 预处理Markdown内容，防止对公式符号的误解析
+const preprocessMarkdown = (markdown: string): string => {
+  // 保护公式中特殊符号，防止被误识别为Markdown语法
+  let processed = markdown;
+  
+  // 查找所有可能是LaTeX公式的部分，暂时替换为安全标记
+  let mathMatches: { index: number, match: string }[] = [];
+  let counter = 0;
+  let match;
+  
+  // 替换可能被误解析为标题的模式，特别是冒号开头的文本
+  processed = processed.replace(/^([^$\\]*)：\s*([^\n$]+)$/gm, '$1: $2');
+  
+  // 替换中文小标题的模式，这些不应该被解析为Markdown标题
+  processed = processed.replace(/^([^#$\\]*)([：])([^\n$]+)$/gm, '$1**$3**');
+  
+  return processed;
+};
+
 // 配置marked选项
 marked.setOptions({
   highlight: function(code: string, lang: string | undefined) {
@@ -170,7 +192,9 @@ renderer.codespan = (text: string) => {
 export async function renderMarkdown(markdown: string): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
-      const html = marked(markdown, { renderer });
+      // 预处理Markdown内容
+      const preprocessed = preprocessMarkdown(markdown);
+      const html = marked(preprocessed, { renderer });
       resolve(html);
     } catch (error) {
       console.error('Markdown渲染错误:', error);

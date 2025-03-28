@@ -52,37 +52,87 @@ const splitContent = (content: string): ContentPart[] => {
   const parts: ContentPart[] = [];
   let currentIndex = 0;
   
-  // 匹配所有公式：行间公式($$...$$)和行内公式($...$)
-  const mathRegex = /(\$\$[\s\S]*?\$\$)|(\$[^$\n]+?\$)/g;
-  let match;
+  // 首先处理所有块级公式和特殊格式
+  const blockMathRegex = /(\$\$[\s\S]*?\$\$)|(\\[\s\n]*\[[\s\S]*?\\[\s\n]*\])|(\\[\s\n]*\([\s\S]*?\\[\s\n]*\))|(\\begin\{[^}]+\}[\s\S]*?\\end\{[^}]+\})/g;
+  let blockMatch;
+  let tempContent = content;
+  let blockMatches: {index: number, match: string, isDisplay: boolean}[] = [];
   
-  while ((match = mathRegex.exec(content)) !== null) {
+  // 先提取所有块级公式
+  while ((blockMatch = blockMathRegex.exec(content)) !== null) {
+    const formula = blockMatch[0];
+    const isDisplayMode = formula.startsWith('$$') || 
+                        formula.startsWith('\\[') || 
+                        /^\\begin\{(equation|align|gather|multline|cases|array|matrix|bmatrix|pmatrix|vmatrix)\*?\}/.test(formula);
+    blockMatches.push({
+      index: blockMatch.index,
+      match: formula,
+      isDisplay: isDisplayMode
+    });
+    
+    // 更新currentIndex跟踪匹配过程
+    currentIndex = blockMathRegex.lastIndex;
+  }
+  
+  // 然后处理行内公式 $...$
+  const inlineMathRegex = /\$([^\$\n]+?)\$/g;
+  let inlineMatch;
+  let allMatches = [...blockMatches];
+  
+  // 提取所有行内公式，但排除块级公式中的内容
+  while ((inlineMatch = inlineMathRegex.exec(content)) !== null) {
+    const formula = inlineMatch[0];
+    const matchIndex = inlineMatch.index;
+    
+    // 检查是否在块级公式内部
+    let isInsideBlock = false;
+    for (const block of blockMatches) {
+      if (matchIndex > block.index && matchIndex < block.index + block.match.length) {
+        isInsideBlock = true;
+        break;
+      }
+    }
+    
+    if (!isInsideBlock) {
+      allMatches.push({
+        index: matchIndex,
+        match: formula,
+        isDisplay: false
+      });
+    }
+  }
+  
+  // 对所有匹配按索引排序
+  allMatches.sort((a, b) => a.index - b.index);
+  
+  // 根据排序后的匹配构建分割结果
+  let lastIndex = 0;
+  for (const match of allMatches) {
     // 添加公式前的文本
-    if (match.index > currentIndex) {
+    if (match.index > lastIndex) {
       parts.push({
         type: 'text',
-        content: content.slice(currentIndex, match.index),
+        content: content.slice(lastIndex, match.index),
         displayMode: false
       });
     }
     
     // 添加公式
-    const formula = match[0];
-    const isDisplayMode = formula.startsWith('$$');
+    const formula = match.match;
     parts.push({
       type: 'math',
       content: extractTexContent(formula),
-      displayMode: isDisplayMode
+      displayMode: match.isDisplay
     });
     
-    currentIndex = match.index + formula.length;
+    lastIndex = match.index + formula.length;
   }
   
   // 添加剩余的文本
-  if (currentIndex < content.length) {
+  if (lastIndex < content.length) {
     parts.push({
       type: 'text',
-      content: content.slice(currentIndex),
+      content: content.slice(lastIndex),
       displayMode: false
     });
   }
@@ -91,56 +141,62 @@ const splitContent = (content: string): ContentPart[] => {
 };
 
 // 渲染单个公式
-const RenderFormula = ({ content, displayMode }: { content: string; displayMode: boolean }) => {
+const RenderFormula = React.memo(({ content, displayMode }: { content: string; displayMode: boolean }) => {
   const [error, setError] = useState<string | null>(null);
   
-  try {
-    return (
-      <span
-        className={cn(
-          'math-renderer',
-          displayMode ? 'math-display katex-display-wrapper' : 'math-inline katex-inline-fix',
-          displayMode ? 'block w-full my-1' : 'inline-block align-middle'
-        )}
-        dangerouslySetInnerHTML={{
-          __html: katex.renderToString(content, {
-            displayMode: displayMode,
-            throwOnError: false,
-            strict: false,
-            trust: true,
-            output: 'html',
-            macros: {
-              '\\vec': '\\mathbf',
-              '\\mat': '\\mathbf',
-              // 添加更多常用宏
-              '\\R': '\\mathbb{R}',
-              '\\N': '\\mathbb{N}',
-              '\\Z': '\\mathbb{Z}',
-              '\\Q': '\\mathbb{Q}',
-              '\\C': '\\mathbb{C}',
-              // 微分符号
-              '\\d': '\\mathrm{d}',
-              '\\diff': '\\,\\mathrm{d}',
-              // 向量符号
-              '\\grad': '\\nabla',
-              '\\div': '\\nabla \\cdot',
-              '\\curl': '\\nabla \\times',
-            },
-          }),
-        }}
-      />
-    );
-  } catch (err) {
-    console.error('KaTeX rendering error:', err);
-    return <span className="math-error">Error rendering math: {err instanceof Error ? err.message : 'Unknown error'}</span>;
+  // 使用useMemo缓存渲染结果，减少重复计算
+  const renderedFormula = React.useMemo(() => {
+    try {
+      return katex.renderToString(content, {
+        displayMode: displayMode,
+        throwOnError: false,
+        strict: false,
+        trust: true,
+        output: 'html',
+        macros: {
+          '\\vec': '\\mathbf',
+          '\\mat': '\\mathbf',
+          // 仅包含最常用的宏，减少处理开销
+          '\\R': '\\mathbb{R}',
+          '\\N': '\\mathbb{N}',
+          '\\Z': '\\mathbb{Z}',
+          '\\d': '\\mathrm{d}',
+        },
+      });
+    } catch (err) {
+      console.error('KaTeX rendering error:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      return null;
+    }
+  }, [content, displayMode]);
+  
+  if (error) {
+    return <span className="math-error">Error rendering math: {error}</span>;
   }
-};
+  
+  const Element = displayMode ? 'div' : 'span';
+  
+  return (
+    <Element
+      className={cn(
+        'math-renderer',
+        displayMode 
+          ? 'math-display katex-display-wrapper' 
+          : 'math-inline katex-inline-fix',
+        displayMode ? 'block' : 'inline'
+      )}
+      dangerouslySetInnerHTML={{
+        __html: renderedFormula as string
+      }}
+    />
+  );
+});
 
-export const MathRenderer: React.FC<MathRendererProps> = ({
+export const MathRenderer = React.memo(({ 
   content,
   displayMode = false,
   className = '',
-}) => {
+}: MathRendererProps) => {
   // 如果整个内容就是一个公式，直接渲染
   if (displayMode || (content.startsWith('$') && content.endsWith('$'))) {
     return <RenderFormula content={extractTexContent(content)} displayMode={displayMode} />;
@@ -162,33 +218,36 @@ export const MathRenderer: React.FC<MathRendererProps> = ({
       ))}
     </div>
   );
-};
+});
 
 // Specialized renderer optimized for message bubbles
-export const MathRendererForMessages: React.FC<MathRendererProps> = ({
+export const MathRendererForMessages = React.memo(({
   content,
   displayMode = false,
   className = '',
-}) => {
-  // 检测内容是否为纯数学公式
+}: MathRendererProps) => {
+  // 检测内容是否为纯数学公式 - 使用简单的条件检查
   const isPureMathFormula = (
     (content.startsWith('$$') && content.endsWith('$$')) ||
     (content.startsWith('$') && content.endsWith('$')) ||
-    content.trim().startsWith('\\begin{') ||
-    content.trim().startsWith('\\[')
+    /^\\[\s\n]*\([\s\S]*?\\[\s\n]*\)$/.test(content) ||  // \(...\) 格式
+    /^\\[\s\n]*\[[\s\S]*?\\[\s\n]*\]$/.test(content) ||  // \[...\] 格式 
+    content.trim().startsWith('\\begin{')
   );
   
   // 如果整个内容就是一个公式，根据公式类型决定显示模式
   if (isPureMathFormula) {
     const texContent = extractTexContent(content);
     // 只有明确是块级公式的才用displayMode=true渲染
-    const isBlockMath = content.startsWith('$$') || content.startsWith('\\[') || content.trim().startsWith('\\begin{');
+    const isBlockMath = 
+      content.startsWith('$$') || 
+      /^\\[\s\n]*\[/.test(content) || 
+      content.trim().startsWith('\\begin{');
     
     return (
       <div className={cn(
-        "message-formula-container markdown-content layout-stable", 
-        isBlockMath ? "w-full py-1" : "inline-block py-0.5", 
-        "px-0 transition-all duration-300 ease-in-out will-change-transform min-h-[1.25em]"
+        "message-formula-container", 
+        isBlockMath ? "block" : "inline"
       )}>
         <RenderFormula 
           content={texContent} 
@@ -198,10 +257,10 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
     );
   }
 
-  // 否则，分割并渲染混合内容
-  const parts = splitContent(content);
+  // 使用React.useMemo优化计算
+  const parts = React.useMemo(() => splitContent(content), [content]);
   
-  // 导入必要的markdown渲染函数
+  // 改进状态管理，减少重渲染次数
   const [processedParts, setProcessedParts] = useState<Array<{
     type: 'math' | 'html';
     content: string;
@@ -211,7 +270,7 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
     : { type: 'html', content: part.content }
   ));
 
-  // 使用useEffect处理文本部分的markdown渲染，带有防抖和清理逻辑
+  // 优化useEffect以减少流式更新过程中的负载
   useEffect(() => {
     let isMounted = true;
     let debounceTimer: NodeJS.Timeout | null = null;
@@ -222,16 +281,15 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
         clearTimeout(debounceTimer);
       }
       
-      // 如果当前内容长度小于前一次处理的内容，立即处理(流式输出可能完成)
-      const totalContentLength = parts.reduce((sum, part) => sum + part.content.length, 0);
-      const shouldProcessImmediately = totalContentLength > 500;
+      // 对于很短的内容或流式更新中的内容，延迟处理以提高性能
+      const shouldDelay = content.length < 20 || processedParts.length > 0;
       
-      // 设置防抖，减少频繁渲染
+      // 设置较长的防抖时间，减少渲染频率
       debounceTimer = setTimeout(async () => {
         if (!isMounted) return;
         
         try {
-          // 批量处理所有部分，减少状态更新次数
+          // 对parts进行批量处理
           const processed = await Promise.all(
             parts.map(async part => {
               // 数学部分保持不变
@@ -239,7 +297,7 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
                 return { type: 'math' as const, content: part.content, displayMode: part.displayMode };
               }
               
-              // 文本部分通过markdown渲染
+              // 对于文本部分，采用更简单的处理方式
               if (part.content.trim()) {
                 try {
                   const html = await renderMarkdown(part.content);
@@ -259,7 +317,7 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
         } catch (error) {
           console.error('处理文本部分时出错:', error);
         }
-      }, shouldProcessImmediately ? 0 : 100); // 较短的内容使用100ms防抖，长内容立即处理
+      }, shouldDelay ? 150 : 30); // 更长的防抖时间
     };
     
     processTextParts();
@@ -271,43 +329,50 @@ export const MathRendererForMessages: React.FC<MathRendererProps> = ({
         clearTimeout(debounceTimer);
       }
     };
-  }, [parts]);
+  }, [parts, content.length]);
   
   return (
     <div className={cn(
-      'math-content message-math-content markdown-content content-height-stable',
-      'transition-all duration-300 ease-in-out transform-gpu',
-      'min-h-[1.2em] will-change-transform',
+      'math-content message-math-content',
       className
     )}>
       {processedParts.map((part, index) => {
         if (part.type === 'math') {
           // 确保行内公式保持在inline元素内
-          const Wrapper = part.displayMode ? 'div' : 'span';
+          const isBlock = part.displayMode === true;
+          const Wrapper = isBlock ? 'div' : 'span';
           return (
             <Wrapper 
               key={index} 
               className={cn(
-                part.displayMode ? "block-math-wrapper katex-display-wrapper" : "inline-math-wrapper katex-inline-fix",
-                "layout-stable transition-all duration-300 ease-in-out", // 添加平滑过渡效果
-                "will-change-transform transform-gpu" // 使用GPU加速
+                isBlock 
+                  ? "block-math-wrapper katex-display-wrapper block" 
+                  : "inline-math-wrapper katex-inline-fix inline",
+                isBlock ? "" : "math-inline" // 额外添加math-inline类
               )}
             >
-              <RenderFormula content={part.content} displayMode={part.displayMode || false} />
+              <RenderFormula content={part.content} displayMode={isBlock} />
             </Wrapper>
           );
         } else {
+          // 对于HTML内容
+          // 移除可能导致错误解析为标题标签的内容
+          let sanitizedContent = part.content;
+          // 将可能会被错误渲染为标题的内容如：饱和溶解氧 替换处理
+          sanitizedContent = sanitizedContent.replace(/<h([1-6])[^>]*>([^<]*)<\/h\1>/g, '<span class="text-content">$2</span>');
+          
           return (
-            <div 
-              key={index} 
-              className="markdown-html-part layout-stable transition-height"
-              dangerouslySetInnerHTML={{ __html: part.content }} 
-            />
+            <React.Fragment key={index}>
+              <span 
+                className="markdown-html-part inline-text"
+                dangerouslySetInnerHTML={{ __html: sanitizedContent }} 
+              />
+            </React.Fragment>
           );
         }
       })}
     </div>
   );
-};
+});
 
 export default MathRenderer; 

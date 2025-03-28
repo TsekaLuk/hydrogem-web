@@ -5,7 +5,7 @@ import CodeHighlighter from './CodeHighlighter';
 import type { Components } from 'react-markdown';
 import { Check, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AdvancedCodeBlock } from '@/cuicui/application-ui/code/advanced-code-block';
+import { CodeBlock as SyntaxCodeBlock } from '@/components/ui/code-block';
 
 // 检测代码块中的LaTeX公式
 const isKatexBlock = (code: string): boolean => {
@@ -30,17 +30,12 @@ export const CodeBlock = ({ className, children }: { className?: string; childre
     return <MathRenderer content={content} displayMode={true} />;
   }
   
-  // 使用高级代码块组件
-  const isDarkMode = typeof window !== 'undefined' 
-    ? window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches 
-    : false;
-    
+  // 使用新的 SyntaxCodeBlock 组件
   return (
-    <AdvancedCodeBlock 
-      code={content} 
-      lang={language as any || "text"} 
-      fileName={language ? `${language} 代码` : undefined}
-      theme={isDarkMode ? "github-dark" : "github-light"}
+    <SyntaxCodeBlock
+      language={language || 'text'}
+      filename={language ? `${language} code` : 'code'}
+      code={content}
     />
   );
 };

@@ -1,38 +1,36 @@
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
-import { cn } from "@/cuicui/utils/cn";
 
-interface CopyToClipboardProps {
+type CopyToClipboardProps = {
   code: string;
-  className?: string;
-}
+};
 
-export default function CopyToClipboard({ code, className }: CopyToClipboardProps) {
-  const [isCopied, setIsCopied] = useState(false);
+const CopyToClipboard = ({ code }: CopyToClipboardProps) => {
+  const [copied, setCopied] = useState(false);
 
-  const copy = async () => {
-    await navigator.clipboard.writeText(code);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error("Failed to copy code to clipboard", error);
+    }
   };
 
   return (
     <button
-      type="button"
-      className={cn(
-        "group/button relative z-10 h-8 w-8 rounded-lg border border-white/20 bg-white/10 backdrop-blur transition",
-        "flex items-center justify-center",
-        "hover:bg-white/20 active:scale-95",
-        "dark:border-white/10 dark:bg-black/20 dark:hover:bg-black/30",
-        className
-      )}
-      onClick={copy}
+      className="flex h-6 w-6 items-center justify-center rounded-md border border-white/30 bg-white/70 text-neutral-700 shadow-sm transition hover:bg-white dark:bg-zinc-600/70 dark:text-neutral-200 dark:hover:bg-zinc-600"
+      onClick={handleCopy}
+      aria-label={copied ? "Copied!" : "Copy code to clipboard"}
     >
-      {isCopied ? (
-        <Check className="h-4 w-4 text-emerald-500 transition dark:text-emerald-400" />
+      {copied ? (
+        <Check className="h-3.5 w-3.5 text-green-500" />
       ) : (
-        <Copy className="h-4 w-4 text-neutral-500 transition group-hover/button:text-neutral-700 dark:text-neutral-400 dark:group-hover/button:text-neutral-300" />
+        <Copy className="h-3.5 w-3.5" />
       )}
     </button>
   );
-} 
+};
+
+export default CopyToClipboard; 

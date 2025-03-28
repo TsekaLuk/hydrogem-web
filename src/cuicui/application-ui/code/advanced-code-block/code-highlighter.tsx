@@ -1,60 +1,55 @@
-import { useEffect, useState } from "react";
-import { getHighlighter, BundledLanguage, BundledTheme, Highlighter } from "shiki";
+import { memo, useEffect, useState } from "react";
+import { getHighlighter, BundledLanguage, BundledTheme } from "shiki";
 
-interface ShikiCodeProps {
+type ShikiCodeProps = {
   code: string;
-  lang: BundledLanguage;
-  theme: BundledTheme;
-}
-
-// 单例模式缓存高亮器实例
-let highlighterPromise: Promise<Highlighter> | null = null;
-
-const getShikiHighlighter = async (theme: BundledTheme) => {
-  if (!highlighterPromise) {
-    highlighterPromise = getHighlighter({
-      themes: [theme, "github-dark"],
-      langs: ["javascript", "typescript", "jsx", "tsx", "json", "html", "css", "python", "bash", "markdown"],
-    });
-  }
-  return highlighterPromise;
+  lang?: BundledLanguage;
+  theme?: BundledTheme;
 };
 
-export default function ShikiCode({ code, lang, theme }: ShikiCodeProps) {
-  const [highlightedCode, setHighlightedCode] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(true);
+const ShikiCode = memo(function ShikiCode({
+  code,
+  lang = "typescript",
+  theme = "github-light",
+}: ShikiCodeProps) {
+  const [highlighted, setHighlighted] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 设置初始加载状态
-    setIsLoading(true);
-
-    const highlight = async () => {
+    async function highlightCode() {
       try {
-        const highlighter = await getShikiHighlighter(theme);
-        const html = highlighter.codeToHtml(code, {
-          lang: lang || "typescript",
-          theme: theme
+        const highlighter = await getHighlighter({
+          langs: [lang],
+          themes: [theme],
         });
-        setHighlightedCode(html);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Shiki highlighting error:", error);
-        // 回退到简单的转义显示
-        setHighlightedCode(`<pre>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>`);
-        setIsLoading(false);
-      }
-    };
 
-    highlight();
+        const html = highlighter.codeToHtml(code, {
+          lang,
+          theme,
+        });
+
+        setHighlighted(html);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to highlight code:", error);
+        setHighlighted(`<pre class="language-${lang}">${code}</pre>`);
+        setLoading(false);
+      }
+    }
+
+    highlightCode();
   }, [code, lang, theme]);
 
-  if (isLoading) {
-    return (
-      <div className="flex animate-pulse items-center justify-center p-4 text-neutral-400">
-        <div className="h-4 w-1/3 rounded bg-neutral-300 dark:bg-neutral-700"></div>
-      </div>
-    );
+  if (loading) {
+    return <div className="animate-pulse bg-gray-200 h-10 w-full dark:bg-gray-700"></div>;
   }
 
-  return <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
-} 
+  return (
+    <div
+      className="language-shiki"
+      dangerouslySetInnerHTML={{ __html: highlighted }}
+    />
+  );
+});
+
+export default ShikiCode; 

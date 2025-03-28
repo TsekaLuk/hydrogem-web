@@ -1,8 +1,8 @@
 //@ts-nocheck
 import type { HTMLAttributes } from "react";
 import type { BundledLanguage, BundledTheme } from "shiki";
-import ShikiCode from "@/cuicui/application-ui/code/advanced-code-block/code-highlighter";
-import CopyToClipboard from "@/cuicui/application-ui/code/advanced-code-block/copy-to-clipboard";
+import ShikiCode from "./code-highlighter";
+import CopyToClipboard from "./copy-to-clipboard";
 import { cn } from "@/cuicui/utils/cn";
 
 type AdvancedBlockProps = {
